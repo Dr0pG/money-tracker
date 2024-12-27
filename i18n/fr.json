@@ -1,0 +1,28 @@
+{
+    "main": {
+        "sign_in": "Connectez-vous",
+        "always_take_control": "Prenez toujours le contrôle de vos finances",
+        "finances_must_be": "Les finances doivent être organisées pour un meilleur style de vie à l'avenir",
+        "get_started": "Commencer",
+    },
+    "sign_up": {
+        "sign_up": "S'inscrire",
+        "lets": "Allons-y",
+        "get_started": "Commencer",
+        "create_an_account": "Créez un compte pour suivre vos dépenses",
+        "enter_your_name": "Entrez votre nom",
+        "enter_your_email": "Entrez votre email",
+        "enter_your_password": "Entrez votre mot de passe",
+        "already_have_account": "Vous avez déjà un compte?",
+        "login": "Connexion",
+        "form": {
+            "name_is_required": "Le nom est requis.",
+            "email_is_required": "L'email est requis.",
+            "password_is_required": "Le mot de passe est requis.",
+
+            "name_contains_invalid_characters": "Le nom contient des caractères invalides.",
+            "invalid_email_format": "Format d'email invalide.",
+            "password_must_be_at_least": "Le mot de passe doit comporter au moins 8 caractères, contenir au moins une lettre majuscule et un caractère spécial.",
+        }
+    }
+}

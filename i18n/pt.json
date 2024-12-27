@@ -1,0 +1,28 @@
+{
+    "main": {
+        "sign_in": "Entrar",
+        "always_take_control": "Controle sempre as suas finanças",
+        "finances_must_be": "As finanças devem ser organizadas para um melhor estilo de vida no futuro",
+        "get_started": "Começar",
+    },
+    "sign_up": {
+        "sign_up": "Registar",
+        "lets": "Vamos",
+        "get_started": "Começar",
+        "create_an_account": "Crie uma conta para acompanhar as suas despesas",
+        "enter_your_name": "Insira o seu nome",
+        "enter_your_email": "Insira o seu email",
+        "enter_your_password": "Insira a sua palavra-passe",
+        "already_have_account": "Já tem uma conta?",
+        "login": "Entrar",
+        "form": {
+            "name_is_required": "Nome é obrigatório.",
+            "email_is_required": "Email é obrigatório.",
+            "password_is_required": "Palavra-passe é obrigatória.",
+
+            "name_contains_invalid_characters": "Nome contém caracteres inválidos.",
+            "invalid_email_format": "Formato de email inválido.",
+            "password_must_be_at_least": "A palavra-passe deve ter pelo menos 8 caracteres, conter pelo menos uma letra maiúscula e um caractere especial.",
+        }
+    }
+}
