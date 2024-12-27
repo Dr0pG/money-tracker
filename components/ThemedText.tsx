@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     lineHeight: Metrics.defaultText * 1.3,
   },
   error: {
-    fontSize: Metrics.defaultText,
-    lineHeight: Metrics.defaultText * 1.3,
+    fontSize: Metrics.smallText,
+    lineHeight: Metrics.smallText * 1.3,
   },
   medium: {
     fontSize: Metrics.mediumText,
