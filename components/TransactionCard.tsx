@@ -30,7 +30,7 @@ const TransactionCard = ({
       <View style={styles.rightInfoContainer}>
         <ThemedText
           type="subtitle"
-          style={{ color: isIncome ? infoGoodTextColor : infoBadTextColor }}
+          color={isIncome ? infoGoodTextColor : infoBadTextColor}
         >
           {`${isIncome ? "+" : "-"} ${value}€`}
         </ThemedText>

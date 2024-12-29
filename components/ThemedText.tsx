@@ -17,6 +17,7 @@ import Durations from "@/constants/Durations";
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
+  color?: string;
   animationType?: string;
   type?:
     | "default"
@@ -37,6 +38,7 @@ const ThemedText = ({
   style,
   lightColor,
   darkColor,
+  color,
   type = "default",
   animationType = undefined,
   ...rest
@@ -66,6 +68,9 @@ const ThemedText = ({
 
   // Use derived value to compute the color based on `type` and `theme`
   const animatedTextColor = useDerivedValue(() => {
+    if (color) {
+      return withTiming(color, { duration: Durations.colorChanged });
+    }
     switch (type) {
       case "bigButton":
         return withTiming(buttonTextColor, {
@@ -85,6 +90,7 @@ const ThemedText = ({
         });
     }
   }, [
+    color,
     theme,
     type,
     lightText,
@@ -118,6 +124,7 @@ const ThemedText = ({
 
   return (
     <Animated.Text
+      {...rest}
       style={[
         animatedStyle,
         type === "default" ? styles.default : undefined,
@@ -134,7 +141,6 @@ const ThemedText = ({
         type === "hightLight" ? styles.hightLight : undefined,
         style,
       ]}
-      {...rest}
       {...(animation?.() &&
         !!animationType && {
           entering: animation().entering,
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
     lineHeight: Metrics.size30 * 1.2 * 1.3,
   },
   subtitle: {
-    fontSize: Metrics.subsize22,
+    fontSize: Metrics.size18,
     fontWeight: "bold",
   },
   link: {

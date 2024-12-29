@@ -16,6 +16,10 @@ export const Colors = {
     link: "#0a7ea4",
 
     green: "green",
+
+    bottomBar: '#1e1e1e',
+    bottomBarActiveIcons: '#A4E736',
+    bottomBarInactiveIcons: '#8E8E93',
   },
   dark: {
     text: "#fff",
@@ -35,5 +39,9 @@ export const Colors = {
     link: "#0a7ea4",
 
     green: "green",
+
+    bottomBar: '#1e1e1e',
+    bottomBarActiveIcons: '#A4E736',
+    bottomBarInactiveIcons: '#8E8E93',
   },
 };

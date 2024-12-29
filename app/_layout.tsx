@@ -70,7 +70,7 @@ const ThemedApp = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: currentBackground }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: currentBackground }} edges={['top', 'left', 'right']}>
       <StatusBar
         style={theme === "dark" ? "light" : "dark"}
         backgroundColor={backgroundColor}

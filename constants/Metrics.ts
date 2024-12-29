@@ -51,6 +51,8 @@ const Metrics = {
   cardInfoIcon: 16,
   cardInfoSize: 20,
 
+  bottomBarIcon: 30,
+
   // Screen Dimensions
   screenWidth: Dimensions.get("window").width,
   screenHeight: Dimensions.get("window").height,

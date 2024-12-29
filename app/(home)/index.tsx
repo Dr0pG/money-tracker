@@ -12,6 +12,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import MainCard from "@/components/MainCard";
 import RecentTransactions from "@/components/Home/RecentTransactions";
+import Authentication from "@/firebase/Authentication";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ const Home = () => {
               styles.searchIconContent,
               { backgroundColor: iconBackgroundColor },
             ]}
+            onPress={Authentication.signOut}
           >
             <Ionicons
               name="search"
@@ -76,10 +78,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
-    paddingVertical: Metrics.mediumPadding,
+    paddingTop: Metrics.mediumPadding,
   },
   helloText: {
-    marginBottom: Metrics.smallMargin,
+    paddingVertical: Metrics.smallPadding,
     fontSize: Metrics.size22,
   },
   headerContainer: {

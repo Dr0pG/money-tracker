@@ -32,9 +32,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
         </View>
         <ThemedText>{isIncome ? "Income" : "Expense"}</ThemedText>
       </View>
-      <ThemedText
-        style={{ color: isIncome ? infoGoodTextColor : infoBadTextColor }}
-      >
+      <ThemedText color={isIncome ? infoGoodTextColor : infoBadTextColor}>
         {value}€
       </ThemedText>
     </View>
