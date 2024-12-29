@@ -1,4 +1,4 @@
-package com.dropg.moneytracker
+package com.moneytracker.app
 
 import android.app.Application
 import android.content.res.Configuration

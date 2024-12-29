@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
@@ -12,16 +12,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Durations from "@/constants/Durations";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { UserProvider } from "@/context/UserContext";
+import { ActivityIndicator } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const ThemedApp = () => {
   const { theme } = useTheme();
+  const router = useRouter();
 
   const backgroundColor = useThemeColor({}, "background");
 
   const [currentBackground, setBackgroundColor] = useState(backgroundColor);
+
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
   useEffect(() => {
     setTimeout(
@@ -30,6 +38,34 @@ const ThemedApp = () => {
     );
   }, [backgroundColor]);
 
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(
+      (user: FirebaseAuthTypes.User | null) => {
+        setUser(user);
+        if (initializing) setInitializing(false);
+      }
+    );
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  useEffect(() => {
+    if (!initializing) {
+      // Redirect to the appropriate screen based on user state
+      if (user) {
+        // User is logged in, navigate to the home screen
+        router.push("/(home)");
+      } else {
+        // User is logged out, navigate to the main screen
+        router.push("/(main)");
+      }
+    }
+  }, [user, initializing, router]);
+
+  // Ensure that we wait until Firebase has finished initializing before rendering
+  if (initializing) {
+    return <ActivityIndicator />; // You can replace this with a loading spinner or splash screen.
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: currentBackground }}>
       <StatusBar
@@ -37,8 +73,9 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <Stack>
+      <Stack initialRouteName={!user ? "(main)" : "(home)"}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
     </SafeAreaView>
@@ -64,7 +101,9 @@ export default function RootLayout() {
     <I18nextProvider i18n={i18n}>
       <GestureHandlerRootView>
         <ThemeProvider>
-          <ThemedApp />
+          <UserProvider>
+            <ThemedApp />
+          </UserProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
     </I18nextProvider>

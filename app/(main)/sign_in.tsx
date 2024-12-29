@@ -14,6 +14,7 @@ import Button from "@/components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-gesture-handler";
 import { validateForm } from "@/utils/signInFormValidation";
+import Authentication from "@/firebase/Authentication";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -35,9 +36,15 @@ const SignIn = () => {
 
   const onSubmit = () => {
     const validate = validateForm(email, password);
+
+    if (!validate.hasError) {
+      Authentication.loginUser(email, password);
+      return;
+    }
+
     serError({
-      email: t(validate?.email),
-      password: t(validate?.password),
+      email: t(validate?.errors?.email),
+      password: t(validate?.errors?.password),
     });
   };
 
@@ -67,7 +74,7 @@ const SignIn = () => {
           keyboardType="email-address"
           returnKeyType="next"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(email: string) => setEmail(email.toLowerCase())}
           hasError={error.email !== ""}
           errorMessage={error.email}
           onFocus={() => serError({ ...error, email: "" })}

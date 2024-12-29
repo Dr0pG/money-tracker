@@ -4,11 +4,20 @@ type FormErrors = {
   password: string;
 };
 
+type ResultValidation = {
+  errors: {
+    name: string;
+    email: string;
+    password: string;
+  };
+  hasError: boolean;
+};
+
 const validateForm = (
   name: string,
   email: string,
   password: string
-): FormErrors => {
+): ResultValidation => {
   let errors: FormErrors = {
     name: "",
     email: "",
@@ -57,7 +66,9 @@ const validateForm = (
     };
   }
 
-  return errors;
+  const hasError = Object.values(errors).some((value) => value !== "");
+
+  return { errors, hasError };
 };
 
 export { validateForm };

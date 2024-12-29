@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "money-tracker",
-    "slug": "money-tracker",
+    "name": "Money Tracker",
+    "slug": "Money Tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,15 +9,17 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.dropg.moneytracker"
+      "bundleIdentifier": "com.moneytracker.app"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dropg.moneytracker"
+      "package": "com.moneytracker.app"
     },
     "web": {
       "bundler": "metro",
