@@ -1,43 +1,43 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import Utils from "@/firebase/Utils";
+import Toast from "@/components/Toast";
+import i18n from "i18next";
 
-const loginUser = (email: string, password: string) => {
-  auth()
+const loginUser = async (email: string, password: string) => {
+  return auth()
     .signInWithEmailAndPassword(email, password)
     .then(() => {
-      console.log("User account created & signed in!");
+      Toast.showSuccess(i18n.t("login_successfully"));
     })
     .catch((error) => {
+      let currentError = null;
       if (error.code === "auth/email-already-in-use") {
-        console.log("That email address is already in use!");
+        currentError = i18n.t("that_email_address_is_already_in_use");
       }
 
       if (error.code === "auth/invalid-email") {
-        console.log("That email address is invalid!");
+        currentError = i18n.t("that_email_address_is_invalid");
       }
 
-      console.error(error);
+      if (error.code === "auth/invalid-credential") {
+        currentError = i18n.t(
+          "the_supplied_authentication_credential_is_malformed_or_has_expired"
+        );
+      }
+
+      return Promise.reject(currentError);
     });
 };
 
-const registerUser = (name: string, email: string, password: string) => {
-  auth()
+const registerUser = async (name: string, email: string, password: string) => {
+  return auth()
     .createUserWithEmailAndPassword(email, password)
     .then((userCredential: FirebaseAuthTypes.UserCredential) => {
-      console.log("User account created & signed in!");
-
       // Now update the user's profile with their name
       const currentUser = userCredential.user;
-      currentUser
-        .updateProfile({
-          displayName: name, // Store the name in the displayName field
-        })
-        .then(() => {
-          console.log("User profile updated with name:", name);
-        })
-        .catch((error) => {
-          console.error("Error updating profile:", error);
-        });
+      currentUser.updateProfile({
+        displayName: name, // Store the name in the displayName field
+      });
 
       // Get the user ID (uid) from Firebase Authentication
       const userId = userCredential.user.uid;
@@ -54,22 +54,24 @@ const registerUser = (name: string, email: string, password: string) => {
         .ref(`/${userId}`)
         .set(user)
         .then(() => {
-          console.log("User data saved in Realtime Database");
+          Toast.showSuccess(i18n.t("account_created_successfully"));
         })
-        .catch((error) => {
-          console.error("Error saving user data:", error);
+        .catch(() => {
+          Toast.showError(i18n.t("there_was_a_problem_creating_your_account"));
         });
     })
     .catch((error) => {
+      let currentError = null;
+
       if (error.code === "auth/email-already-in-use") {
-        console.log("That email address is already in use!");
+        currentError = i18n.t("that_email_address_is_already_in_use");
       }
 
       if (error.code === "auth/invalid-email") {
-        console.log("That email address is invalid!");
+        currentError = i18n.t("that_email_address_is_invalid");
       }
 
-      console.error(error);
+      return Promise.reject(currentError);
     });
 };
 
@@ -77,10 +79,10 @@ const signOut = () => {
   auth()
     .signOut()
     .then(() => {
-      console.log("User logout successfully");
+      Toast.showSuccess(i18n.t("user_logout_successfully"));
     })
-    .catch((error) => {
-      console.error("Error login out the user:", error);
+    .catch(() => {
+      Toast.showError(i18n.t("something_went_wrong"));
     });
 };
 

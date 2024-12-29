@@ -1,36 +1,47 @@
 {
-    "main": {
-        "sign_in": "Sign in",
-        "always_take_control": "Always take control of your finances",
-        "finances_must_be": "Finances must be arranged to set a better lifestyle in future",
-        "get_started": "Get started",
-    },
-    "sign_up": {
-        "sign_up": "Sign up",
-        "lets": "Let's",
-        "get_started": "Get Started",
-        "create_an_account": "Create an account to track your expenses",
-        "enter_your_name": "Enter your name",
-        "already_have_account": "Already have an account?",
-        "form": {
-            "name_is_required": "Name is required.",
-            "email_is_required": "Email is required.",
-            "password_is_required": "Password is required.",
+  "main": {
+    "sign_in": "Sign in",
+    "always_take_control": "Always take control of your finances",
+    "finances_must_be": "Finances must be arranged to set a better lifestyle in future",
+    "get_started": "Get started"
+  },
+  "sign_up": {
+    "sign_up": "Sign up",
+    "lets": "Let's",
+    "get_started": "Get Started",
+    "create_an_account": "Create an account to track your expenses",
+    "enter_your_name": "Enter your name",
+    "already_have_account": "Already have an account?",
+    "form": {
+      "name_is_required": "Name is required.",
+      "email_is_required": "Email is required.",
+      "password_is_required": "Password is required.",
 
-            "name_contains_invalid_characters": "Name contains invalid characters.",
-            "invalid_email_format": "Invalid email format.",
-            "password_must_be_at_least": "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.",
-        }
-    },
-    "sign_in": {
-        "hey": "Hey",
-        "welcome_back": "Welcome Back",
-        "login_now_to_track_all_expenses": "Login now to track all expenses",
-        "forgot_password": "Forgot password",
-        "dont_have_an_account": "Don't have an account?",
-        "sign_up": "Sign up",
-    },
-    "login": "Login",
-    "enter_your_email": "Enter your email",
-    "enter_your_password": "Enter your password",
+      "name_contains_invalid_characters": "Name contains invalid characters.",
+      "invalid_email_format": "Invalid email format.",
+      "password_must_be_at_least": "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character."
+    }
+  },
+  "sign_in": {
+    "hey": "Hey",
+    "welcome_back": "Welcome Back",
+    "login_now_to_track_all_expenses": "Login now to track all expenses",
+    "forgot_password": "Forgot password",
+    "dont_have_an_account": "Don't have an account?",
+    "sign_up": "Sign up"
+  },
+  "home": {
+    "hello": "Hello,",
+  },
+  "login": "Login",
+  "enter_your_email": "Enter your email",
+  "enter_your_password": "Enter your password",
+  "login_successfully": "Login successfully!",
+  "that_email_address_is_already_in_use": "That email address is already in use!",
+  "that_email_address_is_invalid": "That email address is invalid!",
+  "the_supplied_authentication_credential_is_malformed_or_has_expired": "The supplied authentication credential is malformed or has expired",
+  "account_created_successfully": "Account created successfully!",
+  "there_was_a_problem_creating_your_account": "There was a problem creating your account. Try again later!",
+  "user_logout_successfully": "User logout successfully!",
+  "something_went_wrong": "Something went wrong. Try again later!",
 }

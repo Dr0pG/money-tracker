@@ -31,16 +31,27 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [generalError, setGeneralError] = useState<string | null>();
   const [error, serError] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const validate = validateForm(name, email, password);
     if (!validate.hasError) {
-      Authentication.registerUser(name, email, password);
+      try {
+        setIsLoading(true);
+        await Authentication.registerUser(name, email, password);
+        setGeneralError(null);
+      } catch (error: any) {
+        setGeneralError(error);
+      } finally {
+        setIsLoading(false);
+      }
       return;
     }
 
@@ -70,6 +81,15 @@ const SignUp = () => {
   const renderInputs = () => {
     return (
       <View style={styles.inputContainer}>
+        {!!generalError && (
+          <ThemedText
+            type="error"
+            animationType="fade"
+            style={styles.generalError}
+          >
+            {generalError}
+          </ThemedText>
+        )}
         <Input
           ref={nameInputRef}
           icon="name"
@@ -113,7 +133,9 @@ const SignUp = () => {
   };
 
   const renderButton = () => {
-    return <Button text="sign_up.sign_up" onPress={onSubmit} />;
+    return (
+      <Button text="sign_up.sign_up" onPress={onSubmit} isLoading={isLoading} />
+    );
   };
 
   const renderAlreadyAccountText = () => {
@@ -177,6 +199,9 @@ const styles = StyleSheet.create({
     marginTop: Metrics.largePadding,
     alignItems: "center",
     justifyContent: "center",
+  },
+  generalError: {
+    paddingBottom: Metrics.smallPadding,
   },
 });
 

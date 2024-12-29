@@ -1,4 +1,4 @@
-import { StyleSheet, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleSheet, ViewStyle } from "react-native";
 import React from "react";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -10,6 +10,7 @@ type PropTypes = {
   style?: ViewStyle | ViewStyle[];
   text: string;
   isUpperCase?: boolean;
+  isLoading?: boolean;
   onPress?: () => void;
 };
 
@@ -17,11 +18,13 @@ const Button = ({
   style = {},
   text,
   isUpperCase = true,
+  isLoading = false,
   onPress = () => {},
 }: PropTypes) => {
   const { t } = useTranslation();
 
   const backgroundColor = useThemeColor({}, "button");
+  const textColor = useThemeColor({}, "text");
 
   const translatedText = t(text);
   const currentText = isUpperCase
@@ -37,7 +40,8 @@ const Button = ({
       ]}
       onPress={onPress}
     >
-      <ThemedText type="bigButton">{currentText}</ThemedText>
+      {!isLoading && <ThemedText type="bigButton">{currentText}</ThemedText>}
+      {isLoading && <ActivityIndicator color={textColor} />}
     </TouchableOpacity>
   );
 };

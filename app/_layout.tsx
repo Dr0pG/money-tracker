@@ -13,8 +13,9 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Durations from "@/constants/Durations";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { UserProvider } from "@/context/UserContext";
 import { ActivityIndicator } from "react-native";
+import { Toasts } from "@backpackapp-io/react-native-toast";
+import userStore from "@/store/userStore";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,7 +30,9 @@ const ThemedApp = () => {
 
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
+  const currentUser = userStore((state) => state.user);
+  const storeUser = userStore((state) => state.storeUser);
 
   useEffect(() => {
     setTimeout(
@@ -41,7 +44,7 @@ const ThemedApp = () => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(
       (user: FirebaseAuthTypes.User | null) => {
-        setUser(user);
+        storeUser(user);
         if (initializing) setInitializing(false);
       }
     );
@@ -51,7 +54,7 @@ const ThemedApp = () => {
   useEffect(() => {
     if (!initializing) {
       // Redirect to the appropriate screen based on user state
-      if (user) {
+      if (currentUser) {
         // User is logged in, navigate to the home screen
         router.push("/(home)");
       } else {
@@ -59,7 +62,7 @@ const ThemedApp = () => {
         router.push("/(main)");
       }
     }
-  }, [user, initializing, router]);
+  }, [currentUser, initializing, router]);
 
   // Ensure that we wait until Firebase has finished initializing before rendering
   if (initializing) {
@@ -73,7 +76,7 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <Stack initialRouteName={!user ? "(main)" : "(home)"}>
+      <Stack initialRouteName={!currentUser ? "(main)" : "(home)"}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
@@ -101,9 +104,10 @@ export default function RootLayout() {
     <I18nextProvider i18n={i18n}>
       <GestureHandlerRootView>
         <ThemeProvider>
-          <UserProvider>
+          <>
             <ThemedApp />
-          </UserProvider>
+            <Toasts />
+          </>
         </ThemeProvider>
       </GestureHandlerRootView>
     </I18nextProvider>

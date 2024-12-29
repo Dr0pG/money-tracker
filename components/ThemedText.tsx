@@ -1,7 +1,6 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { type TextProps, StyleSheet } from "react-native";
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
   withTiming,
   BounceInDown,
@@ -30,7 +29,8 @@ export type ThemedTextProps = TextProps & {
     | "link"
     | "bigButton"
     | "bigTitle"
-    | "extremeTitle";
+    | "extremeTitle"
+    | "gray";
 };
 
 const ThemedText = ({
@@ -59,8 +59,9 @@ const ThemedText = ({
     "buttonText"
   );
 
-  const animatedColor = useSharedValue(
-    theme === "light" ? lightText : darkText
+  const grayColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "textPlaceholder"
   );
 
   // Use derived value to compute the color based on `type` and `theme`
@@ -74,6 +75,10 @@ const ThemedText = ({
         return withTiming(errorColor, { duration: Durations.colorChanged });
       case "hightLight":
         return withTiming(textHighlight, { duration: Durations.colorChanged });
+      case "gray":
+        return withTiming(grayColor, {
+          duration: Durations.colorChanged,
+        });
       default:
         return withTiming(theme === "light" ? lightText : darkText, {
           duration: Durations.colorChanged,
@@ -116,6 +121,7 @@ const ThemedText = ({
       style={[
         animatedStyle,
         type === "default" ? styles.default : undefined,
+        type === "gray" ? styles.default : undefined,
         type === "medium" ? styles.medium : undefined,
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
@@ -140,44 +146,44 @@ const ThemedText = ({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: Metrics.defaultText,
-    lineHeight: Metrics.defaultText * 1.3,
+    fontSize: Metrics.size14,
+    lineHeight: Metrics.size14 * 1.3,
   },
   error: {
-    fontSize: Metrics.smallText,
-    lineHeight: Metrics.smallText * 1.3,
+    fontSize: Metrics.size12,
+    lineHeight: Metrics.size12 * 1.3,
   },
   medium: {
-    fontSize: Metrics.mediumText,
-    lineHeight: Metrics.mediumText * 1.3,
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
   },
   defaultSemiBold: {
-    fontSize: Metrics.defaultText,
-    lineHeight: Metrics.defaultText * 1.3,
+    fontSize: Metrics.size14,
+    lineHeight: Metrics.size14 * 1.3,
     fontWeight: "600",
   },
   title: {
-    fontSize: Metrics.bigTitleText,
+    fontSize: Metrics.size26,
     fontWeight: "bold",
-    lineHeight: Metrics.bigTitleText,
+    lineHeight: Metrics.size26,
   },
   bigTitle: {
-    fontSize: Metrics.veryBigTitleText,
+    fontSize: Metrics.size30,
     fontWeight: "bold",
-    lineHeight: Metrics.veryBigTitleText,
+    lineHeight: Metrics.size30,
   },
   extremeTitle: {
-    fontSize: Metrics.veryBigTitleText * 1.2,
+    fontSize: Metrics.size30 * 1.2,
     fontWeight: "bold",
-    lineHeight: Metrics.veryBigTitleText * 1.2 * 1.3,
+    lineHeight: Metrics.size30 * 1.2 * 1.3,
   },
   subtitle: {
-    fontSize: Metrics.subtitleText,
+    fontSize: Metrics.subsize22,
     fontWeight: "bold",
   },
   link: {
-    fontSize: Metrics.defaultText,
-    lineHeight: Metrics.defaultText * 1.5,
+    fontSize: Metrics.size14,
+    lineHeight: Metrics.size14 * 1.5,
   },
   bigButton: {
     fontSize: Metrics.textButton,
@@ -185,8 +191,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   hightLight: {
-    fontSize: Metrics.defaultText,
-    lineHeight: Metrics.defaultText * 1.3,
+    fontSize: Metrics.size14,
+    lineHeight: Metrics.size14 * 1.3,
     fontWeight: "bold",
   },
 });

@@ -11,9 +11,11 @@ export const Colors = {
 
     backButtonBackground: "#C8C9CC", // A slightly darker gray for contrast
     error: "#D32F2F", // Balanced, modern red for errors
-    gradient: '200, 203, 207', // A balanced medium-dark gray gradient
+    gradient: "200, 203, 207", // A balanced medium-dark gray gradient
 
-    link: '#0a7ea4',
+    link: "#0a7ea4",
+
+    green: "green",
   },
   dark: {
     text: "#fff",
@@ -28,8 +30,10 @@ export const Colors = {
     backButtonBackground: "#545255",
 
     error: "#FF3B30",
-    gradient: '255, 255, 255',
+    gradient: "255, 255, 255",
 
-    link: '#0a7ea4',
+    link: "#0a7ea4",
+
+    green: "green",
   },
 };
