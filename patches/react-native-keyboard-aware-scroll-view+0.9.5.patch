@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native-keyboard-aware-scroll-view/lib/KeyboardAwareHOC.js b/node_modules/react-native-keyboard-aware-scroll-view/lib/KeyboardAwareHOC.js
+index 03f46af..bbcb813 100644
+--- a/node_modules/react-native-keyboard-aware-scroll-view/lib/KeyboardAwareHOC.js
++++ b/node_modules/react-native-keyboard-aware-scroll-view/lib/KeyboardAwareHOC.js
+@@ -215,7 +215,11 @@ function KeyboardAwareHOC(
+       if (Platform.OS === 'ios') {
+         this.keyboardWillShowEvent = Keyboard.addListener(
+           'keyboardWillShow',
+-          this._updateKeyboardSpace
++          (frame) => {
++            if(Keyboard.isVisible()) { return; }
++
++            this._updateKeyboardSpace(frame)
++          }
+         )
+         this.keyboardWillHideEvent = Keyboard.addListener(
+           'keyboardWillHide',

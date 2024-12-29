@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { type TextProps, StyleSheet } from "react-native";
-
-import { useThemeColor } from "@/hooks/useThemeColor";
-import Metrics from "@/constants/Metrics";
-import { useCallback } from "react";
 import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
   BounceInDown,
   BounceOutDown,
   FadeInDown,
   FadeOutDown,
+  useDerivedValue,
 } from "react-native-reanimated";
+import Metrics from "@/constants/Metrics";
+import { useTheme } from "@/context/ThemeContext";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import Durations from "@/constants/Durations";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -37,26 +41,70 @@ const ThemedText = ({
   animationType = undefined,
   ...rest
 }: ThemedTextProps) => {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+  const { theme } = useTheme();
+  const lightText = lightColor || useThemeColor({}, "text");
+  const darkText = darkColor || useThemeColor({}, "text");
 
   const textHighlight = useThemeColor(
     { light: lightColor, dark: darkColor },
     "textHighlight"
   );
-  const error = useThemeColor({ light: lightColor, dark: darkColor }, "error");
+  const errorColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "error"
+  );
+
+  const buttonTextColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "buttonText"
+  );
+
+  const animatedColor = useSharedValue(
+    theme === "light" ? lightText : darkText
+  );
+
+  // Use derived value to compute the color based on `type` and `theme`
+  const animatedTextColor = useDerivedValue(() => {
+    switch (type) {
+      case "bigButton":
+        return withTiming(buttonTextColor, {
+          duration: Durations.colorChanged,
+        });
+      case "error":
+        return withTiming(errorColor, { duration: Durations.colorChanged });
+      case "hightLight":
+        return withTiming(textHighlight, { duration: Durations.colorChanged });
+      default:
+        return withTiming(theme === "light" ? lightText : darkText, {
+          duration: Durations.colorChanged,
+        });
+    }
+  }, [
+    theme,
+    type,
+    lightText,
+    darkText,
+    buttonTextColor,
+    errorColor,
+    textHighlight,
+  ]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    color: animatedTextColor.value,
+  }));
 
   const animation = useCallback(() => {
     if (!animationType) return null;
     switch (animationType) {
       case "fade":
         return {
-          entering: FadeInDown.duration(1000).springify(),
-          exiting: FadeOutDown.duration(1000).springify(),
+          entering: FadeInDown.duration(Durations.animations).springify(),
+          exiting: FadeOutDown.duration(Durations.animations).springify(),
         };
       case "bounce":
         return {
-          entering: BounceInDown.duration(1000).springify(),
-          exiting: BounceOutDown.duration(1000).springify(),
+          entering: BounceInDown.duration(Durations.animations).springify(),
+          exiting: BounceOutDown.duration(Durations.animations).springify(),
         };
       default:
         return null;
@@ -66,7 +114,7 @@ const ThemedText = ({
   return (
     <Animated.Text
       style={[
-        { color },
+        animatedStyle,
         type === "default" ? styles.default : undefined,
         type === "medium" ? styles.medium : undefined,
         type === "title" ? styles.title : undefined,
@@ -76,10 +124,8 @@ const ThemedText = ({
         type === "bigButton" ? styles.bigButton : undefined,
         type === "bigTitle" ? styles.bigTitle : undefined,
         type === "extremeTitle" ? styles.extremeTitle : undefined,
-        type === "error" ? [styles.error, { color: error }] : undefined,
-        type === "hightLight"
-          ? [styles.hightLight, { color: textHighlight }]
-          : undefined,
+        type === "error" ? styles.error : undefined,
+        type === "hightLight" ? styles.hightLight : undefined,
         style,
       ]}
       {...rest}
@@ -121,9 +167,9 @@ const styles = StyleSheet.create({
     lineHeight: Metrics.veryBigTitleText,
   },
   extremeTitle: {
-    fontSize: Metrics.veryBigTitleText * 1.5,
+    fontSize: Metrics.veryBigTitleText * 1.2,
     fontWeight: "bold",
-    lineHeight: Metrics.veryBigTitleText * 1.5 * 1.3,
+    lineHeight: Metrics.veryBigTitleText * 1.2 * 1.3,
   },
   subtitle: {
     fontSize: Metrics.subtitleText,
@@ -132,7 +178,6 @@ const styles = StyleSheet.create({
   link: {
     fontSize: Metrics.defaultText,
     lineHeight: Metrics.defaultText * 1.5,
-    color: "#0a7ea4",
   },
   bigButton: {
     fontSize: Metrics.textButton,

@@ -72,7 +72,7 @@ const Input = forwardRef<TextInput, PropTypes>(
         default:
           return null;
       }
-    }, [icon]);
+    }, [icon, color]);
 
     const renderErrorIcon = useCallback(() => {
       if (!errorMessage && !showError) return;

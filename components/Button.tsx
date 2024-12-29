@@ -9,7 +9,6 @@ import TouchableOpacity from "@/components/TouchableOpacity";
 type PropTypes = {
   style?: ViewStyle | ViewStyle[];
   text: string;
-  textColor?: string;
   isUpperCase?: boolean;
   onPress?: () => void;
 };
@@ -17,14 +16,12 @@ type PropTypes = {
 const Button = ({
   style = {},
   text,
-  textColor = undefined,
   isUpperCase = true,
   onPress = () => {},
 }: PropTypes) => {
   const { t } = useTranslation();
 
   const backgroundColor = useThemeColor({}, "button");
-  const buttonText = useThemeColor({}, "buttonText");
 
   const translatedText = t(text);
   const currentText = isUpperCase
@@ -40,9 +37,7 @@ const Button = ({
       ]}
       onPress={onPress}
     >
-      <ThemedText type="bigButton" style={{ color: textColor || buttonText }}>
-        {currentText}
-      </ThemedText>
+      <ThemedText type="bigButton">{currentText}</ThemedText>
     </TouchableOpacity>
   );
 };

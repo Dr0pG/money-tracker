@@ -1,7 +1,7 @@
 import React, { memo, useRef, useState } from "react";
 
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Metrics from "@/constants/Metrics";
 import { useTranslation } from "react-i18next";
 
@@ -13,12 +13,14 @@ import AnimatedThemedView from "@/components/AnimatedThemedView";
 import Button from "@/components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-gesture-handler";
-import { validateForm } from "@/utils/formValidation";
+import { validateForm } from "@/utils/signUpFormValidation";
 
 const SignUp = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
+
+  const onNavigateToSignIn = () => router.navigate("/sign_in");
 
   const nameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
@@ -49,19 +51,19 @@ const SignUp = () => {
 
   const renderTopText = () => {
     return (
-      <ThemedView style={styles.topTextContainer}>
+      <View style={styles.topTextContainer}>
         <ThemedText type="extremeTitle">{t("sign_up.lets")}</ThemedText>
         <ThemedText type="extremeTitle">{t("sign_up.get_started")}</ThemedText>
         <ThemedText style={styles.descriptionText}>
           {t("sign_up.create_an_account")}
         </ThemedText>
-      </ThemedView>
+      </View>
     );
   };
 
   const renderInputs = () => {
     return (
-      <ThemedView style={styles.inputContainer}>
+      <View style={styles.inputContainer}>
         <Input
           ref={nameInputRef}
           icon="name"
@@ -77,7 +79,7 @@ const SignUp = () => {
         <Input
           ref={emailInputRef}
           icon="email"
-          placeholder={t("sign_up.enter_your_email")}
+          placeholder={t("enter_your_email")}
           keyboardType="email-address"
           returnKeyType="next"
           value={email}
@@ -90,7 +92,7 @@ const SignUp = () => {
         <Input
           ref={passwordInputRef}
           icon="password"
-          placeholder={t("sign_up.enter_your_password")}
+          placeholder={t("enter_your_password")}
           secureTextEntry
           returnKeyType="send"
           value={password}
@@ -100,7 +102,7 @@ const SignUp = () => {
           onFocus={() => serError({ ...error, password: "" })}
           onSubmitEditing={onSubmit}
         />
-      </ThemedView>
+      </View>
     );
   };
 
@@ -110,14 +112,14 @@ const SignUp = () => {
 
   const renderAlreadyAccountText = () => {
     return (
-      <ThemedView style={styles.alreadyAccountContainer}>
+      <View style={styles.alreadyAccountContainer}>
         <ThemedText>
           {t("sign_up.already_have_account")}
-          <ThemedText type="hightLight" onPress={() => router.back()}>{` ${t(
-            "sign_up.login"
+          <ThemedText type="hightLight" onPress={onNavigateToSignIn}>{` ${t(
+            "login"
           )}`}</ThemedText>
         </ThemedText>
-      </ThemedView>
+      </View>
     );
   };
 
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: Metrics.smallPadding,
   },
   alreadyAccountContainer: {
-    marginTop: Metrics.mediumPadding * 2,
+    marginTop: Metrics.largePadding,
     alignItems: "center",
     justifyContent: "center",
   },

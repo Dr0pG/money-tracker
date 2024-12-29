@@ -1,29 +1,51 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import i18n from "@/i18n";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
+import Durations from "@/constants/Durations";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+const ThemedApp = () => {
+  const { theme } = useTheme();
+
   const backgroundColor = useThemeColor({}, "background");
 
+  const [currentBackground, setBackgroundColor] = useState(backgroundColor);
+
+  useEffect(() => {
+    setTimeout(
+      () => setBackgroundColor(backgroundColor),
+      Durations.colorChanged / 2
+    );
+  }, [backgroundColor]);
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: currentBackground }}>
+      <StatusBar
+        style={theme === "dark" ? "light" : "dark"}
+        backgroundColor={backgroundColor}
+        animated
+      />
+      <Stack>
+        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+      </Stack>
+    </SafeAreaView>
+  );
+};
+
+export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -41,25 +63,9 @@ export default function RootLayout() {
   return (
     <I18nextProvider i18n={i18n}>
       <GestureHandlerRootView>
-        <SafeAreaView style={{ flex: 1, backgroundColor }}>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <StatusBar
-              barStyle={
-                colorScheme === "dark" ? "light-content" : "dark-content"
-              }
-              backgroundColor={backgroundColor}
-            />
-            <Stack>
-              <Stack.Screen name="(main)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="+not-found"
-                options={{ headerShown: false }}
-              />
-            </Stack>
-          </ThemeProvider>
-        </SafeAreaView>
+        <ThemeProvider>
+          <ThemedApp />
+        </ThemeProvider>
       </GestureHandlerRootView>
     </I18nextProvider>
   );

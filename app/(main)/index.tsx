@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import LottieView from "lottie-react-native";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Metrics from "@/constants/Metrics";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,20 +19,20 @@ const Main = () => {
   const router = useRouter();
 
   const backgroundColor = useThemeColor({}, "background");
+  const gradient = useThemeColor({}, "gradient");
 
-  const onNavigateToSignUp = () => {
-    router.navigate("/sign_up");
-  };
+  const onNavigateToSignUp = () => router.navigate("/sign_up");
+  const onNavigateToSignIn = () => router.navigate("/sign_in");
 
   const renderSignIn = () => {
     return (
-      <ThemedView style={styles.signInContainer}>
-        <TouchableOpacity onPress={() => console.log("oi")}>
+      <View style={styles.signInContainer}>
+        <TouchableOpacity onPress={onNavigateToSignIn}>
           <ThemedText type="subtitle" animationType="fade">
             {t("main.sign_in")}
           </ThemedText>
         </TouchableOpacity>
-      </ThemedView>
+      </View>
     );
   };
 
@@ -52,11 +52,9 @@ const Main = () => {
       <LinearGradient
         colors={[
           backgroundColor,
-          "rgba(255, 255, 255, 0)",
-          "rgba(255, 255, 255, 0.1)",
-          "rgba(255, 255, 255, 0.2)",
+          `rgba(${gradient}, 0.2)`,
         ]}
-        locations={[0.8, 0.9, 0.96, 1]}
+        locations={[0.97, 1]}
         style={styles.topContainer}
       >
         {renderSignIn()}
@@ -67,14 +65,14 @@ const Main = () => {
 
   const renderIntroText = () => {
     return (
-      <ThemedView style={styles.introTextContainer}>
+      <View style={styles.introTextContainer}>
         <ThemedText type="title" style={styles.titleInfo}>
           {t("main.always_take_control")}
         </ThemedText>
         <ThemedText type="defaultSemiBold" style={styles.subtitleInfo}>
           {t("main.finances_must_be")}
         </ThemedText>
-      </ThemedView>
+      </View>
     );
   };
 

@@ -12,13 +12,13 @@ const Metrics = {
   largePadding: 24,
 
   // Font Sizes
-  smallText: 14,
-  defaultText: 16,
-  mediumText: 18,
-  subtitleText: 20,
-  titleText: 24,
-  bigTitleText: 28,
-  veryBigTitleText: 32,
+  smallText: 12,
+  defaultText: 14,
+  mediumText: 16,
+  subtitleText: 18,
+  titleText: 22,
+  bigTitleText: 26,
+  veryBigTitleText: 30,
 
   // Border Radius
   smallRadius: 4,
@@ -31,7 +31,7 @@ const Metrics = {
 
   // Button
   heightButton: 60,
-  textButton: 18,
+  textButton: 16,
 
   // Icons
   backIcon: 28,

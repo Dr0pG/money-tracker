@@ -1,6 +1,13 @@
-import { View, type ViewProps } from "react-native";
-
+import React, { useEffect } from "react";
+import { type ViewProps } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { useTheme } from "@/context/ThemeContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import Durations from "@/constants/Durations";
 
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
@@ -13,12 +20,23 @@ const ThemedView = ({
   darkColor,
   ...otherProps
 }: ThemedViewProps) => {
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "background"
-  );
+  const { theme } = useTheme();
+  const lightBg = lightColor || useThemeColor({}, "background");
+  const darkBg = darkColor || useThemeColor({}, "background");
 
-  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+  const animatedColor = useSharedValue(theme === "light" ? lightBg : darkBg);
+
+  useEffect(() => {
+    animatedColor.value = withTiming(theme === "light" ? lightBg : darkBg, {
+      duration: Durations.colorChanged,
+    });
+  }, [theme, lightBg, darkBg]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    backgroundColor: animatedColor.value,
+  }));
+
+  return <Animated.View style={[animatedStyle, style]} {...otherProps} />;
 };
 
 export default ThemedView;
