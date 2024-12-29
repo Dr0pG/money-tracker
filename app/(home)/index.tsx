@@ -11,6 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import MainCard from "@/components/MainCard";
+import RecentTransactions from "@/components/Home/RecentTransactions";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -51,8 +52,14 @@ const Home = () => {
 
   const renderContent = () => {
     return (
-      <ScrollView style={styles.mainContainer}>
+      <ScrollView
+        style={styles.mainContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <MainCard />
+        <View style={styles.recentTransactionsContainer}>
+          <RecentTransactions />
+        </View>
       </ScrollView>
     );
   };
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   helloText: {
     marginBottom: Metrics.smallMargin,
-    fontSize: Metrics.subsize22,
+    fontSize: Metrics.size22,
   },
   headerContainer: {
     flexDirection: "row",
@@ -95,6 +102,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainContainer: {
+    marginTop: Metrics.largeMargin,
+  },
+  recentTransactionsContainer: {
     marginTop: Metrics.largeMargin,
   },
 });
