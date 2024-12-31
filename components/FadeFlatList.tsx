@@ -1,5 +1,7 @@
 import React, { ReactElement, Ref, useCallback, useEffect } from "react";
-import { FlatList, FlatListProps, ListRenderItemInfo } from "react-native";
+import { ListRenderItemInfo } from "@shopify/flash-list";
+import { FlashList, FlashListProps } from "@shopify/flash-list";
+
 import Animated, {
   Easing,
   SharedValue,
@@ -44,7 +46,7 @@ const FadeInComponent = ({
   return <Animated.View style={animatedStyle}>{children}</Animated.View>;
 };
 
-type PropTypes<ItemT> = FlatListProps<ItemT> & {
+type PropTypes<ItemT> = FlashListProps<ItemT> & {
   itemsToFadeIn?: number;
   initialDelay?: number;
   durationPerItem?: number;
@@ -56,13 +58,13 @@ const FadeFlatList = React.forwardRef(
     {
       initialDelay = 0,
       itemsToFadeIn = 10,
-      durationPerItem = 700,
+      durationPerItem = 500,
       parallelItems = 5,
       renderItem: originalRenderItem,
       ItemSeparatorComponent,
       ...props
     }: PropTypes<ItemT>,
-    ref: Ref<FlatList>
+    ref: Ref<FlashList<ItemT>>
   ): ReactElement => {
     const animationValue = useSharedValue(0);
 
@@ -126,7 +128,7 @@ const FadeFlatList = React.forwardRef(
     );
 
     return (
-      <FlatList
+      <FlashList
         {...props}
         ref={ref}
         renderItem={renderItem}

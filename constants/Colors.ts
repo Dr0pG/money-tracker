@@ -15,11 +15,28 @@ export const Colors = {
 
     link: "#0a7ea4",
 
-    green: "green",
+    bottomBar: "#1e1e1e",
+    bottomBarActiveIcons: "#A4E736",
+    bottomBarInactiveIcons: "#8E8E93",
 
-    bottomBar: '#1e1e1e',
-    bottomBarActiveIcons: '#A4E736',
-    bottomBarInactiveIcons: '#8E8E93',
+    transactionCards: "#282628",
+    transactionIcon: "#FEFDFF",
+
+    mainCardBackground: "#EFEDF0",
+    blackText: "#020102",
+
+    green: "#2C9960",
+    red: "#AE4B5B",
+    silver: "#CECCCF",
+    platinum: "#E1DFE1",
+
+    health: "#E01F4C",
+    income: "#1A9F4C",
+    utilities: "#CA8B07",
+    dining: "#B81A5B",
+    clothing: "#7D3BEE",
+    groceries: "#525462",
+    sports: '#FF7F50',
   },
   dark: {
     text: "#fff",
@@ -38,10 +55,27 @@ export const Colors = {
 
     link: "#0a7ea4",
 
-    green: "green",
+    bottomBar: "#1e1e1e",
+    bottomBarActiveIcons: "#A4E736",
+    bottomBarInactiveIcons: "#8E8E93",
 
-    bottomBar: '#1e1e1e',
-    bottomBarActiveIcons: '#A4E736',
-    bottomBarInactiveIcons: '#8E8E93',
+    transactionCards: "#282628",
+    transactionIcon: "#FEFDFF",
+
+    mainCardBackground: "#EFEDF0",
+    blackText: "#020102",
+
+    green: "#2C9960",
+    red: "#AE4B5B",
+    silver: "#CECCCF",
+    platinum: "#E1DFE1",
+
+    health: "#E01F4C",
+    income: "#1A9F4C",
+    utilities: "#CA8B07",
+    dining: "#B81A5B",
+    clothing: "#7D3BEE",
+    groceries: "#525462",
+    sports: '#FF7F50',
   },
 };

@@ -1,8 +1,12 @@
 import React, { memo } from "react";
 import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 import Metrics from "@/constants/Metrics";
+
 const Home = () => {
   const bottomBarColor = useThemeColor({}, "bottomBar");
   const bottomBarActiveIconsColor = useThemeColor({}, "bottomBarActiveIcons");
@@ -35,11 +39,11 @@ const Home = () => {
         }}
       />
       <Tabs.Screen
-        name="stats"
+        name="statistics"
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={Metrics.bottomBarIcon} color={color} />
+            <Ionicons name="stats-chart" size={Metrics.bottomBarIcon} color={color} />
           ),
         }}
       />
@@ -48,7 +52,7 @@ const Home = () => {
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={Metrics.bottomBarIcon} color={color} />
+            <FontAwesome name="user" size={Metrics.bottomBarIcon} color={color} />
           ),
         }}
       />

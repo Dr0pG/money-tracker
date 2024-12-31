@@ -4,6 +4,7 @@ import ThemedText from "@/components/ThemedText";
 import Metrics from "@/constants/Metrics";
 import FadeFlatList from "@/components/FadeFlatList";
 import TransactionCard from "@/components/TransactionCard";
+import { useTranslation } from "react-i18next";
 
 const TEMP = [
   {
@@ -83,7 +84,7 @@ const TEMP = [
     type: "income",
     description: "Gift from a friend",
     isIncome: true,
-    value: 100,
+    value: 100000,
     date: new Date("2024-12-08"),
   },
   {
@@ -105,10 +106,12 @@ const TEMP = [
 ];
 
 const RecentTransactions = () => {
+  const { t } = useTranslation();
+
   return (
     <View>
       <ThemedText type="title" style={styles.title}>
-        Recent Transactions
+        {t("home.recent_transactions")}
       </ThemedText>
       <FadeFlatList
         data={TEMP}

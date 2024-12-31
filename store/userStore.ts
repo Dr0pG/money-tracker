@@ -10,7 +10,6 @@ type Action = {
   removeUser: () => void;
 };
 
-// Create your store, which includes both state and (optionally) actions
 const userStore = create<State & Action>((set) => ({
   user: null,
   storeUser: (currentUser: FirebaseAuthTypes.User | null) =>

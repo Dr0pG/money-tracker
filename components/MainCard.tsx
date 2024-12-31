@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { memo, useState } from "react";
+import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from "react-native";
 
 import Entypo from "@expo/vector-icons/Entypo";
 import ThemedText from "@/components/ThemedText";
@@ -7,6 +7,8 @@ import Metrics from "@/constants/Metrics";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "react-i18next";
+import Animated from "react-native-reanimated";
 
 type InfoPropTypes = {
   type: "expense" | "income";
@@ -14,10 +16,13 @@ type InfoPropTypes = {
 };
 
 const Info = ({ type, value }: InfoPropTypes) => {
-  const backgroundColor = useThemeColor({}, "backButtonBackground");
+  const { t } = useTranslation();
+
+  const blackTextColor = useThemeColor({}, "blackText");
+  const backgroundColor = useThemeColor({}, "silver");
 
   const infoGoodTextColor = useThemeColor({}, "green");
-  const infoBadTextColor = useThemeColor({}, "error");
+  const infoBadTextColor = useThemeColor({}, "red");
 
   const isIncome = type === "income";
   return (
@@ -27,54 +32,108 @@ const Info = ({ type, value }: InfoPropTypes) => {
           <Ionicons
             name={isIncome ? "arrow-down" : "arrow-up"}
             size={Metrics.cardInfoIcon}
-            color="black"
+            color={blackTextColor}
           />
         </View>
-        <ThemedText>{isIncome ? "Income" : "Expense"}</ThemedText>
+        <ThemedText type="defaultSemiBold" color={blackTextColor}>
+          {t(`${isIncome ? "home.income" : "home.expense"}`)}
+        </ThemedText>
       </View>
-      <ThemedText color={isIncome ? infoGoodTextColor : infoBadTextColor}>
+      <ThemedText
+        type="subtitle"
+        color={isIncome ? infoGoodTextColor : infoBadTextColor}
+      >
         {value}€
       </ThemedText>
     </View>
   );
 };
 
-const MainCard = () => {
-  const textColor = useThemeColor({}, "text");
+type PropTypes = {
+  value?: number;
+  income?: number;
+  expense?: number;
+  style?: ViewStyle;
+};
+
+const MainCard = ({
+  value = 0,
+  income = 0,
+  expense = 0,
+  style = {},
+}: PropTypes) => {
+  const { t } = useTranslation();
+
+  const mainCardBackground = useThemeColor({}, "mainCardBackground");
+  const blackTextColor = useThemeColor({}, "blackText");
+  const platinum = useThemeColor({}, "platinum");
+
+  const [cardHeight, setCardHeight] = useState(300);
+
+  const cardWidth = Metrics.screenWidth - Metrics.largePadding * 2;
+
+  const setOnLayout = (e: LayoutChangeEvent) => {
+    setCardHeight(e.nativeEvent.layout.height);
+  };
 
   return (
-    <View style={styles.cardContainer}>
+    <Animated.View
+      style={[
+        styles.cardContainer,
+        { backgroundColor: mainCardBackground },
+        style,
+      ]}
+      onLayout={setOnLayout}
+    >
       <View style={styles.content}>
         <View style={styles.cardHeader}>
-          <ThemedText type="subtitle">Total Balanced</ThemedText>
+          <ThemedText type="subtitle" color={blackTextColor}>
+            {t("home.total_balance")}
+          </ThemedText>
           <Entypo
             name="dots-three-horizontal"
             size={Metrics.cardDotsIcon}
-            color={textColor}
+            color={blackTextColor}
           />
         </View>
-        <ThemedText type="bigTitle" style={styles.balanceText}>
-          334€
+        <ThemedText
+          type="bigTitle"
+          style={styles.balanceText}
+          color={blackTextColor}
+        >
+          {value}€
         </ThemedText>
         <View style={styles.cardInfo}>
-          <Info type="income" value={3123} />
-          <Info type="expense" value={100} />
+          <Info type="income" value={income} />
+          <Info type="expense" value={expense} />
         </View>
       </View>
-    </View>
+      <View
+        style={[
+          styles.backgroundEffect,
+          {
+            width: Metrics.screenWidth - Metrics.largePadding * 2,
+            left: -(cardWidth / 4),
+            height: cardHeight,
+            top: -(cardHeight / 2),
+            backgroundColor: platinum,
+          },
+        ]}
+      />
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: "#1e1e1e",
-    borderRadius: 16,
+    borderRadius: Metrics.largeRadius,
     padding: Metrics.largePadding,
     elevation: 5,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
+    overflow: "hidden",
   },
   content: {
     zIndex: 1,
@@ -83,14 +142,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingBottom: Metrics.mediumPadding,
   },
   balanceText: {
-    fontSize: 32,
+    fontSize: Metrics.size32,
+    lineHeight: Metrics.size32 * 1.3,
     fontWeight: "700",
   },
   cardInfo: {
-    paddingTop: Metrics.largePadding,
+    paddingTop: Metrics.mediumPadding,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -107,6 +166,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: Metrics.smallMargin,
+  },
+  backgroundEffect: {
+    position: "absolute",
+    borderRadius: 100,
   },
 });
 

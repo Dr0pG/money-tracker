@@ -49,9 +49,11 @@ const Metrics = {
 
   cardDotsIcon: 20,
   cardInfoIcon: 16,
-  cardInfoSize: 20,
+  cardInfoSize: 24,
 
-  bottomBarIcon: 30,
+  bottomBarIcon: 24,
+
+  transactionIcon: 22,
 
   // Screen Dimensions
   screenWidth: Dimensions.get("window").width,

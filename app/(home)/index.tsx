@@ -56,9 +56,14 @@ const Home = () => {
     return (
       <ScrollView
         style={styles.mainContainer}
+        contentContainerStyle={styles.mainContentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <MainCard />
+        <MainCard
+          value={5000}
+          income={2000}
+          expense={950}
+        />
         <View style={styles.recentTransactionsContainer}>
           <RecentTransactions />
         </View>
@@ -105,6 +110,9 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Metrics.largeMargin,
+  },
+  mainContentContainer: {
+    paddingBottom: Metrics.largeMargin,
   },
   recentTransactionsContainer: {
     marginTop: Metrics.largeMargin,

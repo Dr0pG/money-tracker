@@ -32,6 +32,10 @@
   },
   "home": {
     "hello": "Hello,",
+    "total_balance": "Total Balance",
+    "recent_transactions": "Recent Transactions",
+    "income": "Income",
+    "expense": "Expense"
   },
   "login": "Login",
   "enter_your_email": "Enter your email",
@@ -43,5 +47,5 @@
   "account_created_successfully": "Account created successfully!",
   "there_was_a_problem_creating_your_account": "There was a problem creating your account. Try again later!",
   "user_logout_successfully": "User logout successfully!",
-  "something_went_wrong": "Something went wrong. Try again later!",
+  "something_went_wrong": "Something went wrong. Try again later!"
 }
