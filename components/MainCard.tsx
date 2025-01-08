@@ -8,7 +8,8 @@ import Metrics from "@/constants/Metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "react-i18next";
-import Animated from "react-native-reanimated";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import Durations from "@/constants/Durations";
 
 type InfoPropTypes = {
   type: "expense" | "income";
@@ -43,7 +44,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
         type="subtitle"
         color={isIncome ? infoGoodTextColor : infoBadTextColor}
       >
-        {value}€
+        {`${value === 0 ? "---" : value + "€"}`}
       </ThemedText>
     </View>
   );
@@ -84,6 +85,8 @@ const MainCard = ({
         style,
       ]}
       onLayout={setOnLayout}
+      entering={FadeInDown.duration(Durations.animations).springify()}
+      exiting={FadeOutDown.duration(Durations.animations).springify()}
     >
       <View style={styles.content}>
         <View style={styles.cardHeader}>
@@ -101,7 +104,7 @@ const MainCard = ({
           style={styles.balanceText}
           color={blackTextColor}
         >
-          {value}€
+          {`${value === 0 ? "---" : value + "€"}`}
         </ThemedText>
         <View style={styles.cardInfo}>
           <Info type="income" value={income} />

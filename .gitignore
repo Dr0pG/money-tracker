@@ -43,3 +43,6 @@ ios/GoogleService-Info.plist
 .env
 
 app-example
+
+# Example data
+example_data.json

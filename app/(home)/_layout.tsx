@@ -3,7 +3,7 @@ import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import Metrics from "@/constants/Metrics";
 
@@ -33,8 +33,8 @@ const Home = () => {
         name="index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={Metrics.bottomBarIcon} color={color} />
+          tabBarIcon: ({ color, focused}) => (
+            <Ionicons name={focused ? "home" : "home-outline"} size={Metrics.bottomBarIcon} color={color} />
           ),
         }}
       />
@@ -42,8 +42,25 @@ const Home = () => {
         name="statistics"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="stats-chart" size={Metrics.bottomBarIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "stats-chart" : "stats-chart-outline"}
+              size={Metrics.bottomBarIcon}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="accounts"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "wallet" : "wallet-outline"}
+              size={Metrics.bottomBarIcon}
+              color={color}
+            />
           ),
         }}
       />
@@ -51,8 +68,12 @@ const Home = () => {
         name="profile"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={Metrics.bottomBarIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome
+              name={focused ? "user" : "user-o"}
+              size={Metrics.bottomBarIcon}
+              color={color}
+            />
           ),
         }}
       />

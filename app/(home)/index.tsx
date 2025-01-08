@@ -4,6 +4,7 @@ import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 import Metrics from "@/constants/Metrics";
 import userStore from "@/store/userStore";
@@ -20,6 +21,10 @@ const Home = () => {
   const currentUser = userStore((state) => state.user);
 
   const iconColor = useThemeColor({}, "icon");
+
+  const addTransactionIconColor = useThemeColor({}, "buttonText");
+  const addTransactionBackgroundColor = useThemeColor({}, "button");
+
   const iconBackgroundColor = useThemeColor({}, "backButtonBackground");
 
   const renderHeader = () => {
@@ -59,11 +64,7 @@ const Home = () => {
         contentContainerStyle={styles.mainContentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <MainCard
-          value={5000}
-          income={2000}
-          expense={950}
-        />
+        <MainCard value={0} income={0} expense={0} />
         <View style={styles.recentTransactionsContainer}>
           <RecentTransactions />
         </View>
@@ -71,10 +72,30 @@ const Home = () => {
     );
   };
 
+  const renderAddTransaction = () => {
+    return (
+      <View style={styles.addTransactionContainer}>
+        <TouchableOpacity
+          style={[
+            styles.addTransactionContent,
+            { backgroundColor: addTransactionBackgroundColor },
+          ]}
+        >
+          <AntDesign
+            name="plus"
+            size={Metrics.addTransactionIcon}
+            color={addTransactionIconColor}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <ThemedView style={styles.container}>
       {renderHeader()}
       {renderContent()}
+      {renderAddTransaction()}
     </ThemedView>
   );
 };
@@ -93,6 +114,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: Metrics.smallPadding,
   },
   nameContainer: {
     flex: 1,
@@ -108,14 +130,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  mainContainer: {
-    marginTop: Metrics.largeMargin,
-  },
+  mainContainer: {},
   mainContentContainer: {
-    paddingBottom: Metrics.largeMargin,
+    marginTop: Metrics.mediumMargin,
+    paddingBottom: Metrics.largeMargin + Metrics.addTransactionButton,
   },
   recentTransactionsContainer: {
     marginTop: Metrics.largeMargin,
+  },
+  addTransactionContainer: {
+    position: "absolute",
+    bottom: Metrics.largePadding,
+    right: Metrics.largePadding,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addTransactionContent: {
+    width: Metrics.addTransactionButton,
+    height: Metrics.addTransactionButton,
+    borderRadius: Metrics.addTransactionButton,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

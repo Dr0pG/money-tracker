@@ -23,7 +23,7 @@ const TouchableOpacity = ({
     : RNTouchableOpacity;
 
   return (
-    <Component activeOpacity={0.6} style={style} onPress={onPress}>
+    <Component activeOpacity={0.5} style={style} onPress={onPress}>
       {children}
     </Component>
   );

@@ -39,6 +39,8 @@ const Metrics = {
   heightButton: 60,
   textButton: 16,
 
+  addTransactionButton: 50,
+
   // Icons
   backIcon: 28,
 
@@ -51,9 +53,11 @@ const Metrics = {
   cardInfoIcon: 16,
   cardInfoSize: 24,
 
-  bottomBarIcon: 24,
+  bottomBarIcon: 26,
 
   transactionIcon: 22,
+
+  addTransactionIcon: 28,
 
   // Screen Dimensions
   screenWidth: Dimensions.get("window").width,

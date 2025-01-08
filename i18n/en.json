@@ -35,7 +35,8 @@
     "total_balance": "Total Balance",
     "recent_transactions": "Recent Transactions",
     "income": "Income",
-    "expense": "Expense"
+    "expense": "Expense",
+    "no_transactions_yet": "No transactions yet... Start adding new ones!",
   },
   "login": "Login",
   "enter_your_email": "Enter your email",

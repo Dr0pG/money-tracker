@@ -24,7 +24,7 @@ const Button = ({
   const { t } = useTranslation();
 
   const backgroundColor = useThemeColor({}, "button");
-  const textColor = useThemeColor({}, "text");
+  const textColor = useThemeColor({}, "buttonText");
 
   const translatedText = t(text);
   const currentText = isUpperCase

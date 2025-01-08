@@ -5,6 +5,7 @@ import Metrics from "@/constants/Metrics";
 import FadeFlatList from "@/components/FadeFlatList";
 import TransactionCard from "@/components/TransactionCard";
 import { useTranslation } from "react-i18next";
+import LottieView from "lottie-react-native";
 
 const TEMP = [
   {
@@ -108,13 +109,29 @@ const TEMP = [
 const RecentTransactions = () => {
   const { t } = useTranslation();
 
+  const ListEmptyComponent = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <LottieView
+          source={require("@/assets/lottie/empty_state.json")}
+          style={styles.animationContent}
+          autoPlay
+          loop
+        />
+        <ThemedText type="gray" style={styles.emptyText}>
+          {t("home.no_transactions_yet")}
+        </ThemedText>
+      </View>
+    );
+  };
+
   return (
     <View>
       <ThemedText type="title" style={styles.title}>
         {t("home.recent_transactions")}
       </ThemedText>
       <FadeFlatList
-        data={TEMP}
+        data={[]}
         scrollEnabled={false}
         renderItem={({ item }) => (
           <TransactionCard
@@ -127,6 +144,7 @@ const RecentTransactions = () => {
           />
         )}
         keyExtractor={(item) => item?.id}
+        ListEmptyComponent={ListEmptyComponent}
       />
     </View>
   );
@@ -135,10 +153,26 @@ const RecentTransactions = () => {
 const styles = StyleSheet.create({
   title: {
     fontSize: Metrics.size22,
+    lineHeight: Metrics.size22 * 1.3,
     paddingBottom: Metrics.mediumPadding,
   },
   itemSeparator: {
     height: Metrics.mediumPadding,
+  },
+  emptyContainer: {
+    flex: 1,
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  animationContent: {
+    width: "60%",
+    height: "60%",
+  },
+  emptyText: {
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
+    paddingBottom: Metrics.mediumPadding,
   },
 });
 

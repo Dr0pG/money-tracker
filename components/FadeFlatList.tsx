@@ -132,6 +132,7 @@ const FadeFlatList = React.forwardRef(
         {...props}
         ref={ref}
         renderItem={renderItem}
+        estimatedItemSize={20}
         ItemSeparatorComponent={
           ItemSeparatorComponent
             ? ({ leadingItem }) => renderSeparator(leadingItem?.index)
