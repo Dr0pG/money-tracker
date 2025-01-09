@@ -5,7 +5,6 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useColorScheme } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Define the Theme type
@@ -25,8 +24,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const systemTheme = useColorScheme() as Theme;
-  const [theme, setTheme] = useState<Theme>(systemTheme || "light");
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
     const loadTheme = async () => {

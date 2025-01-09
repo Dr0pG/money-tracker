@@ -14,9 +14,16 @@ import TouchableOpacity from "@/components/TouchableOpacity";
 import MainCard from "@/components/MainCard";
 import RecentTransactions from "@/components/Home/RecentTransactions";
 import Authentication from "@/firebase/Authentication";
+import { useRouter } from "expo-router";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import Durations from "@/constants/Durations";
 
 const Home = () => {
   const { t } = useTranslation();
+
+  const router = useRouter();
+
+  const onNavigateToAddTransaction = () => router.navigate("/addTransaction");
 
   const currentUser = userStore((state) => state.user);
 
@@ -74,12 +81,21 @@ const Home = () => {
 
   const renderAddTransaction = () => {
     return (
-      <View style={styles.addTransactionContainer}>
+      <Animated.View
+        style={styles.addTransactionContainer}
+        entering={FadeInDown.duration(Durations.animations)
+          .delay(Durations.animationsDelay)
+          .springify()}
+        exiting={FadeOutDown.duration(Durations.animations)
+          .delay(Durations.animationsDelay)
+          .springify()}
+      >
         <TouchableOpacity
           style={[
             styles.addTransactionContent,
             { backgroundColor: addTransactionBackgroundColor },
           ]}
+          onPress={onNavigateToAddTransaction}
         >
           <AntDesign
             name="plus"
@@ -87,7 +103,7 @@ const Home = () => {
             color={addTransactionIconColor}
           />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     );
   };
 

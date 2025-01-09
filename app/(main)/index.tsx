@@ -14,7 +14,7 @@ import TouchableOpacity from "@/components/TouchableOpacity";
 import AnimatedThemedView from "@/components/AnimatedThemedView";
 import { useRouter } from "expo-router";
 
-const Main = () => {
+const Intro = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -50,10 +50,7 @@ const Main = () => {
   const renderTopContent = () => {
     return (
       <LinearGradient
-        colors={[
-          backgroundColor,
-          `rgba(${gradient}, 0.2)`,
-        ]}
+        colors={[backgroundColor, `rgba(${gradient}, 0.2)`]}
         locations={[0.97, 1]}
         style={styles.topContainer}
       >
@@ -136,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Main);
+export default memo(Intro);

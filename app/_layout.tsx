@@ -56,10 +56,10 @@ const ThemedApp = () => {
       // Redirect to the appropriate screen based on user state
       if (currentUser) {
         // User is logged in, navigate to the home screen
-        router.push("/(home)");
+        router.replace("/(home)");
       } else {
         // User is logged out, navigate to the main screen
-        router.push("/(main)");
+        router.replace("/(main)");
       }
     }
   }, [currentUser, initializing, router]);
@@ -70,7 +70,10 @@ const ThemedApp = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: currentBackground }} edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: currentBackground }}
+      edges={["top", "left", "right"]}
+    >
       <StatusBar
         style={theme === "dark" ? "light" : "dark"}
         backgroundColor={backgroundColor}

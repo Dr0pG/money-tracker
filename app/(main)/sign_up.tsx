@@ -153,7 +153,7 @@ const SignUp = () => {
 
   const renderContent = () => {
     return (
-      <AnimatedThemedView style={styles.contentContainer}>
+      <AnimatedThemedView animationType="fade" style={styles.contentContainer}>
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}

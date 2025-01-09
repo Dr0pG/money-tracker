@@ -7,7 +7,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import Metrics from "@/constants/Metrics";
 
-const Home = () => {
+const Navigator = () => {
   const bottomBarColor = useThemeColor({}, "bottomBar");
   const bottomBarActiveIconsColor = useThemeColor({}, "bottomBarActiveIcons");
   const bottomBarInactiveIconsColor = useThemeColor(
@@ -28,18 +28,23 @@ const Home = () => {
           justifyContent: "center",
         },
       }}
+      initialRouteName="(1_tab)"
     >
       <Tabs.Screen
-        name="index"
+        name="(1_tab)"
         options={{
           title: "",
-          tabBarIcon: ({ color, focused}) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={Metrics.bottomBarIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={Metrics.bottomBarIcon}
+              color={color}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="statistics"
+        name="(2_tab)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -52,7 +57,7 @@ const Home = () => {
         }}
       />
       <Tabs.Screen
-        name="accounts"
+        name="(3_tab)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -65,7 +70,7 @@ const Home = () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="(4_tab)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -81,4 +86,4 @@ const Home = () => {
   );
 };
 
-export default memo(Home);
+export default memo(Navigator);
