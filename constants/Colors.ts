@@ -42,6 +42,7 @@ export const Colors = {
     entertainment: '#FF851B',
     insurance: '#2ECC40',
     personal: '#85144B',
+    investments: '#17A2B8',
     other: '#3D9970',
   },
   dark: {
@@ -88,6 +89,7 @@ export const Colors = {
     entertainment: '#FF851B',
     insurance: '#2ECC40',
     personal: '#85144B',
+    investments: '#17A2B8',
     other: '#3D9970',
   },
 };
