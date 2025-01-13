@@ -12,6 +12,13 @@ const Home = () => {
           presentation: "modal",
         }}
       />
+      <Stack.Screen
+        name="createWallet"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 };

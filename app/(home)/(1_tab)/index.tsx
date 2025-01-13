@@ -17,13 +17,18 @@ import Authentication from "@/firebase/Authentication";
 import { useRouter } from "expo-router";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
+import LottieView from "lottie-react-native";
+import Button from "@/components/Button";
 
 const Home = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
 
+  const currentAccount = null;
+
   const onNavigateToAddTransaction = () => router.navigate("/addTransaction");
+  const onNavigateToCreateAccount = () => router.navigate("/createWallet");
 
   const currentUser = userStore((state) => state.user);
 
@@ -45,22 +50,54 @@ const Home = () => {
             {currentUser?.displayName}
           </ThemedText>
         </View>
-        <View style={styles.searchIconContainer}>
-          <TouchableOpacity
-            style={[
-              styles.searchIconContent,
-              { backgroundColor: iconBackgroundColor },
-            ]}
-            onPress={Authentication.signOut}
-          >
-            <Ionicons
-              name="search"
-              size={Metrics.searchIcon}
-              color={iconColor}
-            />
-          </TouchableOpacity>
-        </View>
+        {currentAccount && (
+          <View style={styles.searchIconContainer}>
+            <TouchableOpacity
+              style={[
+                styles.searchIconContent,
+                { backgroundColor: iconBackgroundColor },
+              ]}
+              onPress={Authentication.signOut}
+            >
+              <Ionicons
+                name="search"
+                size={Metrics.searchIcon}
+                color={iconColor}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
+    );
+  };
+
+  const renderMainContent = () => {
+    if (!currentAccount)
+      return (
+        <>
+          <LottieView
+            source={require("@/assets/lottie/no_account.json")}
+            style={styles.animationContent}
+            autoPlay
+            loop
+          />
+          <ThemedText type="gray" style={styles.noAccountText}>
+            {t("home.no_wallet")}
+          </ThemedText>
+          <Button
+            text={t("home.create_wallet")}
+            onPress={onNavigateToCreateAccount}
+          />
+        </>
+      );
+
+    return (
+      <>
+        <MainCard value={0} income={0} expense={0} />
+        <View style={styles.recentTransactionsContainer}>
+          <RecentTransactions />
+        </View>
+      </>
     );
   };
 
@@ -68,13 +105,14 @@ const Home = () => {
     return (
       <ScrollView
         style={styles.mainContainer}
-        contentContainerStyle={styles.mainContentContainer}
+        contentContainerStyle={[
+          !currentAccount
+            ? styles.mainContentEmptyContainer
+            : styles.mainContentContainer,
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        <MainCard value={0} income={0} expense={0} />
-        <View style={styles.recentTransactionsContainer}>
-          <RecentTransactions />
-        </View>
+        {renderMainContent()}
       </ScrollView>
     );
   };
@@ -111,7 +149,7 @@ const Home = () => {
     <ThemedView style={styles.container}>
       {renderHeader()}
       {renderContent()}
-      {renderAddTransaction()}
+      {currentAccount && renderAddTransaction()}
     </ThemedView>
   );
 };
@@ -147,6 +185,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainContainer: {},
+  mainContentEmptyContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: Metrics.largeMargin + Metrics.addTransactionButton,
+  },
   mainContentContainer: {
     marginTop: Metrics.mediumMargin,
     paddingBottom: Metrics.largeMargin + Metrics.addTransactionButton,
@@ -167,6 +211,16 @@ const styles = StyleSheet.create({
     borderRadius: Metrics.addTransactionButton,
     alignItems: "center",
     justifyContent: "center",
+  },
+  animationContent: {
+    width: "100%",
+    height: "60%",
+  },
+  noAccountText: {
+    textAlign: "center",
+    paddingBottom: Metrics.largePadding,
+    fontSize: Metrics.size18,
+    lineHeight: Metrics.size18 * 1.3,
   },
 });
 

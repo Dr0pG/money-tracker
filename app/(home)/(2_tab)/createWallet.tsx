@@ -3,19 +3,11 @@ import React from "react";
 import ThemedView from "@/components/ThemedView";
 import Metrics from "@/constants/Metrics";
 import ThemedText from "@/components/ThemedText";
-import { useRouter } from "expo-router";
-import Back from "@/components/Back";
 
-const AddTransaction = () => {
-  const router = useRouter();
-
-  const onBack = () => router.back();
-
+const CreateWallet = () => {
   return (
     <ThemedView style={styles.container}>
-      <View>
-        <Back onPress={onBack} />
-      </View>
+      <ThemedText>create_account</ThemedText>
     </ThemedView>
   );
 };
@@ -28,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddTransaction;
+export default CreateWallet;

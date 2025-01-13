@@ -30,6 +30,7 @@ type PropTypes = TextInputProps & {
   secureTextEntry?: boolean;
   hasError?: boolean;
   errorMessage?: string;
+  topPlaceholder?: string;
 };
 
 const Input = forwardRef<TextInput, PropTypes>(
@@ -42,6 +43,7 @@ const Input = forwardRef<TextInput, PropTypes>(
       style,
       hasError = false,
       errorMessage = "",
+      topPlaceholder = undefined,
       onFocus = () => {},
       ...props
     }: PropTypes,
@@ -57,17 +59,45 @@ const Input = forwardRef<TextInput, PropTypes>(
       setError(hasError);
     }, [hasError]);
 
+    const renderTopPlaceholder = useCallback(() => {
+      if (!topPlaceholder) return;
+      return (
+        <ThemedText style={styles.topPlaceholderText}>
+          {topPlaceholder}
+        </ThemedText>
+      );
+    }, [topPlaceholder]);
+
     const renderIcon = useCallback(() => {
+      if (!icon) return;
+
       switch (icon) {
         case "name":
           return (
-            <AntDesign name="user" size={Metrics.iconInput} color={color} />
+            <AntDesign
+              name="user"
+              size={Metrics.iconInput}
+              color={color}
+              style={styles.icon}
+            />
           );
         case "email":
-          return <Entypo name="email" size={Metrics.iconInput} color={color} />;
+          return (
+            <Entypo
+              name="email"
+              size={Metrics.iconInput}
+              color={color}
+              style={styles.icon}
+            />
+          );
         case "password":
           return (
-            <Entypo name="suitcase" size={Metrics.iconInput} color={color} />
+            <Entypo
+              name="suitcase"
+              size={Metrics.iconInput}
+              color={color}
+              style={styles.icon}
+            />
           );
         default:
           return null;
@@ -104,6 +134,7 @@ const Input = forwardRef<TextInput, PropTypes>(
 
     return (
       <ThemedView style={styles.inputContainer}>
+        {renderTopPlaceholder()}
         <ThemedView
           style={[
             styles.inputWrapper,
@@ -146,15 +177,18 @@ const styles = StyleSheet.create({
     paddingVertical: Metrics.smallPadding,
   },
   icon: {
-    marginRight: Metrics.smallMargin,
+    marginRight: Metrics.mediumPadding,
   },
   input: {
     flex: 1,
     height: Metrics.heightInput,
-    paddingHorizontal: Metrics.mediumPadding,
   },
   errorText: {
     marginTop: Metrics.smallMargin,
+  },
+  topPlaceholderText: {
+    marginBottom: Metrics.smallMargin,
+    fontWeight: "bold",
   },
 });
 

@@ -12,6 +12,7 @@ type PropTypes = {
   isUpperCase?: boolean;
   isLoading?: boolean;
   onPress?: () => void;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -20,6 +21,7 @@ const Button = ({
   isUpperCase = true,
   isLoading = false,
   onPress = () => {},
+  disabled = false,
 }: PropTypes) => {
   const { t } = useTranslation();
 
@@ -35,10 +37,13 @@ const Button = ({
     <TouchableOpacity
       style={[
         styles.container,
-        { backgroundColor },
+        disabled
+          ? { borderWidth: 1, borderColor: backgroundColor }
+          : { backgroundColor },
         ...(Array.isArray(style) ? style : [style]),
       ]}
       onPress={onPress}
+      disabled={disabled}
     >
       {!isLoading && <ThemedText type="bigButton">{currentText}</ThemedText>}
       {isLoading && <ActivityIndicator color={textColor} />}

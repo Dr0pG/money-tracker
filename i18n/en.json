@@ -37,6 +37,8 @@
     "income": "Income",
     "expense": "Expense",
     "no_transactions_yet": "No transactions yet... Start adding new ones!",
+    "no_wallet": "No wallet found yet! Please create a new one and start tracking your expenses/incomes",
+    "create_wallet": "Create wallet"
   },
   "login": "Login",
   "enter_your_email": "Enter your email",
@@ -48,5 +50,14 @@
   "account_created_successfully": "Account created successfully!",
   "there_was_a_problem_creating_your_account": "There was a problem creating your account. Try again later!",
   "user_logout_successfully": "User logout successfully!",
-  "something_went_wrong": "Something went wrong. Try again later!"
+  "something_went_wrong": "Something went wrong. Try again later!",
+  "create_wallet": {
+    "title": "New Wallet",
+    "wallet_name": "Wallet Name",
+    "name": "Name",
+    "wallet_description": "Wallet Description",
+    "description": "Description",
+    "wallet_image": "Wallet Image",
+  },
+  "upload_image": "Upload Image"
 }

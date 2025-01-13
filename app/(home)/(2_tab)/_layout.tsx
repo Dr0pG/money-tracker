@@ -5,6 +5,13 @@ const Statistics = () => {
   return (
     <Stack initialRouteName="index">
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="createAccount"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 };

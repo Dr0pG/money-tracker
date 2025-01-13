@@ -14,7 +14,7 @@ import MainCard from "@/components/MainCard";
 import RecentTransactions from "@/components/Home/RecentTransactions";
 import Authentication from "@/firebase/Authentication";
 
-const Accounts = () => {
+const Statistics = () => {
   const { t } = useTranslation();
 
   return <ThemedView style={styles.container}></ThemedView>;
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Accounts);
+export default memo(Statistics);

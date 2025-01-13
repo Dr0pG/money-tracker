@@ -22,6 +22,10 @@
     <string>1.0.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Give $(PRODUCT_NAME) permission to save photos</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Give $(PRODUCT_NAME) permission to access your camera</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>

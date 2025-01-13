@@ -49,7 +49,7 @@ const Navigator = () => {
           title: "",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "stats-chart" : "stats-chart-outline"}
+              name={focused ? "wallet" : "wallet-outline"}
               size={Metrics.bottomBarIcon}
               color={color}
             />
@@ -62,7 +62,7 @@ const Navigator = () => {
           title: "",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "wallet" : "wallet-outline"}
+              name={focused ? "stats-chart" : "stats-chart-outline"}
               size={Metrics.bottomBarIcon}
               color={color}
             />
