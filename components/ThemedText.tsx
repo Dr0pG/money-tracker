@@ -126,7 +126,6 @@ const ThemedText = ({
     <Animated.Text
       {...rest}
       style={[
-        animatedStyle,
         type === "default" ? styles.default : undefined,
         type === "gray" ? styles.default : undefined,
         type === "medium" ? styles.medium : undefined,
@@ -139,6 +138,7 @@ const ThemedText = ({
         type === "extremeTitle" ? styles.extremeTitle : undefined,
         type === "error" ? styles.error : undefined,
         type === "hightLight" ? styles.hightLight : undefined,
+        animatedStyle,
         style,
       ]}
       {...(animation?.() &&

@@ -13,7 +13,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import MainCard from "@/components/MainCard";
 import RecentTransactions from "@/components/Home/RecentTransactions";
-import Authentication from "@/firebase/Authentication";
 import { useRouter } from "expo-router";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
@@ -57,7 +56,7 @@ const Home = () => {
                 styles.searchIconContent,
                 { backgroundColor: iconBackgroundColor },
               ]}
-              onPress={Authentication.signOut}
+              onPress={() => console.log("oi")}
             >
               <Ionicons
                 name="search"
@@ -111,6 +110,7 @@ const Home = () => {
             : styles.mainContentContainer,
         ]}
         showsVerticalScrollIndicator={false}
+        bounces={!!currentAccount}
       >
         {renderMainContent()}
       </ScrollView>

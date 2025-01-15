@@ -53,11 +53,10 @@
   "something_went_wrong": "Something went wrong. Try again later!",
   "create_wallet": {
     "title": "New Wallet",
-    "wallet_name": "Wallet Name",
     "name": "Name",
-    "wallet_description": "Wallet Description",
     "description": "Description",
-    "wallet_image": "Wallet Image",
+    "image": "Image"
   },
-  "upload_image": "Upload Image"
+  "upload_image": "Upload Image",
+  "create": "Create"
 }

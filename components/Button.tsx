@@ -26,6 +26,7 @@ const Button = ({
   const { t } = useTranslation();
 
   const backgroundColor = useThemeColor({}, "button");
+  const buttonTextDisabledColor = useThemeColor({}, "buttonTextDisabled");
   const textColor = useThemeColor({}, "buttonText");
 
   const translatedText = t(text);
@@ -45,7 +46,18 @@ const Button = ({
       onPress={onPress}
       disabled={disabled}
     >
-      {!isLoading && <ThemedText type="bigButton">{currentText}</ThemedText>}
+      {!isLoading && (
+        <ThemedText
+          type="bigButton"
+          {...(disabled && {
+            style: {
+              color: buttonTextDisabledColor,
+            },
+          })}
+        >
+          {currentText}
+        </ThemedText>
+      )}
       {isLoading && <ActivityIndicator color={textColor} />}
     </TouchableOpacity>
   );

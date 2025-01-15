@@ -7,6 +7,7 @@ export const Colors = {
     background: "#E2E2E8", // Modern neutral gray with a slightly darker tone
     button: "#4CAF50", // Clean and vibrant green button
     buttonText: "#FFFFFF", // White for contrast
+    buttonTextDisabled: "#fff",
     icon: "#7A7D82", // A medium, modern gray for icons
 
     backButtonBackground: "#C8C9CC", // A slightly darker gray for contrast
@@ -53,6 +54,7 @@ export const Colors = {
     background: "#1A181B",
     button: "#A4E736",
     buttonText: "#010700",
+    buttonTextDisabled: "#fff",
     icon: "#F8F7F8",
 
     backButtonBackground: "#545255",

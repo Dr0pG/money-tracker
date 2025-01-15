@@ -17,7 +17,13 @@ import Authentication from "@/firebase/Authentication";
 const Profile = () => {
   const { t } = useTranslation();
 
-  return <ThemedView style={styles.container}></ThemedView>;
+  return (
+    <ThemedView style={styles.container}>
+      <TouchableOpacity onPress={Authentication.signOut}>
+        <ThemedText>Log out</ThemedText>
+      </TouchableOpacity>
+    </ThemedView>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -49,7 +49,7 @@ const CreateWallet = () => {
       >
         <Input
           ref={nameInputRef}
-          topPlaceholder={`${t("create_wallet.wallet_name")}*`}
+          topPlaceholder={`${t("create_wallet.name")}*`}
           placeholder={t("create_wallet.name")}
           returnKeyType="next"
           value={name}
@@ -62,7 +62,7 @@ const CreateWallet = () => {
         <View style={styles.divider} />
         <Input
           ref={descriptionInputRef}
-          topPlaceholder={t("create_wallet.wallet_description")}
+          topPlaceholder={t("create_wallet.description")}
           placeholder={t("create_wallet.description")}
           returnKeyType="next"
           value={description}
@@ -73,7 +73,7 @@ const CreateWallet = () => {
         />
         <View style={styles.divider} />
         <UploadImage
-          title={t("create_wallet.wallet_image")}
+          title={t("create_wallet.image")}
           imageUrl={image}
           onImagePicked={setImage}
           onRemoveImage={() => setImage("")}
@@ -85,7 +85,7 @@ const CreateWallet = () => {
   const renderButton = useCallback(() => {
     return (
       <View style={styles.buttonContainer}>
-        <Button text="oi" disabled={!name} />
+        <Button text={t('create')} disabled={!name} />
       </View>
     );
   }, [name, description, image]);

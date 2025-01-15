@@ -6,7 +6,7 @@ const Statistics = () => {
     <Stack initialRouteName="index">
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="createAccount"
+        name="createWallet"
         options={{
           headerShown: false,
           presentation: "modal",
