@@ -58,6 +58,7 @@ const registerUser = async (name: string, email: string, password: string) => {
         name: name,
         email: email,
         createdAt: new Date(),
+        currency: "€",
       };
 
       // Set the user object in the Realtime Database under a path like {userId}
@@ -68,7 +69,12 @@ const registerUser = async (name: string, email: string, password: string) => {
           Toast.showSuccess(i18n.t("account_created_successfully"));
         })
         .catch(() => {
-          Toast.showError(i18n.t("there_was_a_problem_creating_your_account"));
+          const currentError = i18n.t(
+            "there_was_a_problem_creating_your_account"
+          );
+          Toast.showError(currentError);
+
+          return Promise.reject(currentError);
         });
     })
     .catch((error) => {

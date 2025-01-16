@@ -10,6 +10,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "react-i18next";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
+import userStore from "@/store/userStore";
 
 type InfoPropTypes = {
   type: "expense" | "income";
@@ -18,6 +19,8 @@ type InfoPropTypes = {
 
 const Info = ({ type, value }: InfoPropTypes) => {
   const { t } = useTranslation();
+
+  const { currency } = userStore();
 
   const blackTextColor = useThemeColor({}, "blackText");
   const backgroundColor = useThemeColor({}, "silver");
@@ -44,7 +47,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
         type="subtitle"
         color={isIncome ? infoGoodTextColor : infoBadTextColor}
       >
-        {`${value === 0 ? "---" : value + "€"}`}
+        {`${value === 0 ? "---" : value + currency}`}
       </ThemedText>
     </View>
   );
@@ -64,6 +67,8 @@ const MainCard = ({
   style = {},
 }: PropTypes) => {
   const { t } = useTranslation();
+
+  const { currency } = userStore();
 
   const mainCardBackground = useThemeColor({}, "mainCardBackground");
   const blackTextColor = useThemeColor({}, "blackText");
@@ -104,7 +109,7 @@ const MainCard = ({
           style={styles.balanceText}
           color={blackTextColor}
         >
-          {`${value === 0 ? "---" : value + "€"}`}
+          {`${value + currency}`}
         </ThemedText>
         <View style={styles.cardInfo}>
           <Info type="income" value={income} />

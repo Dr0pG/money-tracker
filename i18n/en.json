@@ -61,5 +61,6 @@
     "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!"
   },
   "upload_image": "Upload Image",
-  "create": "Create"
+  "create": "Create",
+  "first_release_we_only_store_images_locally": "First release, we only store images locally!",
 }

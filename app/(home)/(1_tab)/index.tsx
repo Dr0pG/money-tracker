@@ -16,18 +16,16 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
 import walletStore from "@/store/walletStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Wallets from "@/firebase/Wallets";
+import User from "@/firebase/User";
 
 const Home = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
-
-  const navigation = useNavigation();
-  const focused = navigation.isFocused();
 
   const { currentWallet, setCurrentWallet } = walletStore();
 
@@ -35,6 +33,7 @@ const Home = () => {
   const onNavigateToCreateAccount = () => router.navigate("/createWallet");
 
   const currentUser = userStore((state) => state.user);
+  const setCurrency = userStore((state) => state.setCurrency);
 
   const iconColor = useThemeColor({}, "icon");
 
@@ -54,11 +53,14 @@ const Home = () => {
         setCurrentWallet(responseCurrentWallet);
     };
 
-    if (focused) {
-      getWallet();
-    }
-    // focused
-  }, [focused]);
+    const getCurrentUserInfo = async () => {
+      const currency = await User.getUserCurrency();
+      if (currency) setCurrency(currency);
+    };
+
+    getWallet();
+    getCurrentUserInfo();
+  }, []);
 
   const renderHeader = () => {
     return (

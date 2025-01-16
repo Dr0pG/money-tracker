@@ -21,7 +21,7 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const onNavigateToSignIn = () => router.navigate("/sign_in");
+  const onNavigateToSignIn = () => router.replace("/sign_in");
 
   const nameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);

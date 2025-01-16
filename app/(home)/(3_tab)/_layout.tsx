@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Stack } from "expo-router";
 
-const Accounts = () => {
+const Statistics = () => {
   return (
     <Stack initialRouteName="index">
       <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -9,4 +9,4 @@ const Accounts = () => {
   );
 };
 
-export default memo(Accounts);
+export default memo(Statistics);

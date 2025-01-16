@@ -81,15 +81,27 @@ const UploadImage = ({
 
   return (
     <View>
-      <ThemedText style={styles.title}>{title}</ThemedText>
+      <View style={styles.textContainer}>
+        <ThemedText style={styles.title}>{title}</ThemedText>
+        <ThemedText type="gray" style={styles.info}>
+          {t("first_release_we_only_store_images_locally")}
+        </ThemedText>
+      </View>
       {renderContent()}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
+  textContainer: {
     marginBottom: Metrics.smallMargin,
+  },
+  title: {
+    fontWeight: "bold",
+  },
+  info: {
+    fontSize: Metrics.size12,
+    lineHeight: Metrics.size12 * 1.5,
     fontWeight: "bold",
   },
   uploadContainer: {

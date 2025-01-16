@@ -11,6 +11,7 @@ import { getTypeColor } from "@/utils/getTypeInfo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import userStore from "@/store/userStore";
 
 type PropTypes = {
   type: TransactionType;
@@ -27,6 +28,8 @@ const TransactionCard = ({
   value,
   date,
 }: PropTypes) => {
+  const { currency } = userStore();
+
   const transactionCardsColor = useThemeColor({}, "transactionCards");
   const transactionIconColor = useThemeColor({}, "transactionIcon");
 
@@ -80,7 +83,7 @@ const TransactionCard = ({
           ellipsizeMode="tail"
           numberOfLines={1}
         >
-          {`${isIncome ? "+" : "-"} ${value}€`}
+          {`${isIncome ? "+" : "-"} ${value}${currency}`}
         </ThemedText>
         <ThemedText type="gray" ellipsizeMode="tail">
           {formattedDate}
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.mediumPadding,
   },
   rightInfoContainer: {
-    maxWidth: '50%',
+    maxWidth: "50%",
     alignItems: "flex-end",
   },
   description: {
