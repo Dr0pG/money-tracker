@@ -2,7 +2,7 @@ import {
   TouchableOpacity as RNTouchableOpacity,
   ViewStyle,
 } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import { TouchableOpacity as GestureTouchableOpacity } from "react-native-gesture-handler";
 
 type PropTypes = {
@@ -36,4 +36,4 @@ const TouchableOpacity = ({
   );
 };
 
-export default TouchableOpacity;
+export default memo(TouchableOpacity);

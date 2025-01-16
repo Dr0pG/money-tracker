@@ -54,8 +54,11 @@
   "create_wallet": {
     "title": "New Wallet",
     "name": "Name",
+
     "description": "Description",
-    "image": "Image"
+    "image": "Image",
+    "wallet_created_successfully": "Wallet created successfully!",
+    "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!"
   },
   "upload_image": "Upload Image",
   "create": "Create"

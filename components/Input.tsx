@@ -1,4 +1,10 @@
-import React, { forwardRef, useCallback, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   TextInput,
   StyleSheet,
@@ -192,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Input;
+export default memo(Input);

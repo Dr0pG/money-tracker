@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { memo, useCallback } from "react";
 import { type TextProps, StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -203,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ThemedText;
+export default memo(ThemedText);

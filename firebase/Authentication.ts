@@ -3,6 +3,11 @@ import Utils from "@/firebase/Utils";
 import Toast from "@/components/Toast";
 import i18n from "i18next";
 
+/**
+ * Function to login the user
+ * @param email
+ * @param password
+ */
 const loginUser = async (email: string, password: string) => {
   return auth()
     .signInWithEmailAndPassword(email, password)
@@ -29,6 +34,12 @@ const loginUser = async (email: string, password: string) => {
     });
 };
 
+/**
+ * Function to register a new user
+ * @param name
+ * @param email
+ * @param password
+ */
 const registerUser = async (name: string, email: string, password: string) => {
   return auth()
     .createUserWithEmailAndPassword(email, password)
@@ -75,6 +86,9 @@ const registerUser = async (name: string, email: string, password: string) => {
     });
 };
 
+/**
+ * Function to log out the user
+ */
 const signOut = () => {
   auth()
     .signOut()

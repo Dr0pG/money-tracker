@@ -7,7 +7,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import Shadow from "@/constants/Shadow";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadImage;
+export default memo(UploadImage);

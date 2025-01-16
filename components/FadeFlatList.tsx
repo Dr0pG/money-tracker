@@ -1,4 +1,4 @@
-import React, { ReactElement, Ref, useCallback, useEffect } from "react";
+import React, { memo, ReactElement, Ref, useCallback, useEffect } from "react";
 import { ListRenderItemInfo } from "@shopify/flash-list";
 import { FlashList, FlashListProps } from "@shopify/flash-list";
 
@@ -37,8 +37,8 @@ const FadeInComponent = ({
       progress < startFadeIn
         ? 0
         : progress > endFadeIn
-        ? 1
-        : (progress - startFadeIn) / (endFadeIn - startFadeIn); // Linear interpolation
+          ? 1
+          : (progress - startFadeIn) / (endFadeIn - startFadeIn); // Linear interpolation
 
     return { opacity };
   });
@@ -145,4 +145,4 @@ const FadeFlatList = React.forwardRef(
 
 FadeFlatList.displayName = "FadeFlatList";
 
-export default FadeFlatList;
+export default memo(FadeFlatList);

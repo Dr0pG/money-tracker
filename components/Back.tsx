@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Metrics from "@/constants/Metrics";
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Back;
+export default memo(Back);

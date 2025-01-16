@@ -1,30 +1,35 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { useTranslation } from "react-i18next";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import Metrics from "@/constants/Metrics";
-import userStore from "@/store/userStore";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import TouchableOpacity from "@/components/TouchableOpacity";
-import MainCard from "@/components/MainCard";
-import RecentTransactions from "@/components/Home/RecentTransactions";
-import { useRouter } from "expo-router";
-import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
-import Durations from "@/constants/Durations";
-import LottieView from "lottie-react-native";
 import Button from "@/components/Button";
+import RecentTransactions from "@/components/Home/RecentTransactions";
+import MainCard from "@/components/MainCard";
+import TouchableOpacity from "@/components/TouchableOpacity";
+import Durations from "@/constants/Durations";
+import Metrics from "@/constants/Metrics";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import userStore from "@/store/userStore";
+import walletStore from "@/store/walletStore";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation, useRouter } from "expo-router";
+import LottieView from "lottie-react-native";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import Wallets from "@/firebase/Wallets";
 
 const Home = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
 
-  const currentAccount = null;
+  const navigation = useNavigation();
+  const focused = navigation.isFocused();
+
+  const { currentWallet, setCurrentWallet } = walletStore();
 
   const onNavigateToAddTransaction = () => router.navigate("/addTransaction");
   const onNavigateToCreateAccount = () => router.navigate("/createWallet");
@@ -38,6 +43,23 @@ const Home = () => {
 
   const iconBackgroundColor = useThemeColor({}, "backButtonBackground");
 
+  useEffect(() => {
+    const getWallet = async () => {
+      const responseCurrentWallet: string | null =
+        await Wallets.getCurrentWallet();
+
+      if (!responseCurrentWallet && !!currentWallet) setCurrentWallet();
+
+      if (responseCurrentWallet !== currentWallet)
+        setCurrentWallet(responseCurrentWallet);
+    };
+
+    if (focused) {
+      getWallet();
+    }
+    // focused
+  }, [focused]);
+
   const renderHeader = () => {
     return (
       <View style={styles.headerContainer}>
@@ -49,7 +71,7 @@ const Home = () => {
             {currentUser?.displayName}
           </ThemedText>
         </View>
-        {currentAccount && (
+        {currentWallet && (
           <View style={styles.searchIconContainer}>
             <TouchableOpacity
               style={[
@@ -71,7 +93,7 @@ const Home = () => {
   };
 
   const renderMainContent = () => {
-    if (!currentAccount)
+    if (!currentWallet)
       return (
         <>
           <LottieView
@@ -105,12 +127,12 @@ const Home = () => {
       <ScrollView
         style={styles.mainContainer}
         contentContainerStyle={[
-          !currentAccount
+          !currentWallet
             ? styles.mainContentEmptyContainer
             : styles.mainContentContainer,
         ]}
         showsVerticalScrollIndicator={false}
-        bounces={!!currentAccount}
+        bounces={!!currentWallet}
       >
         {renderMainContent()}
       </ScrollView>
@@ -149,7 +171,7 @@ const Home = () => {
     <ThemedView style={styles.container}>
       {renderHeader()}
       {renderContent()}
-      {currentAccount && renderAddTransaction()}
+      {currentWallet && renderAddTransaction()}
     </ThemedView>
   );
 };

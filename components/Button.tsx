@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, ViewStyle } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import ThemedText from "@/components/ThemedText";
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default memo(Button);

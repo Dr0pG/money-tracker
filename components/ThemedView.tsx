@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { type ViewProps } from "react-native";
 import Animated, {
   useSharedValue,
@@ -39,4 +39,4 @@ const ThemedView = ({
   return <Animated.View style={[animatedStyle, style]} {...otherProps} />;
 };
 
-export default ThemedView;
+export default memo(ThemedView);
