@@ -63,4 +63,14 @@
   "upload_image": "Upload Image",
   "create": "Create",
   "first_release_we_only_store_images_locally": "First release, we only store images locally!",
+  "profile": {
+    "title": "Profile",
+    "log_out": "Log out",
+    "edit_profile": "Edit profile",
+    "settings": "Settings",
+    "privacy_policy": "Privacy Policy",
+    "are_you_sure_you_want_to_logout": "Are you sure you want to logout?"
+  },
+  "cancel": "Cancel",
+  "logout": "Logout",
 }

@@ -44,6 +44,9 @@ const Metrics = {
   // Upload Image
   imageSize: 200,
 
+  // Profile Image
+  profileImage: 150,
+
   // Remove Image Button
   removeButton: 35,
 
@@ -66,6 +69,9 @@ const Metrics = {
   addTransactionIcon: 28,
 
   uploadImage: 26,
+
+  profileIcons: 24,
+  profileIconsBackgroundSize: 50,
 
   // Screen Dimensions
   screenWidth: Dimensions.get("window").width,

@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: Metrics.size18,
+    lineHeight: Metrics.size18 * 1.3,
     fontWeight: "bold",
   },
   link: {

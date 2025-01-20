@@ -1,28 +1,68 @@
 {
     "main": {
-        "sign_in": "Entrar",
-        "always_take_control": "Controle sempre as suas finanças",
-        "finances_must_be": "As finanças devem ser organizadas para um melhor estilo de vida no futuro",
-        "get_started": "Começar",
+      "sign_in": "Sign in",
+      "always_take_control": "Always take control of your finances",
+      "finances_must_be": "Finances must be arranged to set a better lifestyle in future",
+      "get_started": "Get started"
     },
     "sign_up": {
-        "sign_up": "Registar",
-        "lets": "Vamos",
-        "get_started": "Começar",
-        "create_an_account": "Crie uma conta para acompanhar as suas despesas",
-        "enter_your_name": "Insira o seu nome",
-        "enter_your_email": "Insira o seu email",
-        "enter_your_password": "Insira a sua palavra-passe",
-        "already_have_account": "Já tem uma conta?",
-        "login": "Entrar",
-        "form": {
-            "name_is_required": "Nome é obrigatório.",
-            "email_is_required": "Email é obrigatório.",
-            "password_is_required": "Palavra-passe é obrigatória.",
-
-            "name_contains_invalid_characters": "Nome contém caracteres inválidos.",
-            "invalid_email_format": "Formato de email inválido.",
-            "password_must_be_at_least": "A palavra-passe deve ter pelo menos 8 caracteres, conter pelo menos uma letra maiúscula e um caractere especial.",
-        }
-    }
+      "sign_up": "Sign up",
+      "lets": "Let's",
+      "get_started": "Get Started",
+      "create_an_account": "Create an account to track your expenses",
+      "enter_your_name": "Enter your name",
+      "already_have_account": "Already have an account?",
+      "form": {
+        "name_is_required": "Name is required.",
+        "email_is_required": "Email is required.",
+        "password_is_required": "Password is required.",
+  
+        "name_contains_invalid_characters": "Name contains invalid characters.",
+        "invalid_email_format": "Invalid email format.",
+        "password_must_be_at_least": "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character."
+      }
+    },
+    "sign_in": {
+      "hey": "Hey",
+      "welcome_back": "Welcome Back",
+      "login_now_to_track_all_expenses": "Login now to track all expenses",
+      "forgot_password": "Forgot password",
+      "dont_have_an_account": "Don't have an account?",
+      "sign_up": "Sign up"
+    },
+    "home": {
+      "hello": "Hello,",
+      "total_balance": "Total Balance",
+      "recent_transactions": "Recent Transactions",
+      "income": "Income",
+      "expense": "Expense",
+      "no_transactions_yet": "No transactions yet... Start adding new ones!",
+      "no_wallet": "No wallet found yet! Please create a new one and start tracking your expenses/incomes",
+      "create_wallet": "Create wallet"
+    },
+    "login": "Login",
+    "enter_your_email": "Enter your email",
+    "enter_your_password": "Enter your password",
+    "login_successfully": "Login successfully!",
+    "that_email_address_is_already_in_use": "That email address is already in use!",
+    "that_email_address_is_invalid": "That email address is invalid!",
+    "the_supplied_authentication_credential_is_malformed_or_has_expired": "The supplied authentication credential is malformed or has expired",
+    "account_created_successfully": "Account created successfully!",
+    "there_was_a_problem_creating_your_account": "There was a problem creating your account. Try again later!",
+    "user_logout_successfully": "User logout successfully!",
+    "something_went_wrong": "Something went wrong. Try again later!",
+    "create_wallet": {
+      "title": "New Wallet",
+      "name": "Name",
+  
+      "description": "Description",
+      "image": "Image",
+      "wallet_created_successfully": "Wallet created successfully!",
+      "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!"
+    },
+    "upload_image": "Upload Image",
+    "create": "Create",
+    "first_release_we_only_store_images_locally": "First release, we only store images locally!",
+    "profile": "Profile"
 }
+  
