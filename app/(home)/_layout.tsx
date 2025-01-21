@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { hasNotch } from "react-native-device-info";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -23,8 +22,8 @@ const Navigator = () => {
         tabBarInactiveTintColor: bottomBarInactiveIconsColor,
         headerShown: false,
         tabBarStyle: {
-          height: hasNotch() ? 80 : 60,
-          paddingTop: 10,
+          height: Metrics.bottomBarHeight,
+          paddingTop: Metrics.smallPadding + 2,
           backgroundColor: bottomBarColor,
           justifyContent: "center",
         },
