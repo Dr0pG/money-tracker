@@ -109,7 +109,6 @@ const Profile = () => {
   }, [image]);
 
   const renderUserInfo = useCallback(() => {
-    if (!user) return;
     return (
       <Animated.View
         style={styles.userInfoContainer}
