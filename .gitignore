@@ -35,10 +35,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# Google Services files for Android and iOS
-android/app/google-services.json
-ios/GoogleService-Info.plist
-
 # Env
 .env
 
