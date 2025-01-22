@@ -29,8 +29,8 @@ const Home = () => {
 
   const { currentWallet, setCurrentWallet } = walletStore();
 
-  const onNavigateToAddTransaction = () => router.navigate("/addTransaction");
-  const onNavigateToCreateAccount = () => router.navigate("/createWallet");
+  const onNavigateToAddTransaction = () => router.navigate("../(shared)/addTransaction");
+  const onNavigateToCreateAccount = () => router.navigate("../(shared)/createWallet");
 
   const currentUser = userStore((state) => state.user);
   const setCurrency = userStore((state) => state.setCurrency);

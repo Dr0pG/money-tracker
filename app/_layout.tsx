@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, withLayoutContext } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
@@ -16,6 +16,23 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ActivityIndicator } from "react-native";
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import userStore from "@/store/userStore";
+
+import {
+  createStackNavigator,
+  StackNavigationEventMap,
+  StackNavigationOptions,
+  TransitionPresets,
+} from "@react-navigation/stack";
+import { ParamListBase, StackNavigationState } from "@react-navigation/native";
+
+const { Navigator } = createStackNavigator();
+
+export const JsStack = withLayoutContext<
+  StackNavigationOptions,
+  typeof Navigator,
+  StackNavigationState<ParamListBase>,
+  StackNavigationEventMap
+>(Navigator);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -79,11 +96,29 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <Stack initialRouteName={!currentUser ? "(main)" : "(home)"}>
+      <JsStack initialRouteName={!currentUser ? "(main)" : "(home)"}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <JsStack.Screen
+          name="(shared)/addTransaction"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="(shared)/createWallet"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-      </Stack>
+      </JsStack>
     </SafeAreaView>
   );
 };
