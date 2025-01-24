@@ -6,11 +6,11 @@ PODS:
   - EXImageLoader (5.0.0):
     - ExpoModulesCore
     - React-Core
-  - Expo (52.0.26):
+  - Expo (52.0.27):
     - ExpoModulesCore
   - ExpoAsset (11.0.2):
     - ExpoModulesCore
-  - ExpoBlur (14.0.2):
+  - ExpoBlur (14.0.3):
     - ExpoModulesCore
   - ExpoFileSystem (18.0.7):
     - ExpoModulesCore
@@ -2285,9 +2285,9 @@ SPEC CHECKSUMS:
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXConstants: 6b8c5653492349b3c3fe6b905c556bc45b360405
   EXImageLoader: e5da974e25b13585c196b658a440720c075482d5
-  Expo: c6bc913a8e28f698c948b27b80570208af58adfa
+  Expo: 296cbea8d4469eb60d61f09dbd4925f86d2b85da
   ExpoAsset: d2d2cbc6a4efadf51a3da27d85d589935abd0b98
-  ExpoBlur: cb75554318a537db7a65ad589a0a5f32173ca39b
+  ExpoBlur: 392c1207f71d0ecf22371621c1fbd44ba84d9742
   ExpoFileSystem: 818e82dbb71175414d1ca310e926c48ff0d07348
   ExpoFont: 38656978c2a4022fb7e0c43e4968d66340f5e2f3
   ExpoHaptics: 8d199b2f33245ea85289ff6c954c7ee7c00a5b5d

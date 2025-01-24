@@ -48,7 +48,7 @@ const ThemedApp = () => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
 
-  const currentUser = userStore((state) => state.user);
+  const { user: currentUser } = userStore();
   const storeUser = userStore((state) => state.storeUser);
 
   useEffect(() => {
@@ -63,23 +63,17 @@ const ThemedApp = () => {
       (user: FirebaseAuthTypes.User | null) => {
         storeUser(user);
         if (initializing) setInitializing(false);
+
+        // Navigate to the appropriate screen based on authentication state
+        if (user) {
+          router.replace("/(home)");
+        } else {
+          router.replace("/(main)");
+        }
       }
     );
     return subscriber; // unsubscribe on unmount
-  }, []);
-
-  useEffect(() => {
-    if (!initializing) {
-      // Redirect to the appropriate screen based on user state
-      if (currentUser) {
-        // User is logged in, navigate to the home screen
-        router.replace("/(home)");
-      } else {
-        // User is logged out, navigate to the main screen
-        router.replace("/(main)");
-      }
-    }
-  }, [currentUser, initializing, router]);
+  }, [router, initializing]);
 
   // Ensure that we wait until Firebase has finished initializing before rendering
   if (initializing) {
@@ -96,7 +90,10 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <JsStack initialRouteName={!currentUser ? "(main)" : "(home)"}>
+      <JsStack
+        initialRouteName={!currentUser ? "(main)" : "(home)"}
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <JsStack.Screen
