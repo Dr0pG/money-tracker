@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -21,6 +21,7 @@ import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Wallets from "@/firebase/Wallets";
 import User from "@/firebase/User";
+import Loader from "@/components/Loader";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -29,8 +30,10 @@ const Home = () => {
 
   const { currentWallet, setCurrentWallet } = walletStore();
 
-  const onNavigateToAddTransaction = () => router.navigate("../(shared)/addTransaction");
-  const onNavigateToCreateAccount = () => router.navigate("../(shared)/createWallet");
+  const onNavigateToAddTransaction = () =>
+    router.navigate("../(shared)/addTransaction");
+  const onNavigateToCreateAccount = () =>
+    router.navigate("../(shared)/createWallet");
 
   const currentUser = userStore((state) => state.user);
   const setCurrency = userStore((state) => state.setCurrency);
@@ -42,8 +45,10 @@ const Home = () => {
 
   const iconBackgroundColor = useThemeColor({}, "backButtonBackground");
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const getWallet = async () => {
+    const getInfo = async () => {
       const responseCurrentWallet: string | null =
         await Wallets.getCurrentWallet();
 
@@ -51,15 +56,14 @@ const Home = () => {
 
       if (responseCurrentWallet !== currentWallet)
         setCurrentWallet(responseCurrentWallet);
-    };
 
-    const getCurrentUserInfo = async () => {
       const currency = await User.getUserCurrency();
       if (currency) setCurrency(currency);
+
+      setIsLoading(false);
     };
 
-    getWallet();
-    getCurrentUserInfo();
+    getInfo();
   }, []);
 
   const renderHeader = () => {
@@ -169,6 +173,8 @@ const Home = () => {
     );
   };
 
+  if (isLoading) return <Loader />;
+
   return (
     <ThemedView style={styles.container}>
       {renderHeader()}
@@ -179,6 +185,11 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     paddingHorizontal: Metrics.largePadding,

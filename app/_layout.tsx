@@ -1,8 +1,13 @@
 import { useFonts } from "expo-font";
-import { Stack, useRouter, withLayoutContext } from "expo-router";
+import {
+  Stack,
+  useNavigationContainerRef,
+  useRouter,
+  withLayoutContext,
+} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import "react-native-reanimated";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -13,7 +18,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Durations from "@/constants/Durations";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { ActivityIndicator } from "react-native";
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import userStore from "@/store/userStore";
 
@@ -45,11 +49,29 @@ const ThemedApp = () => {
 
   const [currentBackground, setBackgroundColor] = useState(backgroundColor);
 
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
+  const navigationRef = useNavigationContainerRef();
 
-  const { user: currentUser } = userStore();
   const storeUser = userStore((state) => state.storeUser);
+
+  useEffect(() => {
+    if (navigationRef.current?.isReady()) {
+      const subscriber = auth().onAuthStateChanged(
+        (user: FirebaseAuthTypes.User | null) => {
+          storeUser(user);
+
+          if (user) {
+            router.navigate("/(home)");
+          } else {
+            router.navigate("/(main)");
+          }
+        }
+      );
+
+      return () => {
+        subscriber(); // unsubscribe on unmount
+      };
+    }
+  }, [navigationRef]);
 
   useEffect(() => {
     setTimeout(
@@ -57,28 +79,6 @@ const ThemedApp = () => {
       Durations.colorChanged / 2
     );
   }, [backgroundColor]);
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(
-      (user: FirebaseAuthTypes.User | null) => {
-        storeUser(user);
-        if (initializing) setInitializing(false);
-
-        // Navigate to the appropriate screen based on authentication state
-        if (user) {
-          router.replace("/(home)");
-        } else {
-          router.replace("/(main)");
-        }
-      }
-    );
-    return subscriber; // unsubscribe on unmount
-  }, [router, initializing]);
-
-  // Ensure that we wait until Firebase has finished initializing before rendering
-  if (initializing) {
-    return <ActivityIndicator />; // You can replace this with a loading spinner or splash screen.
-  }
 
   return (
     <SafeAreaView
@@ -90,10 +90,7 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <JsStack
-        initialRouteName={!currentUser ? "(main)" : "(home)"}
-        screenOptions={{ headerShown: false }}
-      >
+      <JsStack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <JsStack.Screen
@@ -137,12 +134,10 @@ export default function RootLayout() {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider>
-          <>
-            <ThemedApp />
-            <Toasts />
-          </>
+          <ThemedApp />
+          <Toasts />
         </ThemeProvider>
       </GestureHandlerRootView>
     </I18nextProvider>
