@@ -1,7 +1,7 @@
 import React, { memo, useRef, useState } from "react";
 
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import Metrics from "@/constants/Metrics";
 import { useTranslation } from "react-i18next";
 
@@ -38,6 +38,8 @@ const SignIn = () => {
   });
 
   const onSubmit = async () => {
+    Keyboard.dismiss();
+
     setGeneralError(null);
 
     const validate = validateForm(email, password);

@@ -3,7 +3,6 @@ import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import Metrics from "@/constants/Metrics";
 
@@ -74,8 +73,8 @@ const Navigator = () => {
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
-            <FontAwesome
-              name={focused ? "user" : "user-o"}
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
               size={Metrics.bottomBarIcon}
               color={color}
             />
