@@ -7,7 +7,7 @@ import {
 } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -90,7 +90,7 @@ const ThemedApp = () => {
         backgroundColor={backgroundColor}
         animated
       />
-      <JsStack screenOptions={{ headerShown: false }}>
+      <JsStack initialRouteName="(main)" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <JsStack.Screen
