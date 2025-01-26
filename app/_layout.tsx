@@ -60,9 +60,9 @@ const ThemedApp = () => {
           storeUser(user);
 
           if (user) {
-            router.navigate("/(home)");
+            router.replace("/(home)");
           } else {
-            router.navigate("/(main)");
+            router.replace("/(main)");
           }
         }
       );
