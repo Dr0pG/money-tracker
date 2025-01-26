@@ -25,7 +25,7 @@ const validateForm = (
   };
 
   // Validate name
-  const nameRegex = /^[a-zA-Z\s]+$/;
+  const nameRegex = /^[\p{L}\s]+$/u;
   if (!name) {
     errors = {
       ...errors,

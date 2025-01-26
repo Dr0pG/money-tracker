@@ -22,6 +22,7 @@ import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Wallets from "@/firebase/Wallets";
 import User from "@/firebase/User";
 import Loader from "@/components/Loader";
+import auth from "@react-native-firebase/auth";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -36,6 +37,8 @@ const Home = () => {
     router.navigate("../(shared)/createWallet");
 
   const currentUser = userStore((state) => state.user);
+
+  const storeUser = userStore((state) => state.storeUser);
   const setCurrency = userStore((state) => state.setCurrency);
 
   const iconColor = useThemeColor({}, "icon");
@@ -49,18 +52,25 @@ const Home = () => {
 
   useEffect(() => {
     const getInfo = async () => {
-      const responseCurrentWallet: string | null =
-        await Wallets.getCurrentWallet();
+      try {
+        const user = auth().currentUser;
+        if (user) storeUser(user);
 
-      if (!responseCurrentWallet && !!currentWallet) setCurrentWallet();
+        const responseCurrentWallet: string | null =
+          await Wallets.getCurrentWallet();
 
-      if (responseCurrentWallet !== currentWallet)
-        setCurrentWallet(responseCurrentWallet);
+        if (!responseCurrentWallet && !!currentWallet) setCurrentWallet();
 
-      const currency = await User.getUserCurrency();
-      if (currency) setCurrency(currency);
+        if (responseCurrentWallet !== currentWallet)
+          setCurrentWallet(responseCurrentWallet);
 
-      setIsLoading(false);
+        const currency = await User.getUserCurrency();
+        if (currency) setCurrency(currency);
+      } catch (error: any) {
+        console.log("Home error: ", error.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     getInfo();
