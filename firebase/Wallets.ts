@@ -1,5 +1,6 @@
 import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
+import { uploadImage } from "@/services/imagesService";
 import { CreateWallet, CreateWalletFirebase } from "@/store/walletStore";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
@@ -19,9 +20,14 @@ const createWallet = async (
 
   if (!newWallet.key) return null;
 
+  let image: string = "";
+
+  if (wallet?.image) image = await uploadImage("wallet", wallet.image);
+
   const formattedWallet: CreateWalletFirebase = {
     ...wallet,
     id: newWallet.key,
+    image,
   };
 
   return newWallet

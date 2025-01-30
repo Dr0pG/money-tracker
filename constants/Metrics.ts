@@ -49,7 +49,7 @@ const Metrics = {
   profileImage: 150,
 
   // Remove Image Button
-  removeButton: 35,
+  removeButton: 30,
 
   // Icons
   backIcon: 28,

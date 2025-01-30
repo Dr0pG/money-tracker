@@ -80,12 +80,9 @@ const UploadImage = ({
   }, [imageUrl]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.textContainer}>
         <ThemedText style={styles.title}>{title}</ThemedText>
-        <ThemedText type="gray" style={styles.info}>
-          {t("first_release_we_only_store_images_locally")}
-        </ThemedText>
       </View>
       {renderContent()}
     </View>
@@ -93,6 +90,9 @@ const UploadImage = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: Metrics.mediumMargin,
+  },
   textContainer: {
     marginBottom: Metrics.smallMargin,
   },

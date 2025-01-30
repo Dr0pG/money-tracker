@@ -14,6 +14,7 @@ import i18n from "i18next";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import WalletPreview from "@/components/WalletPreview";
 
 const CreateWallet = () => {
   const { t } = useTranslation();
@@ -77,6 +78,8 @@ const CreateWallet = () => {
         showsVerticalScrollIndicator={false}
         style={styles.formContainer}
       >
+        <WalletPreview />
+        <View style={styles.divider} />
         <Input
           ref={nameInputRef}
           topPlaceholder={`${t("create_wallet.name")}*`}
@@ -123,7 +126,7 @@ const CreateWallet = () => {
         />
       </View>
     );
-  }, [name, description, image]);
+  }, [name, description, image, isLoading]);
 
   return (
     <ThemedView style={styles.container}>
