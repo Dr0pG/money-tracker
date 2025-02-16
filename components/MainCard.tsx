@@ -54,6 +54,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
 };
 
 type PropTypes = {
+  title: string;
   value?: number;
   income?: number;
   expense?: number;
@@ -61,6 +62,7 @@ type PropTypes = {
 };
 
 const MainCard = ({
+  title = "",
   value = 0,
   income = 0,
   expense = 0,
@@ -71,6 +73,7 @@ const MainCard = ({
   const { currency } = userStore();
 
   const mainCardBackground = useThemeColor({}, "mainCardBackground");
+  const titleBackground = useThemeColor({}, "background");
   const blackTextColor = useThemeColor({}, "blackText");
   const platinum = useThemeColor({}, "platinum");
 
@@ -94,26 +97,41 @@ const MainCard = ({
       exiting={FadeOutDown.duration(Durations.animations).springify()}
     >
       <View style={styles.content}>
-        <View style={styles.cardHeader}>
-          <ThemedText type="subtitle" color={blackTextColor}>
-            {t("home.total_balance")}
-          </ThemedText>
-          <Entypo
-            name="dots-three-horizontal"
-            size={Metrics.cardDotsIcon}
-            color={blackTextColor}
-          />
-        </View>
-        <ThemedText
-          type="bigTitle"
-          style={styles.balanceText}
-          color={blackTextColor}
+        <View
+          style={[
+            styles.titleHeader,
+            {
+              backgroundColor: titleBackground,
+              borderColor: mainCardBackground,
+            },
+          ]}
         >
-          {`${value + currency}`}
-        </ThemedText>
-        <View style={styles.cardInfo}>
-          <Info type="income" value={income} />
-          <Info type="expense" value={expense} />
+          <ThemedText type="subtitle" numberOfLines={1}>
+            {title}
+          </ThemedText>
+        </View>
+        <View style={styles.contentContainer}>
+          <View style={styles.cardHeader}>
+            <ThemedText type="subtitle" color={blackTextColor}>
+              {t("home.total_balance")}
+            </ThemedText>
+            <Entypo
+              name="dots-three-horizontal"
+              size={Metrics.cardDotsIcon}
+              color={blackTextColor}
+            />
+          </View>
+          <ThemedText
+            type="bigTitle"
+            style={styles.balanceText}
+            color={blackTextColor}
+          >
+            {`${value + currency}`}
+          </ThemedText>
+          <View style={styles.cardInfo}>
+            <Info type="income" value={income} />
+            <Info type="expense" value={expense} />
+          </View>
         </View>
       </View>
       <View
@@ -123,7 +141,7 @@ const MainCard = ({
             width: Metrics.screenWidth - Metrics.largePadding * 2,
             left: -(cardWidth / 4),
             height: cardHeight,
-            top: -(cardHeight / 2),
+            top: -(cardHeight / 4),
             backgroundColor: platinum,
           },
         ]}
@@ -135,7 +153,6 @@ const MainCard = ({
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: Metrics.largeRadius,
-    padding: Metrics.largePadding,
     elevation: 5,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -145,6 +162,10 @@ const styles = StyleSheet.create({
   },
   content: {
     zIndex: 1,
+  },
+  contentContainer: {
+    paddingVertical: Metrics.mediumPadding,
+    paddingHorizontal: Metrics.largePadding,
   },
   cardHeader: {
     flexDirection: "row",
@@ -178,6 +199,15 @@ const styles = StyleSheet.create({
   backgroundEffect: {
     position: "absolute",
     borderRadius: 100,
+  },
+  titleHeader: {
+    justifyContent: "center",
+    borderWidth: 1,
+    overflow: "hidden",
+    borderTopLeftRadius: Metrics.largeRadius,
+    borderTopRightRadius: Metrics.largeRadius,
+    paddingVertical: Metrics.smallPadding,
+    paddingHorizontal: Metrics.largePadding,
   },
 });
 

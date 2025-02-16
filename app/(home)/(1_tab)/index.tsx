@@ -14,7 +14,7 @@ import Durations from "@/constants/Durations";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
-import walletStore from "@/store/walletStore";
+import walletStore, { Wallet } from "@/store/walletStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
@@ -29,12 +29,12 @@ const Home = () => {
 
   const router = useRouter();
 
-  const { currentWallet, setCurrentWallet } = walletStore();
-
   const onNavigateToAddTransaction = () =>
     router.navigate("../(shared)/addTransaction");
   const onNavigateToCreateAccount = () =>
     router.navigate("../(shared)/createWallet");
+
+  const { wallets, currentWallet, setCurrentWallet } = walletStore();
 
   const currentUser = userStore((state) => state.user);
 
@@ -56,16 +56,28 @@ const Home = () => {
         const user = auth().currentUser;
         if (user) storeUser(user);
 
-        const responseCurrentWallet: string | null =
-          await Wallets.getCurrentWallet();
+        const [responseCurrentWalletResult, currencyResult] =
+          await Promise.allSettled([
+            Wallets.getCurrentWallet(),
+            User.getUserCurrency(),
+          ]);
 
-        if (!responseCurrentWallet && !!currentWallet) setCurrentWallet();
+        if (
+          responseCurrentWalletResult.status === "fulfilled" &&
+          responseCurrentWalletResult.value !== currentWallet
+        ) {
+          setCurrentWallet(responseCurrentWalletResult.value);
+        } else if (
+          responseCurrentWalletResult.status === "fulfilled" &&
+          !responseCurrentWalletResult.value &&
+          !!currentWallet
+        ) {
+          setCurrentWallet();
+        }
 
-        if (responseCurrentWallet !== currentWallet)
-          setCurrentWallet(responseCurrentWallet);
-
-        const currency = await User.getUserCurrency();
-        if (currency) setCurrency(currency);
+        if (currencyResult.status === "fulfilled" && currencyResult.value) {
+          setCurrency(currencyResult.value);
+        }
       } catch (error: any) {
         console.log("Home error: ", error.message);
       } finally {
@@ -109,7 +121,11 @@ const Home = () => {
   };
 
   const renderMainContent = () => {
-    if (!currentWallet)
+    const current: Wallet | undefined = wallets?.find(
+      (wallet: Wallet) => wallet.id === currentWallet
+    );
+
+    if (!currentWallet && !current) {
       return (
         <>
           <LottieView
@@ -127,10 +143,16 @@ const Home = () => {
           />
         </>
       );
+    }
 
     return (
       <>
-        <MainCard value={0} income={0} expense={0} />
+        <MainCard
+          title={current.name}
+          value={current?.total}
+          income={current?.income}
+          expense={current?.expense}
+        />
         <View style={styles.recentTransactionsContainer}>
           <RecentTransactions />
         </View>

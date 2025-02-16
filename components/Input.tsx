@@ -60,10 +60,14 @@ const Input = forwardRef<TextInput, PropTypes>(
     const error = useThemeColor({}, "error");
 
     const [showError, setError] = useState(false);
+    const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
     useEffect(() => {
       setError(hasError);
     }, [hasError]);
+
+    const onChangeVisiblePassword = () =>
+      setIsVisiblePassword(!isVisiblePassword);
 
     const renderTopPlaceholder = useCallback(() => {
       if (!topPlaceholder) return;
@@ -110,6 +114,19 @@ const Input = forwardRef<TextInput, PropTypes>(
       }
     }, [icon, color]);
 
+    const renderPasswordIcon = useCallback(() => {
+      if (icon !== "password") return;
+
+      return (
+        <Entypo
+          name={isVisiblePassword ? "eye-with-line" : "eye"}
+          size={Metrics.iconInput}
+          color={color}
+          onPress={onChangeVisiblePassword}
+        />
+      );
+    }, [isVisiblePassword]);
+
     const renderErrorIcon = useCallback(() => {
       if (!errorMessage && !showError) return;
 
@@ -155,13 +172,14 @@ const Input = forwardRef<TextInput, PropTypes>(
             style={[styles.input, { color }]}
             placeholderTextColor={textPlaceholder}
             keyboardType={keyboardType}
-            secureTextEntry={secureTextEntry}
+            secureTextEntry={secureTextEntry && !isVisiblePassword}
             onFocus={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
               onFocus?.(e);
               setError(false);
             }}
             {...props}
           />
+          {renderPasswordIcon()}
           {renderErrorIcon()}
         </ThemedView>
         {renderErrorText()}

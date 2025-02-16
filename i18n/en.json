@@ -74,4 +74,7 @@
   "cancel": "Cancel",
   "logout": "Logout",
   "preview": "Preview",
+  "create_transaction": {
+    "title": "New Transaction",
+  }
 }

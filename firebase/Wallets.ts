@@ -1,7 +1,7 @@
 import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
 import { uploadImage } from "@/services/imagesService";
-import { CreateWallet, CreateWalletFirebase } from "@/store/walletStore";
+import { CreateWallet, Wallet } from "@/store/walletStore";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
 
@@ -10,9 +10,7 @@ import i18n from "i18next";
  * @param wallet
  * @returns formatted wallet or null
  */
-const createWallet = async (
-  wallet: CreateWallet
-): Promise<CreateWalletFirebase | null> => {
+const createWallet = async (wallet: CreateWallet): Promise<Wallet | null> => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
@@ -24,10 +22,13 @@ const createWallet = async (
 
   if (wallet?.image) image = await uploadImage("wallet", wallet.image);
 
-  const formattedWallet: CreateWalletFirebase = {
+  const formattedWallet: Wallet = {
     ...wallet,
     id: newWallet.key,
     image,
+    total: 0,
+    expense: 0,
+    income: 0,
   };
 
   return newWallet
