@@ -1,17 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { TransactionCategory } from "@/store/walletStore";
 
-export enum TransactionType {
-  general = "general",
-  health = "health",
-  income = "income",
-  utilities = "utilities",
-  clothing = "clothing",
-  dining = "dining",
-  groceries = "groceries",
-  sports = "sports",
-}
-
-const getTypeColor = (type: TransactionType) => {
+const getTypeColor = (type: TransactionCategory) => {
   const health = useThemeColor({}, "health");
   const income = useThemeColor({}, "income");
   const utilities = useThemeColor({}, "utilities");
@@ -21,40 +11,40 @@ const getTypeColor = (type: TransactionType) => {
   const sports = useThemeColor({}, "sports");
 
   switch (type) {
-    case TransactionType.health:
+    case TransactionCategory.Health:
       return health;
-    case TransactionType.income:
+    case TransactionCategory.Income:
       return income;
-    case TransactionType.utilities:
+    case TransactionCategory.Utilities:
       return utilities;
-    case TransactionType.clothing:
+    case TransactionCategory.Clothing:
       return clothing;
-    case TransactionType.dining:
+    case TransactionCategory.Dining:
       return dining;
-    case TransactionType.groceries:
+    case TransactionCategory.Groceries:
       return groceries;
-    case TransactionType.sports:
+    case TransactionCategory.Sports:
       return sports;
     default:
       return health;
   }
 };
 
-const getTypeIcon = (type: TransactionType) => {
+const getTypeIcon = (type: TransactionCategory) => {
   switch (type) {
-    case TransactionType.health:
+    case TransactionCategory.Health:
       return "heart";
-    case TransactionType.income:
+    case TransactionCategory.Income:
       return "attach-money";
-    case TransactionType.utilities:
+    case TransactionCategory.Utilities:
       return "lightbulb-o";
-    case TransactionType.clothing:
+    case TransactionCategory.Clothing:
       return "tshirt-crew";
-    case TransactionType.dining:
+    case TransactionCategory.Dining:
       return "silverware-fork-knife";
-    case TransactionType.groceries:
+    case TransactionCategory.Groceries:
       return "shopping-cart";
-    case TransactionType.sports:
+    case TransactionCategory.Sports:
       return "dumbbell";
     default:
       return "";

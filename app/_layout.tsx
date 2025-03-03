@@ -28,6 +28,8 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import { ParamListBase, StackNavigationState } from "@react-navigation/native";
+import Settings from "@/firebase/Settings";
+import settingsStore from "@/store/settingsStore";
 
 const { Navigator } = createStackNavigator();
 
@@ -52,6 +54,8 @@ const ThemedApp = () => {
   const navigationRef = useNavigationContainerRef();
 
   const storeUser = userStore((state) => state.storeUser);
+
+  const storeSettings = settingsStore((state) => state.storeSettings);
 
   useEffect(() => {
     if (navigationRef.current?.isReady()) {
@@ -79,6 +83,19 @@ const ThemedApp = () => {
       Durations.colorChanged / 2
     );
   }, [backgroundColor]);
+
+  useEffect(() => {
+    const getCurrentSettings = async () => {
+      try {
+        const settings = await Settings.getSettings();
+        storeSettings(settings);
+      } catch (error: any) {
+        console.log("Settings error: ", error.message);
+      }
+    };
+
+    getCurrentSettings();
+  }, []);
 
   return (
     <SafeAreaView
