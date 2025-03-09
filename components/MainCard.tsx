@@ -54,7 +54,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
 };
 
 type PropTypes = {
-  title: string;
+  title?: string;
   value?: number;
   income?: number;
   expense?: number;
@@ -97,19 +97,21 @@ const MainCard = ({
       exiting={FadeOutDown.duration(Durations.animations).springify()}
     >
       <View style={styles.content}>
-        <View
-          style={[
-            styles.titleHeader,
-            {
-              backgroundColor: titleBackground,
-              borderColor: mainCardBackground,
-            },
-          ]}
-        >
-          <ThemedText type="subtitle" numberOfLines={1}>
-            {title}
-          </ThemedText>
-        </View>
+        {!!title && (
+          <View
+            style={[
+              styles.titleHeader,
+              {
+                backgroundColor: titleBackground,
+                borderColor: mainCardBackground,
+              },
+            ]}
+          >
+            <ThemedText type="subtitle" numberOfLines={1}>
+              {title}
+            </ThemedText>
+          </View>
+        )}
         <View style={styles.contentContainer}>
           <View style={styles.cardHeader}>
             <ThemedText type="subtitle" color={blackTextColor}>
