@@ -55,8 +55,10 @@ export type Wallet = {
 interface WalletState {
   wallets: Wallet[];
   currentWallet: string | null;
-  setCurrentWallet: (id?: string | null) => void;
   createWallet: (newWallet: Wallet) => void;
+  setWallets: (wallets?: Wallet[] | null) => void;
+  setCurrentWallet: (id?: string | null) => void;
+  storeTransaction: (id: string, transaction: Transaction) => void;
 }
 
 const walletStore = create<WalletState, [["zustand/persist", unknown]]>(
@@ -68,6 +70,14 @@ const walletStore = create<WalletState, [["zustand/persist", unknown]]>(
         set((state) => {
           return { ...state, wallets: [...state.wallets, newWallet] };
         }),
+      setWallets: (wallets?: Wallet[] | null) =>
+        set((state) => {
+          return {
+            ...state,
+            wallets: wallets || [],
+            currentWallet: !!wallets?.length ? state.currentWallet : null,
+          };
+        }),
       setCurrentWallet: (id?: string | null) =>
         set((state) => ({ ...state, currentWallet: id })),
       storeTransaction: (id: string, transaction: Transaction) =>
@@ -77,7 +87,10 @@ const walletStore = create<WalletState, [["zustand/persist", unknown]]>(
               wallet.id === id
                 ? {
                     ...wallet,
-                    transactions: [...(wallet.transactions ?? []), transaction],
+                    transactions: [
+                      ...(wallet?.transactions ?? []),
+                      transaction,
+                    ],
                   }
                 : wallet
             ),
