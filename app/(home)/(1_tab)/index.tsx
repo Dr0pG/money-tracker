@@ -70,15 +70,9 @@ const Home = () => {
 
         if (
           resCurrentWalletResult.status === "fulfilled" &&
-          resCurrentWalletResult.value !== currentWallet
+          resCurrentWalletResult.value
         ) {
           setCurrentWallet(resCurrentWalletResult.value as string);
-        } else if (
-          resCurrentWalletResult.status === "fulfilled" &&
-          !resCurrentWalletResult.value &&
-          !!currentWallet
-        ) {
-          setCurrentWallet();
         }
 
         if (
