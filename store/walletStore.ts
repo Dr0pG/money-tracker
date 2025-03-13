@@ -24,16 +24,6 @@ export enum TransactionType {
   Income = "income",
 }
 
-export enum TransactionFields {
-  Type = "type",
-  Wallet = "wallet",
-  Category = "category",
-  Date = "date",
-  Amount = "amount",
-  Description = "description",
-  Image = "image",
-}
-
 export type Transaction = {
   walletId: string;
   type: TransactionType;
