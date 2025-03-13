@@ -74,6 +74,8 @@ const Metrics = {
   profileIcons: 24,
   profileIconsBackgroundSize: 50,
 
+  dropdownIcon: 24,
+
   // BottomBar
   bottomBarHeight: hasNotch() ? 80 : 60,
 

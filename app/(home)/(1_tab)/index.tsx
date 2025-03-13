@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, View } from "react-native";
 
 import Button from "@/components/Button";
 import RecentTransactions from "@/components/Home/RecentTransactions";

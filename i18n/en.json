@@ -76,5 +76,12 @@
   "preview": "Preview",
   "create_transaction": {
     "title": "New Transaction",
-  }
+    "type": "Type",
+    "wallet": "Wallet",
+    "expense_category": "Expense Category",
+    "date": "Date",
+    "amount": "Amount",
+    "description": "Description"
+  },
+  "select_item": "Select item"
 }

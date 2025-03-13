@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Input from "@/components/Input";
 import { ErrorAddTransaction } from "@/type/ErrorType";
 import { TransactionFields } from "@/store/walletStore";
+import DropDown from "@/components/DropDown";
 
 const initialState = {
   type: "",
@@ -45,7 +46,10 @@ const AddTransaction = () => {
 
   const onBack = () => router.back();
 
-  const onChangeValue = (type: TransactionFields, payload: string) => {
+  const onChangeValue = (
+    type: TransactionFields,
+    payload: string | number | Date
+  ) => {
     dispatch({ type, payload });
   };
 
@@ -60,8 +64,25 @@ const AddTransaction = () => {
         showsVerticalScrollIndicator={false}
         style={styles.formContainer}
       >
+        <DropDown placeholder="create_transaction.type" />
+        <View style={styles.divider} />
         <Input
           ref={amountInputRef}
+          topPlaceholder={t("create_wallet.amount")}
+          placeholder={t("create_wallet.amount")}
+          returnKeyType="next"
+          keyboardType="numeric"
+          value={state.amount}
+          onChangeText={(amount: string) =>
+            onChangeValue(TransactionFields.Amount, parseFloat(amount))
+          }
+          hasError={state.error.amount !== ""}
+          errorMessage={state.error.amount}
+          onFocus={() => onError(ErrorAddTransaction.Amount, "")}
+        />
+        <View style={styles.divider} />
+        <Input
+          ref={descriptionInputRef}
           topPlaceholder={t("create_wallet.description")}
           placeholder={t("create_wallet.description")}
           returnKeyType="next"
