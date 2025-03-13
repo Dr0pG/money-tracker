@@ -34,8 +34,7 @@ const Home = () => {
   const onNavigateToCreateAccount = () =>
     router.navigate("../(shared)/createWallet");
 
-  const { wallets, currentWallet, setCurrentWallet, setWallets } =
-    walletStore();
+  const { wallets, currentWallet, setCurrentWallet } = walletStore();
 
   const currentUser = userStore((state) => state.user);
 
@@ -57,35 +56,27 @@ const Home = () => {
         const user = auth().currentUser;
         if (user) storeUser(user);
 
-        const [resWalletsResult, resCurrentWalletResult, resCurrencyResult] =
+        const [responseCurrentWalletResult, currencyResult] =
           await Promise.allSettled([
-            Wallets.getWallets(),
             Wallets.getCurrentWallet(),
             User.getUserCurrency(),
           ]);
 
-        if (resWalletsResult.status === "fulfilled" && resWalletsResult.value) {
-          setWallets(resWalletsResult.value as Wallet[]);
-        }
-
         if (
-          resCurrentWalletResult.status === "fulfilled" &&
-          resCurrentWalletResult.value !== currentWallet
+          responseCurrentWalletResult.status === "fulfilled" &&
+          responseCurrentWalletResult.value !== currentWallet
         ) {
-          setCurrentWallet(resCurrentWalletResult.value as string);
+          setCurrentWallet(responseCurrentWalletResult.value);
         } else if (
-          resCurrentWalletResult.status === "fulfilled" &&
-          !resCurrentWalletResult.value &&
+          responseCurrentWalletResult.status === "fulfilled" &&
+          !responseCurrentWalletResult.value &&
           !!currentWallet
         ) {
           setCurrentWallet();
         }
 
-        if (
-          resCurrencyResult.status === "fulfilled" &&
-          resCurrencyResult.value
-        ) {
-          setCurrency(resCurrencyResult.value as string);
+        if (currencyResult.status === "fulfilled" && currencyResult.value) {
+          setCurrency(currencyResult.value);
         }
       } catch (error: any) {
         console.log("Home error: ", error.message);
@@ -157,7 +148,7 @@ const Home = () => {
     return (
       <>
         <MainCard
-          title={current?.name}
+          title={current.name}
           value={current?.total}
           income={current?.income}
           expense={current?.expense}
