@@ -1,16 +1,23 @@
-import { View, StyleSheet, TextInput } from "react-native";
-import React, { useReducer, useRef } from "react";
+import Back from "@/components/Back";
+import DatePicker from "@/components/DatePicker";
+import DropDown from "@/components/DropDown";
+import Input from "@/components/Input";
+import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import Metrics from "@/constants/Metrics";
-import ThemedText from "@/components/ThemedText";
-import { useRouter } from "expo-router";
-import Back from "@/components/Back";
-import { useTranslation } from "react-i18next";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Input from "@/components/Input";
+import settingsStore from "@/store/settingsStore";
+import walletStore, {
+  TransactionFields,
+  TransactionType,
+} from "@/store/walletStore";
 import { ErrorAddTransaction } from "@/type/ErrorType";
-import { TransactionFields } from "@/store/walletStore";
-import DropDown from "@/components/DropDown";
+import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
+import { splitStringIntoArray } from "@/utils/Helpers";
+import { useRouter } from "expo-router";
+import React, { useReducer, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TextInput, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const initialState = {
   type: "",
@@ -44,6 +51,9 @@ const AddTransaction = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const { wallets } = walletStore();
+  const { settings } = settingsStore();
+
   const onBack = () => router.back();
 
   const onChangeValue = (
@@ -63,13 +73,55 @@ const AddTransaction = () => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         style={styles.formContainer}
+        nestedScrollEnabled
       >
-        <DropDown placeholder="create_transaction.type" />
+        <DropDown
+          key={TransactionFields.Type}
+          placeholder={t("create_transaction.type")}
+          isRequired
+          options={splitStringIntoArray(settings?.transactions?.type)}
+          onChangeValue={(value: string) =>
+            onChangeValue(TransactionFields.Type, value)
+          }
+        />
+        <View style={styles.divider} />
+        <DropDown
+          key={TransactionFields.Wallet}
+          placeholder={t("create_transaction.wallet")}
+          isRequired
+          options={formatWalletsOptions(wallets)}
+          onChangeValue={(value: string) =>
+            onChangeValue(TransactionFields.Wallet, value)
+          }
+        />
+        <View style={styles.divider} />
+        {state.type === TransactionType.Expense && (
+          <>
+            <DropDown
+              key={TransactionFields.Category}
+              placeholder={t("create_transaction.expense_category")}
+              isRequired
+              options={splitStringIntoArray(settings?.transactions?.category)}
+              onChangeValue={(value: string) =>
+                onChangeValue(TransactionFields.Category, value)
+              }
+            />
+            <View style={styles.divider} />
+          </>
+        )}
+        <DatePicker
+          key={TransactionFields.Date}
+          placeholder={t("create_transaction.date")}
+          isRequired
+          onChangeValue={(value: string) =>
+            onChangeValue(TransactionFields.Date, value)
+          }
+        />
         <View style={styles.divider} />
         <Input
           ref={amountInputRef}
-          topPlaceholder={t("create_wallet.amount")}
-          placeholder={t("create_wallet.amount")}
+          topPlaceholder={t("create_transaction.amount")}
+          placeholder={t("create_transaction.amount")}
           returnKeyType="next"
           keyboardType="numeric"
           value={state.amount}
@@ -79,12 +131,13 @@ const AddTransaction = () => {
           hasError={state.error.amount !== ""}
           errorMessage={state.error.amount}
           onFocus={() => onError(ErrorAddTransaction.Amount, "")}
+          onSubmitEditing={() => descriptionInputRef.current?.focus()}
         />
         <View style={styles.divider} />
         <Input
           ref={descriptionInputRef}
-          topPlaceholder={t("create_wallet.description")}
-          placeholder={t("create_wallet.description")}
+          topPlaceholder={t("create_transaction.description")}
+          placeholder={t("create_transaction.description")}
           returnKeyType="next"
           value={state.description}
           onChangeText={(description: string) =>

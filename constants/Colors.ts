@@ -5,6 +5,8 @@ export const Colors = {
     textHighlight: "#4CAF50", // Soft but vibrant green for highlights
 
     background: "#E2E2E8", // Modern neutral gray with a slightly darker tone
+    backgroundDark: "#1b1a18",
+
     button: "#4CAF50", // Clean and vibrant green button
     buttonText: "#FFFFFF", // White for contrast
     buttonTextDisabled: "#fff",
@@ -45,6 +47,8 @@ export const Colors = {
     personal: '#85144B',
     investments: '#17A2B8',
     other: '#3D9970',
+
+    modalBackground: "rgba(0,0,0,0.5)",
   },
   dark: {
     text: "#fff",
@@ -52,6 +56,8 @@ export const Colors = {
     textHighlight: "#A4E736",
 
     background: "#1A181B",
+    backgroundDark: "#1b1a18",
+    
     button: "#A4E736",
     buttonText: "#010700",
     buttonTextDisabled: "#fff",
@@ -93,5 +99,7 @@ export const Colors = {
     personal: '#85144B',
     investments: '#17A2B8',
     other: '#3D9970',
+
+    modalBackground: "rgba(0,0,0,0.5)",
   },
 };

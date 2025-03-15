@@ -1,3 +1,5 @@
+import { LogBox } from "react-native";
+
 import { useFonts } from "expo-font";
 import {
   Stack,
@@ -8,28 +10,30 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import "react-native-reanimated";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "react-native-reanimated";
 
-import i18n from "@/i18n";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Durations from "@/constants/Durations";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { Toasts } from "@backpackapp-io/react-native-toast";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import i18n from "@/i18n";
 import userStore from "@/store/userStore";
+import { Toasts } from "@backpackapp-io/react-native-toast";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+import Settings from "@/firebase/Settings";
+import settingsStore from "@/store/settingsStore";
+import { ParamListBase, StackNavigationState } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackNavigationEventMap,
   StackNavigationOptions,
   TransitionPresets,
 } from "@react-navigation/stack";
-import { ParamListBase, StackNavigationState } from "@react-navigation/native";
-import Settings from "@/firebase/Settings";
-import settingsStore from "@/store/settingsStore";
+
+LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 const { Navigator } = createStackNavigator();
 

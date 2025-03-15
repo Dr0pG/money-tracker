@@ -83,5 +83,6 @@
     "amount": "Amount",
     "description": "Description"
   },
-  "select_item": "Select item"
+  "select_item": "Select item",
+  "select_date": "Select date"
 }

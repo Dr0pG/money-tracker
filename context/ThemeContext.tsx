@@ -1,14 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Define the Theme type
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 
 // Define the context type
 interface ThemeContextType {

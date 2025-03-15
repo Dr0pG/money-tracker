@@ -1,0 +1,69 @@
+{
+  "extends": [
+    "@react-native",
+    "universe/native",
+    "plugin:react-native/all",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier",
+    "plugin:simple-import-sort/recommended"
+  ],
+  "plugins": ["react-native", "import", "simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          ["^react$", "^react-native$"],
+          ["^expo", "^@?\\w"],
+          ["^@/"],
+          ["^\\./", "^\\.\\./"],
+          ["^\\u0000"]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error",
+    "sort-imports": [
+      "error",
+      { "ignoreCase": true, "ignoreDeclarationSort": true }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["external", "builtin"],
+          "internal",
+          ["sibling", "parent"],
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@(react|react-native)",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@src/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["internal", "react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    },
+    "babel-module": {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    }
+  }
+}

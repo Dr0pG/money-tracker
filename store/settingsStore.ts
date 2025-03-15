@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import { TransactionCategory, TransactionType } from "@/store/walletStore";
 
 export type Settings = {
   transactions: {
-    category: TransactionCategory;
-    type: TransactionType;
+    category: string;
+    type: string;
   };
 };
 
