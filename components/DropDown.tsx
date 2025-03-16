@@ -160,18 +160,20 @@ const DropDown = ({
 
   return (
     <TouchableWithoutFeedback onPress={() => setShowOptions(false)}>
-      <ThemedView style={[styles.container, style]}>
-        {renderTopPlaceholder()}
-        <Pressable onPress={onSetShowOptions}>
-          <ThemedView
-            style={[styles.wrapper, { borderColor: color }, wrapperStyle]}
-          >
-            {renderSelectedOption()}
-            {renderIcon()}
-          </ThemedView>
-        </Pressable>
-        {renderOptions()}
-      </ThemedView>
+      <>
+        <ThemedView style={[styles.container, style]}>
+          {renderTopPlaceholder()}
+          <Pressable onPress={onSetShowOptions}>
+            <ThemedView
+              style={[styles.wrapper, { borderColor: color }, wrapperStyle]}
+            >
+              {renderSelectedOption()}
+              {renderIcon()}
+            </ThemedView>
+          </Pressable>
+        </ThemedView>
+        <View style={styles.modalContainer}>{renderOptions()}</View>
+      </>
     </TouchableWithoutFeedback>
   );
 };
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: Metrics.mediumMargin,
-    zIndex: 99,
+    zIndex: 5,
   },
   placeholderText: {
     fontWeight: "bold",
@@ -195,15 +197,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.mediumPadding,
     height: Metrics.heightInput + Metrics.smallPadding * 2,
   },
+  modalContainer: {
+    zIndex: 10,
+  },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   optionsContainer: {
+    width: Metrics.screenWidth - Metrics.largeMargin * 2,
     maxHeight: 280,
     borderRadius: Metrics.largeRadius,
-    width: Metrics.screenWidth - Metrics.largeMargin * 2,
     borderWidth: 1,
     overflow: "hidden",
   },

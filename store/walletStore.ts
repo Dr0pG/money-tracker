@@ -41,7 +41,6 @@ export type Transaction = {
   date: Date;
   amount: number;
   description?: string;
-  image?: string;
 };
 
 export type CreateWallet = {

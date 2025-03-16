@@ -13,7 +13,13 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, TextInputProps, ViewStyle } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 type PropTypes = TextInputProps & {
@@ -104,14 +110,15 @@ const DatePicker = forwardRef(
 
     const renderCalendar = () => {
       return (
-        <DateTimePickerModal
-          isVisible={displayCalendar}
-          date={new Date(selectedDate || Date.now())}
-          mode="date"
-          isDarkModeEnabled
-          onConfirm={onChangeDate}
-          onCancel={() => setDisplayCalendar(false)}
-        />
+        <View style={styles.calendarContainer}>
+          <DateTimePickerModal
+            isVisible={displayCalendar}
+            mode="date"
+            isDarkModeEnabled
+            onConfirm={onChangeDate}
+            onCancel={() => setDisplayCalendar(false)}
+          />
+        </View>
       );
     };
 
@@ -179,6 +186,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: 300,
+  },
+  calendarContainer: {
+    zIndex: 100,
   },
 });
 

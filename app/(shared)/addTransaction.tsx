@@ -1,4 +1,5 @@
 import Back from "@/components/Back";
+import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import DropDown from "@/components/DropDown";
 import Input from "@/components/Input";
@@ -14,7 +15,7 @@ import { ErrorAddTransaction } from "@/type/ErrorType";
 import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
 import { useRouter } from "expo-router";
-import React, { useReducer, useRef } from "react";
+import React, { useCallback, useReducer, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -26,7 +27,6 @@ const initialState = {
   date: new Date(),
   amount: 0,
   description: "",
-  image: "",
   error: {
     type: "",
     wallet: "",
@@ -49,10 +49,14 @@ const AddTransaction = () => {
   const amountInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { wallets } = walletStore();
   const { settings } = settingsStore();
+
+  const onCreateTransaction = () => {};
 
   const onBack = () => router.back();
 
@@ -124,6 +128,7 @@ const AddTransaction = () => {
           placeholder={t("create_transaction.amount")}
           returnKeyType="next"
           keyboardType="numeric"
+          isRequired
           value={state.amount}
           onChangeText={(amount: string) =>
             onChangeValue(TransactionFields.Amount, parseFloat(amount))
@@ -139,6 +144,7 @@ const AddTransaction = () => {
           topPlaceholder={t("create_transaction.description")}
           placeholder={t("create_transaction.description")}
           returnKeyType="next"
+          isBigInput
           value={state.description}
           onChangeText={(description: string) =>
             onChangeValue(TransactionFields.Description, description)
@@ -162,10 +168,24 @@ const AddTransaction = () => {
     );
   };
 
+  const renderButton = useCallback(() => {
+    return (
+      <View style={styles.buttonContainer}>
+        <Button
+          text={t("create")}
+          disabled
+          onPress={onCreateTransaction}
+          isLoading={isLoading}
+        />
+      </View>
+    );
+  }, [state, isLoading]);
+
   return (
     <ThemedView style={styles.container}>
       {renderHeader()}
       {renderContent()}
+      {renderButton()}
     </ThemedView>
   );
 };
@@ -191,7 +211,7 @@ const styles = StyleSheet.create({
     height: Metrics.mediumMargin,
   },
   buttonContainer: {
-    paddingTop: Metrics.mediumPadding,
+    paddingVertical: Metrics.mediumPadding,
   },
 });
 

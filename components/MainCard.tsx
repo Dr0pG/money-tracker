@@ -1,16 +1,16 @@
 import React, { memo, useState } from "react";
-import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native";
 
-import Entypo from "@expo/vector-icons/Entypo";
 import ThemedText from "@/components/ThemedText";
 import Metrics from "@/constants/Metrics";
+import Entypo from "@expo/vector-icons/Entypo";
 
-import Ionicons from "@expo/vector-icons/Ionicons";
+import Durations from "@/constants/Durations";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import userStore from "@/store/userStore";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
-import Durations from "@/constants/Durations";
-import userStore from "@/store/userStore";
 
 type InfoPropTypes = {
   type: "expense" | "income";
@@ -141,9 +141,9 @@ const MainCard = ({
           styles.backgroundEffect,
           {
             width: Metrics.screenWidth - Metrics.largePadding * 2,
-            left: -(cardWidth / 4),
+            left: -(cardWidth / 2.5),
             height: cardHeight,
-            top: -(cardHeight / 4),
+            top: -(cardHeight / 2.5),
             backgroundColor: platinum,
           },
         ]}

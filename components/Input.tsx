@@ -1,3 +1,10 @@
+import AnimatedThemedView from "@/components/AnimatedThemedView";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import Metrics from "@/constants/Metrics";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
 import React, {
   forwardRef,
   memo,
@@ -6,20 +13,13 @@ import React, {
   useState,
 } from "react";
 import {
-  TextInput,
-  StyleSheet,
-  ViewStyle,
-  TextInputProps,
   NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
   TextInputFocusEventData,
+  TextInputProps,
+  ViewStyle,
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import ThemedView from "@/components/ThemedView";
-import Entypo from "@expo/vector-icons/Entypo";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import Metrics from "@/constants/Metrics";
-import ThemedText from "@/components/ThemedText";
-import AnimatedThemedView from "@/components/AnimatedThemedView";
 
 type PropTypes = TextInputProps & {
   icon?: string;
@@ -35,6 +35,8 @@ type PropTypes = TextInputProps & {
     | "url";
   secureTextEntry?: boolean;
   hasError?: boolean;
+  isRequired?: boolean;
+  isBigInput?: boolean;
   errorMessage?: string;
   topPlaceholder?: string;
 };
@@ -48,8 +50,10 @@ const Input = forwardRef<TextInput, PropTypes>(
       secureTextEntry = false,
       style,
       hasError = false,
+      isRequired = false,
       errorMessage = "",
       topPlaceholder = undefined,
+      isBigInput = false,
       onFocus = () => {},
       ...props
     }: PropTypes,
@@ -71,9 +75,10 @@ const Input = forwardRef<TextInput, PropTypes>(
 
     const renderTopPlaceholder = useCallback(() => {
       if (!topPlaceholder) return;
+      const formattedPlaceholder = `${placeholder} ${isRequired ? "*" : ""}`;
       return (
         <ThemedText style={styles.topPlaceholderText}>
-          {topPlaceholder}
+          {formattedPlaceholder}
         </ThemedText>
       );
     }, [topPlaceholder]);
@@ -169,7 +174,7 @@ const Input = forwardRef<TextInput, PropTypes>(
           <TextInput
             ref={ref}
             placeholder={placeholder}
-            style={[styles.input, { color }]}
+            style={[styles.input, { color }, isBigInput && styles.bigInput]}
             placeholderTextColor={textPlaceholder}
             keyboardType={keyboardType}
             secureTextEntry={secureTextEntry && !isVisiblePassword}
@@ -177,6 +182,9 @@ const Input = forwardRef<TextInput, PropTypes>(
               onFocus?.(e);
               setError(false);
             }}
+            {...(isBigInput && {
+              multiline: true,
+            })}
             {...props}
           />
           {renderPasswordIcon()}
@@ -206,6 +214,11 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: Metrics.heightInput,
+  },
+  bigInput: {
+    height: Metrics.heightInput * 2,
+    textAlignVertical: "top",
+    paddingTop: Metrics.smallPadding,
   },
   errorText: {
     marginTop: Metrics.smallMargin,
