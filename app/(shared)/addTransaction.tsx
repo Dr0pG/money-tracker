@@ -14,10 +14,11 @@ import walletStore, {
 import { ErrorAddTransaction } from "@/type/ErrorType";
 import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
+import { isFormValidated, validateForm } from "@/utils/TransationsHelper";
 import { useRouter } from "expo-router";
 import React, { useCallback, useReducer, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, TextInput, View } from "react-native";
+import { Keyboard, StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const initialState = {
@@ -46,6 +47,7 @@ const AddTransaction = () => {
 
   const router = useRouter();
 
+  const datePickerRef = useRef(null);
   const amountInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
@@ -56,7 +58,15 @@ const AddTransaction = () => {
   const { wallets } = walletStore();
   const { settings } = settingsStore();
 
-  const onCreateTransaction = () => {};
+  const onCreateTransaction = () => {
+    Keyboard.dismiss();
+
+    dispatch({ type: "error", payload: {} });
+
+    const validate = validateForm(state);
+
+    console.log("validate: ", validate);
+  };
 
   const onBack = () => router.back();
 
@@ -114,6 +124,7 @@ const AddTransaction = () => {
           </>
         )}
         <DatePicker
+          ref={datePickerRef}
           key={TransactionFields.Date}
           placeholder={t("create_transaction.date")}
           isRequired
@@ -173,7 +184,7 @@ const AddTransaction = () => {
       <View style={styles.buttonContainer}>
         <Button
           text={t("create")}
-          disabled
+          disabled={!isFormValidated(state)}
           onPress={onCreateTransaction}
           isLoading={isLoading}
         />

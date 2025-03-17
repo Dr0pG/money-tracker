@@ -76,6 +76,8 @@ const Metrics = {
 
   dropdownIcon: 24,
 
+  selectedIcon: 24,
+
   // BottomBar
   bottomBarHeight: hasNotch() ? 80 : 60,
 

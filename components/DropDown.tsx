@@ -3,9 +3,9 @@ import ThemedView from "@/components/ThemedView";
 import Metrics from "@/constants/Metrics";
 import { useTheme } from "@/context/ThemeContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { capitalizeFirstLetter } from "@/utils/Helpers";
+import { capitalizeFirstLetter, transformArray } from "@/utils/Helpers";
 import Entypo from "@expo/vector-icons/Entypo";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -18,18 +18,43 @@ import {
   ViewStyle,
 } from "react-native";
 
-type OptionsPropTypes = {
-  data: string[];
-  onPress: (value: string) => void;
+export type DataType = {
+  value: string;
+  label: string;
 };
 
-const Options = ({ data, onPress }: OptionsPropTypes) => {
+type OptionsPropTypes = {
+  selectedValue: DataType;
+  data: DataType[];
+  onPress: (value: DataType) => void;
+};
+
+const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
   const { theme } = useTheme();
 
-  const backButtonBackground = useThemeColor({}, "backButtonBackground");
+  const flatListRef = useRef(null);
 
-  const renderItem = ({ item }: { item: string }) => {
-    const text = capitalizeFirstLetter(item);
+  const backButtonBackground = useThemeColor({}, "backButtonBackground");
+  const green = useThemeColor({}, "green");
+
+  useEffect(() => {
+    if (selectedValue) {
+      const index = data.findIndex(
+        (item) => item.value === selectedValue.value
+      );
+      if (index !== -1) {
+        flatListRef.current?.scrollToIndex({
+          index,
+          animated: true,
+          viewPosition: 0.5, // Centers the item
+        });
+      }
+    }
+  }, [selectedValue]);
+
+  const renderItem = ({ item }: { item: DataType }) => {
+    const isSelected = item.value === selectedValue.value;
+    const text = capitalizeFirstLetter(item.label);
     return (
       <Pressable
         onPress={() => {
@@ -41,20 +66,30 @@ const Options = ({ data, onPress }: OptionsPropTypes) => {
             backgroundColor: pressed ? backButtonBackground : "transparent",
           },
           styles.optionContainer,
+          isSelected && { backgroundColor: backButtonBackground },
         ]}
       >
         <ThemedText>{text}</ThemedText>
+        {isSelected && (
+          <Entypo name="check" size={Metrics.selectedIcon} color={green} />
+        )}
       </Pressable>
     );
   };
 
   return (
     <FlatList
-      keyExtractor={(item) => item}
+      ref={flatListRef}
+      keyExtractor={(item) => item.value}
       data={data}
       renderItem={renderItem}
       showsVerticalScrollIndicator
       indicatorStyle={theme === "dark" ? "white" : "black"}
+      getItemLayout={(_, index) => ({
+        length: Metrics.mediumPadding * 2,
+        offset: Metrics.mediumPadding * 2 * index,
+        index,
+      })}
     />
   );
 };
@@ -62,7 +97,7 @@ const Options = ({ data, onPress }: OptionsPropTypes) => {
 type PropTypes = {
   placeholder: string;
   isRequired?: boolean;
-  options: string[];
+  options: DataType[] | string[];
   style?: ViewStyle | ViewStyle[];
   wrapperStyle?: ViewStyle | ViewStyle[];
   onChangeValue: (value: string) => void;
@@ -82,29 +117,34 @@ const DropDown = ({
   const backgroundDark = useThemeColor({}, "backgroundDark");
   const modalBackground = useThemeColor({}, "modalBackground");
 
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState<DataType>({
+    value: "",
+    label: "",
+  });
   const [showOptions, setShowOptions] = useState(false);
 
-  useEffect(() => {
-    if (options?.length === 1) setSelectedValue(options[0]);
-  }, [options]);
+  const formattedOptions = transformArray(options);
 
   useEffect(() => {
-    onChangeValue(selectedValue);
-  }, [selectedValue]);
+    if (formattedOptions?.length === 1) setSelectedValue(formattedOptions[0]);
+  }, [formattedOptions]);
+
+  useEffect(() => {
+    onChangeValue(selectedValue.value);
+  }, [selectedValue.value]);
 
   const onSetShowOptions = () => {
-    if (options?.length === 1) return;
+    if (formattedOptions?.length === 1) return;
     setShowOptions((prevValue) => !prevValue);
   };
 
-  const onChange = (value: string) => {
-    if (!value) {
+  const onChange = (item: DataType) => {
+    if (!item.value) {
       setShowOptions(false);
       return;
     }
 
-    setSelectedValue(value);
+    setSelectedValue(item);
     onSetShowOptions();
   };
 
@@ -120,8 +160,8 @@ const DropDown = ({
 
   const renderSelectedOption = useCallback(() => {
     return (
-      <ThemedText type={selectedValue ? "default" : "gray"}>
-        {capitalizeFirstLetter(selectedValue) || t("select_item")}
+      <ThemedText type={selectedValue.value ? "default" : "gray"}>
+        {capitalizeFirstLetter(selectedValue.label) || t("select_item")}
       </ThemedText>
     );
   }, [selectedValue]);
@@ -150,7 +190,11 @@ const DropDown = ({
                 { backgroundColor: backgroundDark, borderColor: color },
               ]}
             >
-              <Options data={options} onPress={onChange} />
+              <Options
+                selectedValue={selectedValue}
+                data={formattedOptions}
+                onPress={onChange}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -216,6 +260,9 @@ const styles = StyleSheet.create({
     height: Metrics.largePadding,
   },
   optionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: Metrics.mediumPadding,
     paddingHorizontal: Metrics.largePadding,
   },

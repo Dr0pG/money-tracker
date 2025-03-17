@@ -48,7 +48,9 @@ const DatePicker = forwardRef(
     const color = useThemeColor({}, "text");
     const error = useThemeColor({}, "error");
 
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [selectedDate, setSelectedDate] = useState<string>(
+      formateDate(new Date())
+    );
     const [displayCalendar, setDisplayCalendar] = useState<boolean>(false);
 
     const [showError, setError] = useState<boolean>(false);

@@ -32,11 +32,20 @@ export enum TransactionFields {
   Amount = "amount",
   Description = "description",
   Image = "image",
-}
+};
+
+export type TransactionForm = {
+  type: TransactionType;
+  wallet: string;
+  category?: TransactionCategory;
+  date: string;
+  amount: string;
+  description?: string;
+};
 
 export type Transaction = {
-  walletId: string;
   type: TransactionType;
+  walletId: string;
   category: TransactionCategory;
   date: Date;
   amount: number;

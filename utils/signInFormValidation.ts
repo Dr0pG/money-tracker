@@ -4,10 +4,7 @@ type FormErrors = {
 };
 
 type ResultValidation = {
-  errors: {
-    email: string;
-    password: string;
-  };
+  errors: FormErrors;
   hasError: boolean;
 };
 
@@ -44,3 +41,4 @@ const validateForm = (email: string, password: string): ResultValidation => {
 };
 
 export { validateForm };
+

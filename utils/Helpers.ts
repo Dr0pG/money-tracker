@@ -1,3 +1,5 @@
+import { DataType } from "@/components/DropDown";
+
 function capitalizeFirstLetter(str: string) {
   return String(str).charAt(0).toUpperCase() + String(str).slice(1);
 }
@@ -19,5 +21,17 @@ function formateDate(date: Date) {
   );
 }
 
-export { capitalizeFirstLetter, formateDate, splitStringIntoArray };
+function transformArray(arr: DataType[] | string[]) {
+  if (arr.every((item) => typeof item === "string")) {
+    return arr.map((item) => ({ value: item, label: item }));
+  }
+  return arr;
+}
+
+export {
+  capitalizeFirstLetter,
+  formateDate,
+  splitStringIntoArray,
+  transformArray
+};
 
