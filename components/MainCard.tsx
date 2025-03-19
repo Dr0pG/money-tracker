@@ -8,12 +8,13 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Durations from "@/constants/Durations";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
+import { TransactionType } from "@/store/walletStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 type InfoPropTypes = {
-  type: "expense" | "income";
+  type: TransactionType;
   value: number;
 };
 
@@ -40,14 +41,14 @@ const Info = ({ type, value }: InfoPropTypes) => {
           />
         </View>
         <ThemedText type="defaultSemiBold" color={blackTextColor}>
-          {t(`${isIncome ? "home.income" : "home.expense"}`)}
+          {t(`home.${type}`)}
         </ThemedText>
       </View>
       <ThemedText
         type="subtitle"
         color={isIncome ? infoGoodTextColor : infoBadTextColor}
       >
-        {`${value === 0 ? "---" : value + currency}`}
+        {`${isIncome ? "" : "-"}${value === 0 ? "---" : value + currency}`}
       </ThemedText>
     </View>
   );
@@ -55,7 +56,6 @@ const Info = ({ type, value }: InfoPropTypes) => {
 
 type PropTypes = {
   title?: string;
-  value?: number;
   income?: number;
   expense?: number;
   style?: ViewStyle;
@@ -63,7 +63,6 @@ type PropTypes = {
 
 const MainCard = ({
   title = "",
-  value = 0,
   income = 0,
   expense = 0,
   style = {},
@@ -80,6 +79,8 @@ const MainCard = ({
   const [cardHeight, setCardHeight] = useState(300);
 
   const cardWidth = Metrics.screenWidth - Metrics.largePadding * 2;
+
+  const value = income - expense;
 
   const setOnLayout = (e: LayoutChangeEvent) => {
     setCardHeight(e.nativeEvent.layout.height);
@@ -131,8 +132,8 @@ const MainCard = ({
             {`${value + currency}`}
           </ThemedText>
           <View style={styles.cardInfo}>
-            <Info type="income" value={income} />
-            <Info type="expense" value={expense} />
+            <Info type={TransactionType.Income} value={income} />
+            <Info type={TransactionType.Expense} value={expense} />
           </View>
         </View>
       </View>

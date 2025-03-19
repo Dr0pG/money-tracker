@@ -14,6 +14,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Keyboard,
   Pressable,
   StyleSheet,
   TextInputProps,
@@ -49,7 +50,7 @@ const DatePicker = forwardRef(
     const error = useThemeColor({}, "error");
 
     const [selectedDate, setSelectedDate] = useState<string>(
-      formateDate(new Date())
+      new Date().toUTCString()
     );
     const [displayCalendar, setDisplayCalendar] = useState<boolean>(false);
 
@@ -64,11 +65,12 @@ const DatePicker = forwardRef(
     }, [hasError]);
 
     const onSetDisplayCalendar = () => {
+      Keyboard.dismiss();
       setDisplayCalendar((prevValue) => !prevValue);
     };
 
     const onChangeDate = (date: Date) => {
-      setSelectedDate(formateDate(date));
+      setSelectedDate(date.toISOString());
       onSetDisplayCalendar();
     };
 
@@ -125,9 +127,11 @@ const DatePicker = forwardRef(
     };
 
     const renderSelectedDate = useCallback(() => {
+      const parsedDate = new Date(selectedDate);
+
       return (
         <ThemedText type={selectedDate ? "default" : "gray"}>
-          {selectedDate || t("select_date")}
+          {formateDate(parsedDate) || t("select_date")}
         </ThemedText>
       );
     }, [selectedDate]);

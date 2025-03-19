@@ -81,7 +81,9 @@
     "expense_category": "Expense Category",
     "date": "Date",
     "amount": "Amount",
-    "description": "Description"
+    "description": "Description",
+    "transaction_created_successfully": "Transaction created successfully!",
+    "there_was_a_problem_creating_your_transaction": "There was a problem creating your transaction. Try again later!"
   },
   "select_item": "Select item",
   "select_date": "Select date"

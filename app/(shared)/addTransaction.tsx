@@ -5,9 +5,13 @@ import DropDown from "@/components/DropDown";
 import Input from "@/components/Input";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
+import Toast from "@/components/Toast";
 import Metrics from "@/constants/Metrics";
+import Transactions from "@/firebase/Transactions";
+import i18n from "@/i18n";
 import settingsStore from "@/store/settingsStore";
 import walletStore, {
+  Transaction,
   TransactionFields,
   TransactionType,
 } from "@/store/walletStore";
@@ -55,17 +59,55 @@ const AddTransaction = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { wallets } = walletStore();
+  const { wallets, storeTransaction } = walletStore();
   const { settings } = settingsStore();
 
-  const onCreateTransaction = () => {
+  const onCreateTransaction = async () => {
     Keyboard.dismiss();
 
-    dispatch({ type: "error", payload: {} });
+    setIsLoading(true);
 
-    const validate = validateForm(state);
+    try {
+      dispatch({
+        type: "error",
+        payload: {
+          type: "",
+          wallet: "",
+          category: "",
+          date: "",
+          amount: "",
+          description: "",
+        },
+      });
 
-    console.log("validate: ", validate);
+      const validate = validateForm(state);
+
+      if (validate.hasError) {
+        Toast.showError(
+          i18n.t(
+            "create_transaction.there_was_a_problem_creating_your_transaction"
+          )
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      const response: Transaction | null =
+        await Transactions.createTransaction(state);
+
+      if (response) {
+        storeTransaction(response);
+        onBack();
+      }
+    } catch (error) {
+      Toast.showError(
+        i18n.t(
+          "create_transaction.there_was_a_problem_creating_your_transaction"
+        )
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onBack = () => router.back();

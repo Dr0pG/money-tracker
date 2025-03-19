@@ -1,5 +1,6 @@
 import {
   TransactionCategory,
+  TransactionFields,
   TransactionForm,
   TransactionType,
 } from "@/store/walletStore";
@@ -40,18 +41,14 @@ const validateForm = (state: TransactionForm): ResultValidation => {
     description: "",
   };
 
-  const setError = (field: keyof FormErrors, message: string) => {
-    errors[field] = message;
-  };
-
   const REQUIRED_MESSAGE = "sign_up.form.password_is_required";
 
   if (!state.type || !Object.values(TransactionType).includes(state.type)) {
-    setError("type", REQUIRED_MESSAGE);
+    errors[TransactionFields.Type] = REQUIRED_MESSAGE;
   }
 
   if (!state.wallet) {
-    setError("wallet", REQUIRED_MESSAGE);
+    errors[TransactionFields.Wallet] = REQUIRED_MESSAGE;
   }
 
   if (state.type === TransactionType.Expense) {
@@ -59,19 +56,19 @@ const validateForm = (state: TransactionForm): ResultValidation => {
       !state.category ||
       !Object.values(TransactionCategory).includes(state.category)
     ) {
-      setError("category", REQUIRED_MESSAGE);
+      errors[TransactionFields.Category] = REQUIRED_MESSAGE;
     }
   }
 
   if (!state.date) {
-    setError("date", REQUIRED_MESSAGE);
+    errors[TransactionFields.Date] = REQUIRED_MESSAGE;
   }
 
   if (!state.amount) {
-    setError("amount", REQUIRED_MESSAGE);
+    errors[TransactionFields.Amount] = REQUIRED_MESSAGE;
   }
 
-  const hasError = Object.keys(errors).length > 0;
+  const hasError = Object.values(errors).some((error) => error !== "");
 
   return { errors, hasError };
 };

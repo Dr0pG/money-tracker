@@ -1,7 +1,7 @@
 import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
 import { uploadImage } from "@/services/imagesService";
-import { CreateWallet, Wallet } from "@/store/walletStore";
+import { CreateWallet, TransactionType, Wallet } from "@/store/walletStore";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
 
@@ -26,7 +26,6 @@ const createWallet = async (wallet: CreateWallet): Promise<Wallet | null> => {
     ...wallet,
     id: newWallet.key,
     image,
-    total: 0,
     expense: 0,
     income: 0,
   };
@@ -54,25 +53,42 @@ const selectCurrentWallet = async (id: string) => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
-  await Utils.database()
-    .ref(`/${currentUser.uid}/wallets/currentWallet`)
-    .set(id);
+  await Utils.database().ref(`/${currentUser.uid}/currentWallet`).set(id);
 };
 
 /**
  * Function to get the current wallet selected by the user
- * @returns id of the current wallet
+ * @returns current wallet
  */
 const getCurrentWallet = async () => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
+  const currentWalletId = await getCurrentWalletId();
+
   return Utils.database()
-    .ref(`/${currentUser.uid}/wallets/currentWallet`)
+    .ref(`/${currentUser.uid}/wallets/${currentWalletId}`)
     .once("value")
     .then((snapshot) => {
-      const currentWallet: string | null = snapshot.val();
+      const currentWallet: Wallet | null = snapshot.val();
       return currentWallet;
+    });
+};
+
+/**
+ * Function to get the current wallet id selected by the user
+ * @returns id of the current wallet
+ */
+const getCurrentWalletId = async () => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  return Utils.database()
+    .ref(`/${currentUser.uid}/currentWallet`)
+    .once("value")
+    .then((snapshot) => {
+      const currentWalletId: string | null = snapshot.val();
+      return currentWalletId;
     });
 };
 
@@ -89,14 +105,54 @@ const getWallets = async () => {
     .once("value")
     .then((snapshot) => {
       const wallets = snapshot.val();
-      const walletsArray = wallets ? Object.values(wallets) : [];
-      return walletsArray;
+
+      const walletsArray = wallets
+        ? Object.entries(wallets).map(([id, wallet]) => ({
+            id,
+            ...wallet,
+          }))
+        : [];
+
+      const formatTransactions = walletsArray?.map((wallet) => {
+        if (!wallet.transactions) return wallet;
+        return {
+          ...wallet,
+          transactions:
+            Object?.entries(wallet?.transactions).map(([id, transaction]) => ({
+              id,
+              ...transaction,
+            })) || [],
+        };
+      });
+
+      return formatTransactions;
     });
+};
+
+/**
+ *
+ * @param id
+ * @returns
+ */
+const changeWalletValue = async (type: TransactionType, value: number) => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  let currentWallet: Wallet | null = await getCurrentWallet();
+  if (!currentWallet) return null;
+
+  currentWallet[type] = currentWallet[type] + value;
+
+  await Utils.database()
+    .ref(`/${currentUser.uid}/wallets/${currentWallet.id}`)
+    .set(currentWallet);
 };
 
 export default {
   createWallet,
   selectCurrentWallet,
   getCurrentWallet,
+  getCurrentWalletId,
+  changeWalletValue,
   getWallets,
 };

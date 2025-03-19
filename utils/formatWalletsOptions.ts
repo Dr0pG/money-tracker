@@ -7,11 +7,11 @@ const formatWalletsOptions = (wallets: Wallet[]) => {
   if (!wallets?.length) return formattedWallets;
 
   wallets.map((wallet) => {
-    const { id, name, total } = wallet;
+    const { id, name, income, expense } = wallet;
     if (!id) return;
     formattedWallets.push({
       value: id,
-      label: `${name} (${total})`,
+      label: `${name} (${income - expense})`,
     });
   });
 

@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { TransactionCategory } from "@/store/walletStore";
+import { TransactionCategory, TransactionType } from "@/store/walletStore";
 
-const getTypeColor = (type: TransactionCategory) => {
+const getTypeColor = (type: TransactionCategory | TransactionType) => {
   const health = useThemeColor({}, "health");
   const income = useThemeColor({}, "income");
   const utilities = useThemeColor({}, "utilities");
@@ -13,7 +13,7 @@ const getTypeColor = (type: TransactionCategory) => {
   switch (type) {
     case TransactionCategory.Health:
       return health;
-    case TransactionCategory.Income:
+    case TransactionType.Income:
       return income;
     case TransactionCategory.Utilities:
       return utilities;
@@ -30,12 +30,10 @@ const getTypeColor = (type: TransactionCategory) => {
   }
 };
 
-const getTypeIcon = (type: TransactionCategory) => {
+const getTypeIcon = (type: TransactionCategory | TransactionType) => {
   switch (type) {
     case TransactionCategory.Health:
       return "heart";
-    case TransactionCategory.Income:
-      return "attach-money";
     case TransactionCategory.Utilities:
       return "lightbulb-o";
     case TransactionCategory.Clothing:
@@ -46,9 +44,12 @@ const getTypeIcon = (type: TransactionCategory) => {
       return "shopping-cart";
     case TransactionCategory.Sports:
       return "dumbbell";
+    case TransactionType.Income:
+      return "attach-money";
     default:
       return "";
   }
 };
 
 export { getTypeColor, getTypeIcon };
+

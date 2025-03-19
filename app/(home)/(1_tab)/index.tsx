@@ -8,26 +8,28 @@ import { useTranslation } from "react-i18next";
 
 import Button from "@/components/Button";
 import RecentTransactions from "@/components/Home/RecentTransactions";
+import Loader from "@/components/Loader";
 import MainCard from "@/components/MainCard";
 import TouchableOpacity from "@/components/TouchableOpacity";
 import Durations from "@/constants/Durations";
 import Metrics from "@/constants/Metrics";
+import User from "@/firebase/User";
+import Wallets from "@/firebase/Wallets";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
 import walletStore, { Wallet } from "@/store/walletStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
-import Wallets from "@/firebase/Wallets";
-import User from "@/firebase/User";
-import Loader from "@/components/Loader";
-import auth from "@react-native-firebase/auth";
 
 const Home = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
+  const isFocused = useIsFocused();
 
   const onNavigateToAddTransaction = () =>
     router.navigate("../(shared)/addTransaction");
@@ -52,6 +54,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isFocused) return;
+
     const getInfo = async () => {
       try {
         const user = auth().currentUser;
@@ -60,19 +64,21 @@ const Home = () => {
         const [resWalletsResult, resCurrentWalletResult, resCurrencyResult] =
           await Promise.allSettled([
             Wallets.getWallets(),
-            Wallets.getCurrentWallet(),
+            Wallets.getCurrentWalletId(),
             User.getUserCurrency(),
           ]);
 
-        if (resWalletsResult.status === "fulfilled" && resWalletsResult.value) {
-          setWallets(resWalletsResult.value as Wallet[]);
-        }
-
         if (
+          resWalletsResult.status === "fulfilled" &&
+          resWalletsResult.value &&
           resCurrentWalletResult.status === "fulfilled" &&
           resCurrentWalletResult.value
         ) {
+          setWallets(resWalletsResult.value as Wallet[]);
           setCurrentWallet(resCurrentWalletResult.value as string);
+        } else {
+          setWallets(null);
+          setCurrentWallet(null);
         }
 
         if (
@@ -89,7 +95,7 @@ const Home = () => {
     };
 
     getInfo();
-  }, []);
+  }, [isFocused]);
 
   const renderHeader = () => {
     return (
@@ -152,7 +158,6 @@ const Home = () => {
       <>
         <MainCard
           title={current?.name}
-          value={current?.total}
           income={current?.income}
           expense={current?.expense}
         />
@@ -259,11 +264,17 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: Metrics.largeMargin + Metrics.addTransactionButton,
+    paddingBottom:
+      Metrics.largePadding +
+      Metrics.addTransactionButton +
+      Metrics.mediumPadding,
   },
   mainContentContainer: {
     marginTop: Metrics.mediumMargin,
-    paddingBottom: Metrics.largeMargin + Metrics.addTransactionButton,
+    paddingBottom:
+      Metrics.largePadding +
+      Metrics.addTransactionButton +
+      Metrics.mediumPadding,
   },
   recentTransactionsContainer: {
     marginTop: Metrics.largeMargin,

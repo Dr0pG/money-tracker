@@ -12,13 +12,11 @@ function splitStringIntoArray(str: string = "", splitValue: string = ",") {
 
 function formateDate(date: Date) {
   if (!date) return "";
-  return (
-    String(date.getDate()).padStart(2, "0") +
-    "/" +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    "/" +
-    date.getFullYear()
-  );
+  return date.toLocaleDateString("pt-PT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 }
 
 function transformArray(arr: DataType[] | string[]) {

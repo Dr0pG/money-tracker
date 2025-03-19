@@ -1,28 +1,31 @@
-import { View, StyleSheet } from "react-native";
-import React, { memo, useCallback } from "react";
-import Metrics from "@/constants/Metrics";
 import TouchableOpacity from "@/components/TouchableOpacity";
+import Metrics from "@/constants/Metrics";
+import React, { memo, useCallback } from "react";
+import { StyleSheet, View } from "react-native";
 
 import ThemedText from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { getTypeIcon, TransactionType } from "@/utils/getTypeInfo";
-import { getTypeColor } from "@/utils/getTypeInfo";
+import { getTypeColor, getTypeIcon } from "@/utils/getTypeInfo";
 
+import userStore from "@/store/userStore";
+import { TransactionCategory, TransactionType } from "@/store/walletStore";
+import { capitalizeFirstLetter } from "@/utils/Helpers";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import userStore from "@/store/userStore";
 
 type PropTypes = {
   type: TransactionType;
+  category?: TransactionCategory;
   description?: string;
   isIncome: boolean;
   value: number;
-  date: Date;
+  date: string;
 };
 
 const TransactionCard = ({
   type,
+  category,
   description,
   isIncome = false,
   value,
@@ -36,34 +39,36 @@ const TransactionCard = ({
   const infoGoodTextColor = useThemeColor({}, "green");
   const infoBadTextColor = useThemeColor({}, "error");
 
-  const formattedType = type.charAt(0).toUpperCase() + type.slice(1);
+  const formattedType = capitalizeFirstLetter(category || type);
 
   const renderTypeIcon = () => {
-    switch (type) {
-      case TransactionType.health:
-      case TransactionType.utilities:
-      case TransactionType.groceries:
+    if (type === TransactionType.Income) {
+      return (
+        <MaterialIcons
+          name={getTypeIcon(type)}
+          size={Metrics.transactionIcon}
+          color={transactionIconColor}
+        />
+      );
+    }
+
+    switch (category) {
+      case TransactionCategory.Health:
+      case TransactionCategory.Utilities:
+      case TransactionCategory.Groceries:
         return (
           <FontAwesome
-            name={getTypeIcon(type)}
+            name={getTypeIcon(category)}
             size={Metrics.transactionIcon}
             color={transactionIconColor}
           />
         );
-      case TransactionType.income:
-        return (
-          <MaterialIcons
-            name={getTypeIcon(type)}
-            size={Metrics.transactionIcon}
-            color={transactionIconColor}
-          />
-        );
-      case TransactionType.dining:
-      case TransactionType.clothing:
-      case TransactionType.sports:
+      case TransactionCategory.Dining:
+      case TransactionCategory.Clothing:
+      case TransactionCategory.Sports:
         return (
           <MaterialCommunityIcons
-            name={getTypeIcon(type)}
+            name={getTypeIcon(category)}
             size={Metrics.transactionIcon}
             color={transactionIconColor}
           />
@@ -72,9 +77,14 @@ const TransactionCard = ({
   };
 
   const renderRightInfo = useCallback(() => {
-    const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
-      month: "short",
-    })}`;
+    const transactionDate = new Date(date);
+    const formattedDate = `${transactionDate.getDate()} ${transactionDate.toLocaleString(
+      "default",
+      {
+        month: "short",
+      }
+    )}`;
+
     return (
       <View style={styles.rightInfoContainer}>
         <ThemedText
@@ -97,7 +107,10 @@ const TransactionCard = ({
       style={[styles.container, { backgroundColor: transactionCardsColor }]}
     >
       <View
-        style={[styles.typeContainer, { backgroundColor: getTypeColor(type) }]}
+        style={[
+          styles.typeContainer,
+          { backgroundColor: getTypeColor(category || type) },
+        ]}
       >
         {renderTypeIcon()}
       </View>
