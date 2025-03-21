@@ -62,26 +62,29 @@ export type Wallet = {
   name: string;
   description?: string;
   image?: string;
-  expense: number;
-  income: number;
+  expense?: number;
+  income?: number;
   transactions?: Transaction[];
 };
 
 type WalletState = {
   wallets: Wallet[];
-  currentWallet: string | null;
+  currentWallet: Wallet | null;
+  currentWalletId: string | null;
 };
 
 type WalletAction = {
   createWallet: (newWallet: Wallet) => void;
   setWallets: (wallets?: Wallet[] | null) => void;
-  setCurrentWallet: (id?: string | null) => void;
+  setCurrentWallet: (wallet?: Wallet | null) => void;
+  setCurrentWalletId: (id?: string | null) => void;
   storeTransaction: (transaction: Transaction) => void;
 };
 
 const walletStore = create<WalletState & WalletAction>((set) => ({
   wallets: [],
   currentWallet: null,
+  currentWalletId: null,
   createWallet: (newWallet: Wallet) =>
     set((state) => {
       const currentWallets = [...state.wallets];
@@ -96,8 +99,10 @@ const walletStore = create<WalletState & WalletAction>((set) => ({
         currentWallet: !!wallets?.length ? state.currentWallet : null,
       };
     }),
-  setCurrentWallet: (id?: string | null) =>
-    set((state) => ({ ...state, currentWallet: id })),
+  setCurrentWallet: (wallet?: Wallet | null) =>
+    set((state) => ({ ...state, currentWallet: wallet })),
+  setCurrentWalletId: (id?: string | null) =>
+    set((state) => ({ ...state, currentWalletId: id })),
   storeTransaction: (transaction: Transaction) =>
     set((state) => {
       return {

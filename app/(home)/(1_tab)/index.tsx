@@ -36,7 +36,7 @@ const Home = () => {
   const onNavigateToCreateAccount = () =>
     router.navigate("../(shared)/createWallet");
 
-  const { wallets, currentWallet, setCurrentWallet, setWallets } =
+  const { currentWallet, setCurrentWalletId, setCurrentWallet, setWallets } =
     walletStore();
 
   const currentUser = userStore((state) => state.user);
@@ -61,23 +61,32 @@ const Home = () => {
         const user = auth().currentUser;
         if (user) storeUser(user);
 
-        const [resWalletsResult, resCurrentWalletResult, resCurrencyResult] =
-          await Promise.allSettled([
-            Wallets.getWallets(),
-            Wallets.getCurrentWalletId(),
-            User.getUserCurrency(),
-          ]);
+        const [
+          resWalletsResult,
+          resCurrentWalletResult,
+          resCurrentWalletIdResult,
+          resCurrencyResult,
+        ] = await Promise.allSettled([
+          Wallets.getWallets(),
+          Wallets.getCurrentWallet(),
+          Wallets.getCurrentWalletId(),
+          User.getUserCurrency(),
+        ]);
 
         if (
           resWalletsResult.status === "fulfilled" &&
           resWalletsResult.value &&
           resCurrentWalletResult.status === "fulfilled" &&
-          resCurrentWalletResult.value
+          resCurrentWalletResult.value &&
+          resCurrentWalletIdResult.status === "fulfilled" &&
+          resCurrentWalletIdResult.value
         ) {
           setWallets(resWalletsResult.value as Wallet[]);
-          setCurrentWallet(resCurrentWalletResult.value as string);
+          setCurrentWallet(resCurrentWalletResult.value as Wallet);
+          setCurrentWalletId(resCurrentWalletIdResult.value as string);
         } else {
           setWallets(null);
+          setCurrentWalletId(null);
           setCurrentWallet(null);
         }
 
@@ -130,11 +139,7 @@ const Home = () => {
   };
 
   const renderMainContent = () => {
-    const current: Wallet | undefined = wallets?.find(
-      (wallet: Wallet) => wallet.id === currentWallet
-    );
-
-    if (!currentWallet && !current) {
+    if (!currentWallet) {
       return (
         <>
           <LottieView
@@ -157,9 +162,9 @@ const Home = () => {
     return (
       <>
         <MainCard
-          title={current?.name}
-          income={current?.income}
-          expense={current?.expense}
+          title={currentWallet?.name}
+          income={currentWallet?.income}
+          expense={currentWallet?.expense}
         />
         <View style={styles.recentTransactionsContainer}>
           <RecentTransactions />

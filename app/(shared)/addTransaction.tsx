@@ -184,7 +184,7 @@ const AddTransaction = () => {
           isRequired
           value={state.amount}
           onChangeText={(amount: string) =>
-            onChangeValue(TransactionFields.Amount, parseFloat(amount))
+            onChangeValue(TransactionFields.Amount, amount)
           }
           hasError={state.error.amount !== ""}
           errorMessage={state.error.amount}

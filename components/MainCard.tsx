@@ -9,6 +9,7 @@ import Durations from "@/constants/Durations";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
 import { TransactionType } from "@/store/walletStore";
+import { formatEuropeanNumber, subtractNumbers } from "@/utils/Helpers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
@@ -48,7 +49,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
         type="subtitle"
         color={isIncome ? infoGoodTextColor : infoBadTextColor}
       >
-        {`${isIncome ? "" : "-"}${value === 0 ? "---" : value + currency}`}
+        {`${isIncome ? "" : "-"}${value === 0 ? "---" : formatEuropeanNumber(value) + currency}`}
       </ThemedText>
     </View>
   );
@@ -80,7 +81,7 @@ const MainCard = ({
 
   const cardWidth = Metrics.screenWidth - Metrics.largePadding * 2;
 
-  const value = income - expense;
+  const value = subtractNumbers(income, expense);
 
   const setOnLayout = (e: LayoutChangeEvent) => {
     setCardHeight(e.nativeEvent.layout.height);
@@ -129,7 +130,7 @@ const MainCard = ({
             style={styles.balanceText}
             color={blackTextColor}
           >
-            {`${value + currency}`}
+            {`${formatEuropeanNumber(value) + currency}`}
           </ThemedText>
           <View style={styles.cardInfo}>
             <Info type={TransactionType.Income} value={income} />
@@ -142,7 +143,7 @@ const MainCard = ({
           styles.backgroundEffect,
           {
             width: Metrics.screenWidth - Metrics.largePadding * 2,
-            left: -(cardWidth / 2.5),
+            left: -(cardWidth / 3),
             height: cardHeight,
             top: -(cardHeight / 2.5),
             backgroundColor: platinum,

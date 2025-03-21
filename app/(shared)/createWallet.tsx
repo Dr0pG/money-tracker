@@ -1,4 +1,3 @@
-import { StyleSheet, TextInput, View } from "react-native";
 import Back from "@/components/Back";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
@@ -13,12 +12,18 @@ import { useRouter } from "expo-router";
 import i18n from "i18next";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CreateWallet = () => {
   const { t } = useTranslation();
 
-  const { currentWallet, createWallet, setCurrentWallet } = walletStore();
+  const {
+    currentWalletId,
+    createWallet,
+    setCurrentWallet,
+    setCurrentWalletId,
+  } = walletStore();
 
   const router = useRouter();
 
@@ -45,9 +50,10 @@ const CreateWallet = () => {
       const response = await Wallets.createWallet(newWallet);
       if (response) {
         createWallet(response);
-        if (!currentWallet) {
+        if (!currentWalletId) {
           await Wallets.selectCurrentWallet(response.id);
-          setCurrentWallet(response.id);
+          setCurrentWallet(response);
+          setCurrentWalletId(response.id);
         }
         onBack();
       }

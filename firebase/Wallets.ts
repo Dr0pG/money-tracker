@@ -1,9 +1,11 @@
 import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
 import { uploadImage } from "@/services/imagesService";
-import { CreateWallet, TransactionType, Wallet } from "@/store/walletStore";
+import { CreateWallet, Wallet } from "@/store/walletStore";
+import { formatTotalTransactions } from "@/utils/TransationsHelper";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
+import Transactions from "./Transactions";
 
 /*
  * Function to create a new wallet
@@ -26,8 +28,6 @@ const createWallet = async (wallet: CreateWallet): Promise<Wallet | null> => {
     ...wallet,
     id: newWallet.key,
     image,
-    expense: 0,
-    income: 0,
   };
 
   return newWallet
@@ -65,13 +65,19 @@ const getCurrentWallet = async () => {
   if (!currentUser) return null;
 
   const currentWalletId = await getCurrentWalletId();
+  if (!currentWalletId) return null;
 
   return Utils.database()
     .ref(`/${currentUser.uid}/wallets/${currentWalletId}`)
     .once("value")
-    .then((snapshot) => {
-      const currentWallet: Wallet | null = snapshot.val();
-      return currentWallet;
+    .then(async (snapshot) => {
+      let currentWallet: Wallet | null = snapshot.val();
+      if (!currentWallet) return null;
+
+      currentWallet.transactions =
+        (await Transactions.getTransactions()) || undefined;
+
+      return formatTotalTransactions(currentWallet);
     });
 };
 
@@ -129,30 +135,10 @@ const getWallets = async () => {
     });
 };
 
-/**
- *
- * @param id
- * @returns
- */
-const changeWalletValue = async (type: TransactionType, value: number) => {
-  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
-  if (!currentUser) return null;
-
-  let currentWallet: Wallet | null = await getCurrentWallet();
-  if (!currentWallet) return null;
-
-  currentWallet[type] = currentWallet[type] + value;
-
-  await Utils.database()
-    .ref(`/${currentUser.uid}/wallets/${currentWallet.id}`)
-    .set(currentWallet);
-};
-
 export default {
   createWallet,
   selectCurrentWallet,
   getCurrentWallet,
   getCurrentWalletId,
-  changeWalletValue,
   getWallets,
 };

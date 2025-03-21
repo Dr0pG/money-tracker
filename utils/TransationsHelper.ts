@@ -3,7 +3,9 @@ import {
   TransactionFields,
   TransactionForm,
   TransactionType,
+  Wallet,
 } from "@/store/walletStore";
+import { addNumbers } from "@/utils/Helpers";
 
 type FormErrors = {
   type: string;
@@ -73,5 +75,26 @@ const validateForm = (state: TransactionForm): ResultValidation => {
   return { errors, hasError };
 };
 
-export { isFormValidated, validateForm };
+const formatTotalTransactions = (currentWallet: Wallet) => {
+  if (!currentWallet) return null;
+
+  let income = 0;
+  let expense = 0;
+
+  currentWallet.transactions?.forEach((transaction) => {
+    if (transaction.type === TransactionType.Income) {
+      income = addNumbers(income, transaction.amount);
+    } else {
+      expense = addNumbers(income, transaction.amount);
+    }
+  });
+
+  return {
+    ...currentWallet,
+    income,
+    expense,
+  };
+};
+
+export { formatTotalTransactions, isFormValidated, validateForm };
 

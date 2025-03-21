@@ -11,7 +11,7 @@ const formatWalletsOptions = (wallets: Wallet[]) => {
     if (!id) return;
     formattedWallets.push({
       value: id,
-      label: `${name} (${income - expense})`,
+      label: `${name} (${(income ?? 0) - (expense ?? 0)})`,
     });
   });
 

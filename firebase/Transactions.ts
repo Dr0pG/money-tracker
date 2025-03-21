@@ -3,6 +3,7 @@ import Utils from "@/firebase/Utils";
 import Wallets from "@/firebase/Wallets";
 import i18n from "@/i18n";
 import { Transaction, TransactionForm } from "@/store/walletStore";
+import { parseEuropeanNumber, transformObjectIntoArray } from "@/utils/Helpers";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 /**
@@ -24,18 +25,13 @@ const createTransaction = async (transaction: TransactionForm) => {
     wallet: transaction.wallet,
     category: transaction.category,
     date: transaction.date,
-    amount: parseFloat(transaction.amount),
+    amount: parseEuropeanNumber(transaction.amount),
     description: transaction.description,
   };
 
   return newTransaction
     .set(formattedTransaction)
     .then(async () => {
-      await Wallets.changeWalletValue(
-        formattedTransaction.type,
-        formattedTransaction.amount
-      );
-
       Toast.showSuccess(
         i18n.t("create_transaction.transaction_created_successfully")
       );
@@ -59,21 +55,17 @@ const getTransactions = async () => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
-  const currentWallet = await Wallets.getCurrentWalletId();
-  if (!currentWallet) return null;
+  const currentWalletId = await Wallets.getCurrentWalletId();
+  if (!currentWalletId) return null;
 
   return Utils.database()
-    .ref(`/${currentUser.uid}/wallets/${currentWallet}/transactions`)
+    .ref(`/${currentUser.uid}/wallets/${currentWalletId}/transactions`)
     .once("value")
     .then((snapshot) => {
       const transactions = snapshot.val();
 
-      const transactionsArray: Transaction[] | null = transactions
-        ? Object.entries(transactions).map(([id, transaction]) => ({
-            id,
-            ...transaction,
-          }))
-        : [];
+      const transactionsArray: Transaction[] | null =
+        transformObjectIntoArray(transactions);
 
       const sortedTransactions =
         transactionsArray?.sort(
