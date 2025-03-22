@@ -33,6 +33,8 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 
+globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
+
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 const { Navigator } = createStackNavigator();
