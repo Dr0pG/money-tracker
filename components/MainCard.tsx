@@ -36,7 +36,7 @@ const Info = ({ type, value }: InfoPropTypes) => {
       <View style={styles.infoTitle}>
         <View style={[styles.infoIconContainer, { backgroundColor }]}>
           <Ionicons
-            name={isIncome ? "arrow-down" : "arrow-up"}
+            name={isIncome ? "arrow-up" : "arrow-down"}
             size={Metrics.cardInfoIcon}
             color={blackTextColor}
           />
@@ -143,7 +143,7 @@ const MainCard = ({
           styles.backgroundEffect,
           {
             width: Metrics.screenWidth - Metrics.largePadding * 2,
-            left: -(cardWidth / 3),
+            left: -(cardWidth / 3.5),
             height: cardHeight,
             top: -(cardHeight / 2.5),
             backgroundColor: platinum,

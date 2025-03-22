@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { useTheme } from "@/context/ThemeContext";
 
-type ColorName = keyof typeof Colors.light;
+export type ColorName = keyof typeof Colors.light;
 
 interface ThemeColorProps {
   light?: string;

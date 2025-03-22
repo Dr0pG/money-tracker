@@ -85,7 +85,7 @@ const formatTotalTransactions = (currentWallet: Wallet) => {
     if (transaction.type === TransactionType.Income) {
       income = addNumbers(income, transaction.amount);
     } else {
-      expense = addNumbers(income, transaction.amount);
+      expense = addNumbers(expense, transaction.amount);
     }
   });
 

@@ -9,6 +9,13 @@ const getTypeColor = (type: TransactionCategory | TransactionType) => {
   const dining = useThemeColor({}, "dining");
   const groceries = useThemeColor({}, "groceries");
   const sports = useThemeColor({}, "sports");
+  const rent = useThemeColor({}, "rent");
+  const transportation = useThemeColor({}, "transportation");
+  const entertainment = useThemeColor({}, "entertainment");
+  const insurance = useThemeColor({}, "insurance");
+  const personal = useThemeColor({}, "personal");
+  const investments = useThemeColor({}, "investments");
+  const other = useThemeColor({}, "other");
 
   switch (type) {
     case TransactionCategory.Health:
@@ -25,6 +32,20 @@ const getTypeColor = (type: TransactionCategory | TransactionType) => {
       return groceries;
     case TransactionCategory.Sports:
       return sports;
+    case TransactionCategory.Rent:
+      return rent;
+    case TransactionCategory.Transportation:
+      return transportation;
+    case TransactionCategory.Entertainment:
+      return entertainment;
+    case TransactionCategory.Insurance:
+      return insurance;
+    case TransactionCategory.Personal:
+      return personal;
+    case TransactionCategory.Investments:
+      return investments;
+    case TransactionCategory.Other:
+      return other;
     default:
       return health;
   }
@@ -32,6 +53,8 @@ const getTypeColor = (type: TransactionCategory | TransactionType) => {
 
 const getTypeIcon = (type: TransactionCategory | TransactionType) => {
   switch (type) {
+    case TransactionType.Income:
+      return "attach-money";
     case TransactionCategory.Health:
       return "heart";
     case TransactionCategory.Utilities:
@@ -44,8 +67,20 @@ const getTypeIcon = (type: TransactionCategory | TransactionType) => {
       return "shopping-cart";
     case TransactionCategory.Sports:
       return "dumbbell";
-    case TransactionType.Income:
-      return "attach-money";
+    case TransactionCategory.Rent:
+      return "home";
+    case TransactionCategory.Transportation:
+      return "car";
+    case TransactionCategory.Entertainment:
+      return "gamepad";
+    case TransactionCategory.Insurance:
+      return "shield-checkmark";
+    case TransactionCategory.Personal:
+      return "user";
+    case TransactionCategory.Investments:
+      return "chart-line";
+    case TransactionCategory.Other:
+      return "ellipsis-h";
     default:
       return "";
   }

@@ -11,6 +11,8 @@ import userStore from "@/store/userStore";
 import { TransactionCategory, TransactionType } from "@/store/walletStore";
 import { capitalizeFirstLetter, formatEuropeanNumber } from "@/utils/Helpers";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -56,6 +58,11 @@ const TransactionCard = ({
       case TransactionCategory.Health:
       case TransactionCategory.Utilities:
       case TransactionCategory.Groceries:
+      case TransactionCategory.Rent:
+      case TransactionCategory.Transportation:
+      case TransactionCategory.Entertainment:
+      case TransactionCategory.Personal:
+      case TransactionCategory.Other:
         return (
           <FontAwesome
             name={getTypeIcon(category)}
@@ -68,6 +75,22 @@ const TransactionCard = ({
       case TransactionCategory.Sports:
         return (
           <MaterialCommunityIcons
+            name={getTypeIcon(category)}
+            size={Metrics.transactionIcon}
+            color={transactionIconColor}
+          />
+        );
+      case TransactionCategory.Insurance:
+        return (
+          <Ionicons
+            name={getTypeIcon(category)}
+            size={Metrics.transactionIcon}
+            color={transactionIconColor}
+          />
+        );
+      case TransactionCategory.Investments:
+        return (
+          <FontAwesome5
             name={getTypeIcon(category)}
             size={Metrics.transactionIcon}
             color={transactionIconColor}
@@ -116,14 +139,16 @@ const TransactionCard = ({
       </View>
       <View style={styles.textInfoContainer}>
         <ThemedText type="medium">{formattedType}</ThemedText>
-        <ThemedText
-          type="gray"
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={styles.description}
-        >
-          {description}
-        </ThemedText>
+        {!!description && (
+          <ThemedText
+            type="gray"
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={styles.description}
+          >
+            {description}
+          </ThemedText>
+        )}
       </View>
       {renderRightInfo()}
     </TouchableOpacity>
