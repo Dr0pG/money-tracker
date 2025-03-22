@@ -2,7 +2,11 @@ import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
 import Wallets from "@/firebase/Wallets";
 import i18n from "@/i18n";
-import { Transaction, TransactionForm } from "@/store/walletStore";
+import {
+  Transaction,
+  TransactionForm,
+  TransactionType,
+} from "@/store/walletStore";
 import { parseEuropeanNumber, transformObjectIntoArray } from "@/utils/Helpers";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
@@ -23,10 +27,12 @@ const createTransaction = async (transaction: TransactionForm) => {
     id: newTransaction.key,
     type: transaction.type,
     wallet: transaction.wallet,
-    category: transaction.category,
     date: transaction.date,
     amount: parseEuropeanNumber(transaction.amount),
     description: transaction.description,
+    ...(transaction.type === TransactionType.Expense && {
+      category: transaction.category,
+    }),
   };
 
   return newTransaction
