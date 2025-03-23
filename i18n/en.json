@@ -86,5 +86,10 @@
     "there_was_a_problem_creating_your_transaction": "There was a problem creating your transaction. Try again later!"
   },
   "select_item": "Select item",
-  "select_date": "Select date"
+  "select_date": "Select date",
+  "wallets": {
+    "total_balance": "Total Balance",
+    "my_wallets": "My Wallets",
+    "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets",
+  }
 }

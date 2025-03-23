@@ -5,6 +5,7 @@ export const Colors = {
     textHighlight: "#4CAF50", // Soft but vibrant green for highlights
 
     background: "#E2E2E8", // Modern neutral gray with a slightly darker tone
+    backgroundMiddle: '#1A1919',
     backgroundDark: "#1b1a18",
 
     button: "#4CAF50", // Clean and vibrant green button
@@ -56,6 +57,7 @@ export const Colors = {
     textHighlight: "#A4E736",
 
     background: "#1A181B",
+    backgroundMiddle: '#1A1919',
     backgroundDark: "#1b1a18",
     
     button: "#A4E736",

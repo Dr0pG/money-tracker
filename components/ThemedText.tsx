@@ -1,18 +1,18 @@
+import Durations from "@/constants/Durations";
+import Metrics from "@/constants/Metrics";
+import { useTheme } from "@/context/ThemeContext";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import React, { memo, useCallback } from "react";
 import { type TextProps, StyleSheet } from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  withTiming,
   BounceInDown,
   BounceOutDown,
   FadeInDown,
   FadeOutDown,
+  useAnimatedStyle,
   useDerivedValue,
+  withTiming,
 } from "react-native-reanimated";
-import Metrics from "@/constants/Metrics";
-import { useTheme } from "@/context/ThemeContext";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import Durations from "@/constants/Durations";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -31,7 +31,8 @@ export type ThemedTextProps = TextProps & {
     | "bigButton"
     | "bigTitle"
     | "extremeTitle"
-    | "gray";
+    | "gray"
+    | "walletTotal";
 };
 
 const ThemedText = ({
@@ -138,6 +139,7 @@ const ThemedText = ({
         type === "extremeTitle" ? styles.extremeTitle : undefined,
         type === "error" ? styles.error : undefined,
         type === "hightLight" ? styles.hightLight : undefined,
+        type === "walletTotal" ? styles.walletTotal : undefined,
         animatedStyle,
         style,
       ]}
@@ -201,6 +203,11 @@ const styles = StyleSheet.create({
     fontSize: Metrics.size14,
     lineHeight: Metrics.size14 * 1.3,
     fontWeight: "bold",
+  },
+  walletTotal: {
+    fontSize: Metrics.size34 * 1.2,
+    fontWeight: '600',
+    lineHeight: Metrics.size34 * 1.2 * 1.3,
   },
 });
 

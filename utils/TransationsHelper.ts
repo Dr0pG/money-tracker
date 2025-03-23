@@ -5,7 +5,7 @@ import {
   TransactionType,
   Wallet,
 } from "@/store/walletStore";
-import { addNumbers } from "@/utils/Helpers";
+import { addNumbers, subtractNumbers } from "@/utils/Helpers";
 
 type FormErrors = {
   type: string;
@@ -96,5 +96,25 @@ const formatTotalTransactions = (currentWallet: Wallet) => {
   };
 };
 
-export { formatTotalTransactions, isFormValidated, validateForm };
+const totalWallets = (currentWallets: Wallet[]) => {
+  if (!currentWallets?.length) return 0;
+
+  let income = 0;
+  let expense = 0;
+
+  currentWallets.map((currentWallet: Wallet) => {
+    currentWallet.transactions?.forEach((transaction) => {
+      if (transaction.type === TransactionType.Income) {
+        income = addNumbers(income, transaction.amount);
+      } else {
+        expense = addNumbers(expense, transaction.amount);
+      }
+    });
+  });
+
+  const total = subtractNumbers(income, expense);
+  return total;
+};
+
+export { formatTotalTransactions, isFormValidated, totalWallets, validateForm };
 
