@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 
 import ThemedView from "@/components/ThemedView";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import FadeFlatList from "@/components/FadeFlatList";
 import Loader from "@/components/Loader";
@@ -17,15 +17,23 @@ import userStore from "@/store/userStore";
 import walletStore, { Wallet } from "@/store/walletStore";
 import { formatEuropeanNumber, subtractNumbers } from "@/utils/Helpers";
 import { totalWallets } from "@/utils/TransactionsHelper";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 
 const WalletsTab = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+
+  const onNavigateToCreateAccount = () =>
+    router.navigate("../(shared)/createWallet");
 
   const { currency } = userStore();
   const { wallets, setWallets } = walletStore();
 
   const backgroundMiddle = useThemeColor({}, "backgroundMiddle");
+  const addTransactionBackgroundColor = useThemeColor({}, "button");
+  const addTransactionIconColor = useThemeColor({}, "buttonText");
 
   const [currentWalletsTotal, setCurrentWalletsTotal] = useState(0);
 
@@ -87,7 +95,22 @@ const WalletsTab = () => {
       <View
         style={[styles.walletsContainer, { backgroundColor: backgroundMiddle }]}
       >
-        <ThemedText type="subtitle">{t("wallets.my_wallets")}</ThemedText>
+        <View style={styles.walletsAddContainer}>
+          <ThemedText type="subtitle">{t("wallets.my_wallets")}</ThemedText>
+          <TouchableOpacity
+            onPress={onNavigateToCreateAccount}
+            style={[
+              styles.createWallet,
+              { backgroundColor: addTransactionBackgroundColor },
+            ]}
+          >
+            <AntDesign
+              name="plus"
+              size={Metrics.createWalletIcon}
+              color={addTransactionIconColor}
+            />
+          </TouchableOpacity>
+        </View>
         <FadeFlatList
           data={wallets}
           contentContainerStyle={styles.walletsListContainer}
@@ -160,6 +183,18 @@ const styles = StyleSheet.create({
   },
   walletsListContainer: {
     paddingVertical: Metrics.largePadding,
+  },
+  walletsAddContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  createWallet: {
+    width: Metrics.createWalletButton,
+    height: Metrics.createWalletButton,
+    borderRadius: Metrics.createWalletButton,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

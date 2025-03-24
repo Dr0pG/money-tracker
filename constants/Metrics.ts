@@ -54,6 +54,9 @@ const Metrics = {
   // Remove Image Button
   removeButton: 30,
 
+  // Create Wallet
+  createWalletButton: 30,
+
   // Icons
   backIcon: 28,
 
@@ -80,6 +83,8 @@ const Metrics = {
   dropdownIcon: 24,
 
   selectedIcon: 24,
+
+  createWalletIcon: 22,
 
   // BottomBar
   bottomBarHeight: hasNotch() ? 80 : 60,
