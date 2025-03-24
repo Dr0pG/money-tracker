@@ -48,6 +48,9 @@ const Metrics = {
   // Profile Image
   profileImage: 150,
 
+  // Wallet Image
+  walletImage: 50,
+
   // Remove Image Button
   removeButton: 30,
 

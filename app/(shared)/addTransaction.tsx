@@ -18,7 +18,7 @@ import walletStore, {
 import { ErrorAddTransaction } from "@/type/ErrorType";
 import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
-import { isFormValidated, validateForm } from "@/utils/TransationsHelper";
+import { isFormValidated, validateForm } from "@/utils/TransactionsHelper";
 import { useRouter } from "expo-router";
 import React, { useCallback, useReducer, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

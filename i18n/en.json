@@ -90,6 +90,7 @@
   "wallets": {
     "total_balance": "Total Balance",
     "my_wallets": "My Wallets",
-    "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets",
+    "no_wallets_yet": "No wallets yet... Create a new one!",
+    "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets"
   }
 }

@@ -2,7 +2,7 @@ import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
 import { uploadImage } from "@/services/imagesService";
 import { CreateWallet, Wallet } from "@/store/walletStore";
-import { formatTotalTransactions } from "@/utils/TransationsHelper";
+import { formatTotalTransactions } from "@/utils/TransactionsHelper";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
 import Transactions from "./Transactions";
@@ -131,7 +131,11 @@ const getWallets = async () => {
         };
       });
 
-      return formatTransactions;
+      const formattedWallets =
+        formatTransactions?.map((wallet) => formatTotalTransactions(wallet)) ||
+        [];
+
+      return formattedWallets;
     });
 };
 
