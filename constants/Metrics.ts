@@ -81,6 +81,7 @@ const Metrics = {
   profileIconsBackgroundSize: 50,
 
   dropdownIcon: 24,
+  walletRightIcon: 28,
 
   selectedIcon: 24,
 

@@ -20,13 +20,23 @@ import { totalWallets } from "@/utils/TransactionsHelper";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 const WalletsTab = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const isFocused = useIsFocused();
 
-  const onNavigateToCreateAccount = () =>
-    router.navigate("../(shared)/createWallet");
+  const onNavigateToWallet = (wallet?: Wallet) => {
+    if (!wallet) {
+      router.navigate("../(shared)/createWallet");
+    } else {
+      router.push({
+        pathname: "/(shared)/createWallet",
+        params: { wallet: JSON.stringify(wallet) },
+      });
+    }
+  };
 
   const { currency } = userStore();
   const { wallets, setWallets } = walletStore();
@@ -40,6 +50,8 @@ const WalletsTab = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!isFocused) return;
+
     const getWallets = async () => {
       try {
         setIsLoading(true);
@@ -60,7 +72,7 @@ const WalletsTab = () => {
     };
 
     getWallets();
-  }, []);
+  }, [isFocused]);
 
   const renderTotal = useCallback(() => {
     return (
@@ -98,7 +110,7 @@ const WalletsTab = () => {
         <View style={styles.walletsAddContainer}>
           <ThemedText type="subtitle">{t("wallets.my_wallets")}</ThemedText>
           <TouchableOpacity
-            onPress={onNavigateToCreateAccount}
+            onPress={() => onNavigateToWallet()}
             style={[
               styles.createWallet,
               { backgroundColor: addTransactionBackgroundColor },
@@ -123,6 +135,7 @@ const WalletsTab = () => {
                 name={name}
                 image={image}
                 total={subtractNumbers(income ?? 0, expense ?? 0)}
+                onPress={() => onNavigateToWallet(item as Wallet)}
               />
             );
           }}
@@ -136,8 +149,6 @@ const WalletsTab = () => {
     );
   }, [wallets]);
 
-  if (isLoading) return <Loader />;
-
   return (
     <ThemedView style={styles.container}>
       {renderTotal()}
@@ -147,18 +158,13 @@ const WalletsTab = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Metrics.mediumPadding,
-  },
+  container: { flex: 1, paddingTop: Metrics.mediumPadding },
   topContainer: {
     paddingVertical: Metrics.largePadding * 2,
     justifyContent: "center",
     alignItems: "center",
   },
-  totalText: {
-    paddingBottom: Metrics.smallPadding,
-  },
+  totalText: { paddingBottom: Metrics.smallPadding },
   walletsContainer: {
     flex: 1,
     paddingVertical: Metrics.mediumPadding * 2,
@@ -172,18 +178,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  animationContent: {
-    width: "60%",
-    height: "60%",
-  },
+  animationContent: { width: "60%", height: "60%" },
   emptyText: {
     fontSize: Metrics.size16,
     lineHeight: Metrics.size16 * 1.3,
     paddingBottom: Metrics.mediumPadding,
   },
-  walletsListContainer: {
-    paddingVertical: Metrics.largePadding,
-  },
+  walletsListContainer: { paddingVertical: Metrics.largePadding },
   walletsAddContainer: {
     flexDirection: "row",
     alignItems: "center",

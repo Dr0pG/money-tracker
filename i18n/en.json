@@ -38,7 +38,7 @@
     "expense": "Expense",
     "no_transactions_yet": "No transactions yet... Start adding new ones!",
     "no_wallet": "No wallet found yet! Please create a new one and start tracking your expenses/incomes",
-    "create_wallet": "Create wallet"
+    "create_wallet": "Create wallet",
   },
   "login": "Login",
   "enter_your_email": "Enter your email",
@@ -53,15 +53,20 @@
   "something_went_wrong": "Something went wrong. Try again later!",
   "create_wallet": {
     "title": "New Wallet",
+    "edit_wallet": "Edit wallet",
+
     "name": "Name",
 
     "description": "Description",
     "image": "Image",
     "wallet_created_successfully": "Wallet created successfully!",
-    "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!"
+    "wallet_updated_successfully": "Wallet updated successfully!",
+    "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!",
+    "there_was_a_problem_updating_your_wallet": "There was a problem updating your wallet. Try again later!"
   },
   "upload_image": "Upload Image",
   "create": "Create",
+  "edit": "Edit",
   "first_release_we_only_store_images_locally": "First release, we only store images locally!",
   "profile": {
     "title": "Profile",

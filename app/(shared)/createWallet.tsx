@@ -8,7 +8,7 @@ import UploadImage from "@/components/UploadImage";
 import Metrics from "@/constants/Metrics";
 import Wallets from "@/firebase/Wallets";
 import walletStore from "@/store/walletStore";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import i18n from "i18next";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 const CreateWallet = () => {
   const { t } = useTranslation();
+
+  const { wallet } = useLocalSearchParams();
 
   const {
     currentWalletId,
@@ -32,22 +34,26 @@ const CreateWallet = () => {
   const nameInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const currentSelectedWallet = !!wallet ? JSON.parse(wallet as string) : "";
+
+  const [name, setName] = useState(currentSelectedWallet?.name || "");
+  const [description, setDescription] = useState(
+    currentSelectedWallet?.description || ""
+  );
+  const [image, setImage] = useState(currentSelectedWallet?.image || "");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [error, serError] = useState({
-    name: "",
-    description: "",
-  });
+  const [error, serError] = useState({ name: "", description: "" });
 
   const onCreateWallet = async () => {
     setIsLoading(true);
     try {
       const newWallet = { name, description, image };
-      const response = await Wallets.createWallet(newWallet);
+      const response = !!currentSelectedWallet
+        ? await Wallets.updateWallet({ ...currentSelectedWallet, ...newWallet })
+        : await Wallets.createWallet(newWallet);
+
       if (response) {
         createWallet(response);
         if (!currentWalletId) {
@@ -70,7 +76,13 @@ const CreateWallet = () => {
     return (
       <View style={styles.header}>
         <Back onPress={onBack} />
-        <ThemedText type="title">{t("create_wallet.title")}</ThemedText>
+        <ThemedText type="title">
+          {t(
+            !!currentSelectedWallet
+              ? "create_wallet.edit_wallet"
+              : "create_wallet.title"
+          )}
+        </ThemedText>
         <View style={styles.rightWidth} />
       </View>
     );
@@ -122,14 +134,14 @@ const CreateWallet = () => {
     return (
       <View style={styles.buttonContainer}>
         <Button
-          text={t("create")}
+          text={t(!!currentSelectedWallet ? "edit" : "create")}
           disabled={!name}
           onPress={onCreateWallet}
           isLoading={isLoading}
         />
       </View>
     );
-  }, [name, description, image, isLoading]);
+  }, [currentSelectedWallet, name, description, image, isLoading]);
 
   return (
     <ThemedView style={styles.container}>
@@ -152,18 +164,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  rightWidth: {
-    width: Metrics.backButtonSize,
-  },
-  formContainer: {
-    marginTop: Metrics.largePadding + Metrics.smallPadding,
-  },
-  divider: {
-    height: Metrics.mediumMargin,
-  },
-  buttonContainer: {
-    paddingTop: Metrics.mediumPadding,
-  },
+  rightWidth: { width: Metrics.backButtonSize },
+  formContainer: { marginTop: Metrics.largePadding + Metrics.smallPadding },
+  divider: { height: Metrics.mediumMargin },
+  buttonContainer: { paddingTop: Metrics.mediumPadding },
 });
 
 export default CreateWallet;

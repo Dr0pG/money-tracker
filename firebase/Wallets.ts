@@ -24,11 +24,7 @@ const createWallet = async (wallet: CreateWallet): Promise<Wallet | null> => {
 
   if (wallet?.image) image = await uploadImage("wallet", wallet.image);
 
-  const formattedWallet: Wallet = {
-    ...wallet,
-    id: newWallet.key,
-    image,
-  };
+  const formattedWallet: Wallet = { ...wallet, id: newWallet.key, image };
 
   return newWallet
     .set(formattedWallet)
@@ -39,6 +35,40 @@ const createWallet = async (wallet: CreateWallet): Promise<Wallet | null> => {
     .catch(() => {
       Toast.showSuccess(
         i18n.t("create_wallet.there_was_a_problem_creating_your_wallet")
+      );
+      return null;
+    });
+};
+
+/*
+ * Function to update an exist wallet
+ * @param wallet
+ * @returns formatted wallet or null
+ */
+const updateWallet = async (wallet: Wallet): Promise<Wallet | null> => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  let image: string = "";
+
+  if (wallet?.image) image = await uploadImage("wallet", wallet.image);
+
+  const formattedWallet: Wallet = { ...wallet, image };
+  console.log("🚀 ~ updateWal ~ formattedWallet:", formattedWallet);
+
+  const updatedWallet = Utils.database().ref(
+    `/${currentUser.uid}/wallets/${wallet.id}`
+  );
+
+  return updatedWallet
+    .set(formattedWallet)
+    .then(() => {
+      Toast.showSuccess(i18n.t("create_wallet.wallet_updated_successfully"));
+      return formattedWallet;
+    })
+    .catch(() => {
+      Toast.showSuccess(
+        i18n.t("create_wallet.there_was_a_problem_updating_your_wallet")
       );
       return null;
     });
@@ -113,10 +143,7 @@ const getWallets = async () => {
       const wallets = snapshot.val();
 
       const walletsArray = wallets
-        ? Object.entries(wallets).map(([id, wallet]) => ({
-            id,
-            ...wallet,
-          }))
+        ? Object.entries(wallets).map(([id, wallet]) => ({ id, ...wallet }))
         : [];
 
       const formatTransactions = walletsArray?.map((wallet) => {
@@ -145,4 +172,5 @@ export default {
   getCurrentWallet,
   getCurrentWalletId,
   getWallets,
+  updateWallet,
 };
