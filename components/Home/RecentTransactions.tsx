@@ -88,6 +88,7 @@ const RecentTransactions = () => {
           return transaction?.id;
         }}
         ListEmptyComponent={ListEmptyComponent}
+        onDeleteItem={(deletedId) => console.log("id: ", deletedId)}
       />
     );
   };

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import FadeFlatList from "@/components/FadeFlatList";
-import Loader from "@/components/Loader";
 import ThemedText from "@/components/ThemedText";
 import Toast from "@/components/Toast";
 import WalletCard from "@/components/WalletCard";
@@ -18,9 +17,9 @@ import walletStore, { Wallet } from "@/store/walletStore";
 import { formatEuropeanNumber, subtractNumbers } from "@/utils/Helpers";
 import { totalWallets } from "@/utils/TransactionsHelper";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useIsFocused } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useIsFocused } from "@react-navigation/native";
 
 const WalletsTab = () => {
   const { t } = useTranslation();

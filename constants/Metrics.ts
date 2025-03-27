@@ -87,6 +87,9 @@ const Metrics = {
 
   createWalletIcon: 22,
 
+  trashSize: 50,
+  trashDeleteIcon: 24,
+
   // BottomBar
   bottomBarHeight: hasNotch() ? 80 : 60,
 

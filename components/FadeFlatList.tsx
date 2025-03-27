@@ -1,25 +1,66 @@
+import {
+  FlashList,
+  FlashListProps,
+  ListRenderItemInfo,
+} from "@shopify/flash-list";
 import React, { memo, ReactElement, Ref, useCallback, useEffect } from "react";
-import { ListRenderItemInfo } from "@shopify/flash-list";
-import { FlashList, FlashListProps } from "@shopify/flash-list";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import Metrics from "@/constants/Metrics";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
-  SharedValue,
   runOnJS,
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import TouchableOpacity from "./TouchableOpacity";
 
 type FadeInProps = {
   index: number;
+  onDelete?: () => void;
   children: ReactElement;
   parallelItems: number;
   animationValue: SharedValue<number>;
 };
 
+function RightAction(
+  prog: SharedValue<number>,
+  drag: SharedValue<number>,
+  onDelete: () => void
+) {
+  const backgroundRed = useThemeColor({}, "error");
+  const iconColor = useThemeColor({}, "text");
+
+  const styleAnimation = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: drag.value + Metrics.trashSize }],
+    };
+  });
+
+  return (
+    <Animated.View style={styleAnimation}>
+      <TouchableOpacity onPress={onDelete}>
+        <View style={[styles.rightAction, { backgroundColor: backgroundRed }]}>
+          <FontAwesome
+            name="trash"
+            size={Metrics.trashDeleteIcon}
+            color={iconColor}
+          />
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
+
 const FadeInComponent = ({
   index,
+  onDelete,
   children,
   parallelItems,
   animationValue,
@@ -43,7 +84,21 @@ const FadeInComponent = ({
     return { opacity };
   });
 
-  return <Animated.View style={animatedStyle}>{children}</Animated.View>;
+  return (
+    <GestureHandlerRootView>
+      <ReanimatedSwipeable
+        friction={2}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        renderRightActions={(
+          prog: SharedValue<number>,
+          drag: SharedValue<number>
+        ) => RightAction(prog, drag, onDelete)}
+      >
+        <Animated.View style={animatedStyle}>{children}</Animated.View>
+      </ReanimatedSwipeable>
+    </GestureHandlerRootView>
+  );
 };
 
 type PropTypes<ItemT> = FlashListProps<ItemT> & {
@@ -51,6 +106,7 @@ type PropTypes<ItemT> = FlashListProps<ItemT> & {
   initialDelay?: number;
   durationPerItem?: number;
   parallelItems?: number;
+  onDeleteItem?: (id: string) => void;
 };
 
 const FadeFlatList = React.forwardRef(
@@ -62,6 +118,7 @@ const FadeFlatList = React.forwardRef(
       parallelItems = 5,
       renderItem: originalRenderItem,
       ItemSeparatorComponent,
+      onDeleteItem,
       ...props
     }: PropTypes<ItemT>,
     ref: Ref<FlashList<ItemT>>
@@ -100,6 +157,7 @@ const FadeFlatList = React.forwardRef(
         return info.index < itemsToFadeIn ? (
           <FadeInComponent
             index={info.index}
+            onDelete={() => onDeleteItem?.(info?.item?.id || "")}
             parallelItems={parallelItems}
             animationValue={animationValue}
           >
@@ -144,5 +202,16 @@ const FadeFlatList = React.forwardRef(
 );
 
 FadeFlatList.displayName = "FadeFlatList";
+
+const styles = StyleSheet.create({
+  rightAction: {
+    width: Metrics.trashSize,
+    height: Metrics.mediumPadding * 2 + 40,
+    borderTopRightRadius: Metrics.largeRadius,
+    borderBottomRightRadius: Metrics.largeRadius,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default memo(FadeFlatList);
