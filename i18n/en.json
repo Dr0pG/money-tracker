@@ -90,6 +90,12 @@
     "transaction_created_successfully": "Transaction created successfully!",
     "there_was_a_problem_creating_your_transaction": "There was a problem creating your transaction. Try again later!"
   },
+  "delete_transaction": {
+    "delete_transaction": "Delete transaction",
+    "do_you_wanna_delete_this_transaction": "Do you wanna delete this transaction?",
+    "transaction_deleted_successfully": "Transaction deleted successfully!",
+    "there_was_a_problem_deleting_your_transaction": "There was a problem deleting your transaction. Try again later!"
+  },
   "select_item": "Select item",
   "select_date": "Select date",
   "wallets": {
@@ -97,5 +103,6 @@
     "my_wallets": "My Wallets",
     "no_wallets_yet": "No wallets yet... Create a new one!",
     "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets"
-  }
+  },
+  "ok": "Ok",
 }

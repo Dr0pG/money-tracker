@@ -16,6 +16,7 @@ import walletStore, {
   TransactionType,
 } from "@/store/walletStore";
 import { ErrorAddTransaction } from "@/type/ErrorType";
+import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
 import { isFormValidated, validateForm } from "@/utils/TransactionsHelper";
@@ -96,6 +97,8 @@ const AddTransaction = () => {
         await Transactions.createTransaction(state);
 
       if (response) {
+        EventEmitterHelper.emit(EventName.UpdateTransactions);
+
         storeTransaction(response);
         onBack();
       }

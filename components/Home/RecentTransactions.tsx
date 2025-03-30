@@ -5,22 +5,19 @@ import TransactionCard from "@/components/TransactionCard";
 import Metrics from "@/constants/Metrics";
 import Transactions from "@/firebase/Transactions";
 import { Transaction, TransactionType } from "@/store/walletStore";
-import { useIsFocused } from "@react-navigation/native";
+import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 const RecentTransactions = () => {
   const { t } = useTranslation();
-  const isFocused = useIsFocused();
 
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    if (!isFocused) return;
-
     const getTransactions = async () => {
       setIsLoading(true);
       try {
@@ -37,7 +34,36 @@ const RecentTransactions = () => {
     };
 
     getTransactions();
-  }, [isFocused]);
+
+    const subscription = EventEmitterHelper.listen(
+      EventName.UpdateTransactions,
+      () => {
+        getTransactions();
+      }
+    );
+
+    return () => {
+      EventEmitterHelper.remove(subscription);
+    };
+  }, []);
+
+  const onDeleteTransaction = (id: string) => {
+    Alert.alert(
+      t("delete_transaction.delete_transaction"),
+      t("delete_transaction.do_you_wanna_delete_this_transaction"),
+      [
+        {
+          text: t("cancel"),
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: t("ok").toUpperCase(),
+          onPress: async () => await Transactions.deleteTransaction(id),
+        },
+      ]
+    );
+  };
 
   const ListEmptyComponent = () => {
     return (
@@ -88,7 +114,7 @@ const RecentTransactions = () => {
           return transaction?.id;
         }}
         ListEmptyComponent={ListEmptyComponent}
-        onDeleteItem={(deletedId) => console.log("id: ", deletedId)}
+        onDeleteItem={onDeleteTransaction}
       />
     );
   };

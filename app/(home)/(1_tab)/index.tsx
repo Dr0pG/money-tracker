@@ -18,9 +18,9 @@ import Wallets from "@/firebase/Wallets";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
 import walletStore, { Wallet } from "@/store/walletStore";
+import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import auth from "@react-native-firebase/auth";
-import { useIsFocused } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
@@ -29,7 +29,6 @@ const Home = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
-  const isFocused = useIsFocused();
 
   const onNavigateToAddTransaction = () =>
     router.navigate("../(shared)/addTransaction");
@@ -54,8 +53,6 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!isFocused) return;
-
     const getInfo = async () => {
       try {
         const user = auth().currentUser;
@@ -104,7 +101,18 @@ const Home = () => {
     };
 
     getInfo();
-  }, [isFocused]);
+
+    const subscription = EventEmitterHelper.listen(
+      EventName.UpdateTransactions,
+      () => {
+        getInfo();
+      }
+    );
+
+    return () => {
+      EventEmitterHelper.remove(subscription);
+    };
+  }, []);
 
   const renderHeader = () => {
     return (
