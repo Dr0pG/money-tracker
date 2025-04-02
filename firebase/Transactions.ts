@@ -14,7 +14,9 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 /**
  * Function to create a new transaction into a wallet
  */
-const createTransaction = async (transaction: TransactionForm) => {
+const createTransaction = async (
+  transaction: TransactionForm
+): Promise<Transaction | null> => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
@@ -48,6 +50,51 @@ const createTransaction = async (transaction: TransactionForm) => {
       Toast.showSuccess(
         i18n.t(
           "create_transaction.there_was_a_problem_creating_your_transaction"
+        )
+      );
+      return null;
+    });
+};
+
+/*
+ * Function to update an exist transaction
+ * @param transaction
+ * @returns formatted transaction or null
+ */
+const updateTransaction = async (
+  transaction: TransactionForm
+): Promise<Transaction | null> => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  const updatedTransaction = Utils.database().ref(
+    `/${currentUser.uid}/wallets/${transaction.wallet}/transactions`
+  );
+
+  const formattedTransaction: Transaction = {
+    id: transaction.id,
+    type: transaction.type,
+    wallet: transaction.wallet,
+    date: transaction.date,
+    amount: parseEuropeanNumber(transaction.amount),
+    description: transaction.description,
+    ...(transaction.type === TransactionType.Expense && {
+      category: transaction.category,
+    }),
+  };
+
+  return updatedTransaction
+    .set(formattedTransaction)
+    .then(() => {
+      Toast.showSuccess(
+        i18n.t("create_transaction.transaction_updated_successfully")
+      );
+      return formattedTransaction;
+    })
+    .catch(() => {
+      Toast.showSuccess(
+        i18n.t(
+          "create_transaction.there_was_a_problem_updating_your_transaction"
         )
       );
       return null;
@@ -113,6 +160,7 @@ const deleteTransaction = async (id: string) => {
 
 export default {
   createTransaction,
+  updateTransaction,
   getTransactions,
   deleteTransaction,
 };

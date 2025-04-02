@@ -89,7 +89,9 @@
     "amount": "Amount",
     "description": "Description",
     "transaction_created_successfully": "Transaction created successfully!",
-    "there_was_a_problem_creating_your_transaction": "There was a problem creating your transaction. Try again later!"
+    "transaction_updated_successfully": "Transaction updated successfully!",
+    "there_was_a_problem_creating_your_transaction": "There was a problem creating your transaction. Try again later!",
+    "there_was_a_problem_updating_your_transaction": "There was a problem updating your transaction. Try again later!"
   },
   "delete_transaction": {
     "delete_transaction": "Delete transaction",

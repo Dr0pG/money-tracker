@@ -54,7 +54,6 @@ const updateWallet = async (wallet: Wallet): Promise<Wallet | null> => {
   if (wallet?.image) image = await uploadImage("wallet", wallet.image);
 
   const formattedWallet: Wallet = { ...wallet, image };
-  console.log("🚀 ~ updateWal ~ formattedWallet:", formattedWallet);
 
   const updatedWallet = Utils.database().ref(
     `/${currentUser.uid}/wallets/${wallet.id}`

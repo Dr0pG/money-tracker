@@ -32,6 +32,7 @@ export enum TransactionFields {
 }
 
 export type TransactionForm = {
+  id?: string;
   type: TransactionType;
   wallet: string;
   category?: TransactionCategory;
@@ -41,7 +42,7 @@ export type TransactionForm = {
 };
 
 export type Transaction = {
-  id: string;
+  id?: string;
   type: TransactionType;
   wallet: string;
   category?: TransactionCategory;
