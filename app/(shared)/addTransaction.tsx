@@ -20,8 +20,14 @@ import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
 import { isFormValidated, validateForm } from "@/utils/TransactionsHelper";
-import { useRouter } from "expo-router";
-import React, { useCallback, useReducer, useRef, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, {
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -44,11 +50,20 @@ const initialState = {
 };
 
 const reducer = (state: any, action: any) => {
+  if (action.type === "load_values") {
+    return {
+      ...state,
+      ...action.payload,
+    };
+  }
+
   return { ...state, [action.type]: action.payload };
 };
 
 const AddTransaction = () => {
   const { t } = useTranslation();
+
+  const { transaction } = useLocalSearchParams();
 
   const router = useRouter();
 
@@ -58,10 +73,23 @@ const AddTransaction = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const currentSelectedTransaction = !!transaction
+    ? JSON.parse(transaction as string)
+    : "";
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { wallets, storeTransaction } = walletStore();
   const { settings } = settingsStore();
+
+  useEffect(() => {
+    if (currentSelectedTransaction) {
+      dispatch({
+        type: "load_values",
+        payload: currentSelectedTransaction,
+      });
+    }
+  }, []);
 
   const onCreateTransaction = async () => {
     Keyboard.dismiss();
@@ -214,28 +242,34 @@ const AddTransaction = () => {
     );
   };
 
-  const renderHeader = () => {
+  const renderHeader = useCallback(() => {
     return (
       <View style={styles.header}>
         <Back onPress={onBack} />
-        <ThemedText type="title">{t("create_transaction.title")}</ThemedText>
+        <ThemedText type="title">
+          {t(
+            !!currentSelectedTransaction
+              ? "create_transaction.edit_transaction"
+              : "create_transaction.title"
+          )}
+        </ThemedText>
         <View style={styles.rightWidth} />
       </View>
     );
-  };
+  }, [currentSelectedTransaction]);
 
   const renderButton = useCallback(() => {
     return (
       <View style={styles.buttonContainer}>
         <Button
-          text={t("create")}
+          text={t(!!currentSelectedTransaction ? "edit" : "create")}
           disabled={!isFormValidated(state)}
           onPress={onCreateTransaction}
           isLoading={isLoading}
         />
       </View>
     );
-  }, [state, isLoading]);
+  }, [currentSelectedTransaction, state, isLoading]);
 
   return (
     <ThemedView style={styles.container}>

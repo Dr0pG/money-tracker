@@ -81,6 +81,7 @@
   "preview": "Preview",
   "create_transaction": {
     "title": "New Transaction",
+    "edit_transaction": "Edit Transaction",
     "type": "Type",
     "wallet": "Wallet",
     "expense_category": "Expense Category",

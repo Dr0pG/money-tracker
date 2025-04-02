@@ -23,6 +23,7 @@ type PropTypes = {
   isIncome: boolean;
   value: number;
   date: string;
+  onPress: () => void;
 };
 
 const TransactionCard = ({
@@ -32,6 +33,7 @@ const TransactionCard = ({
   isIncome = false,
   value,
   date,
+  onPress,
 }: PropTypes) => {
   const { currency } = userStore();
 
@@ -128,6 +130,7 @@ const TransactionCard = ({
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: transactionCardsColor }]}
+      onPress={onPress}
     >
       <View
         style={[

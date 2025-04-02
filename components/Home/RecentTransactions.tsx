@@ -6,6 +6,7 @@ import Metrics from "@/constants/Metrics";
 import Transactions from "@/firebase/Transactions";
 import { Transaction, TransactionType } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
+import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,9 +14,21 @@ import { Alert, StyleSheet, View } from "react-native";
 
 const RecentTransactions = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const onNavigateToTransaction = (transaction?: Transaction) => {
+    if (!transaction) {
+      router.navigate("../(shared)/addTransaction");
+    } else {
+      router.push({
+        pathname: "/(shared)/addTransaction",
+        params: { transaction: JSON.stringify(transaction) },
+      });
+    }
+  };
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -106,6 +119,7 @@ const RecentTransactions = () => {
               value={amount}
               date={date}
               description={description}
+              onPress={() => onNavigateToTransaction(item as Transaction)}
             />
           );
         }}
