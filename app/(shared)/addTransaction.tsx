@@ -14,10 +14,14 @@ import walletStore, {
   Transaction,
   TransactionFields,
   TransactionType,
+  Wallet,
 } from "@/store/walletStore";
 import { ErrorAddTransaction } from "@/type/ErrorType";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
-import { formatWalletsOptions } from "@/utils/formatWalletsOptions";
+import {
+  formatWalletOption,
+  formatWalletsOptions,
+} from "@/utils/formatWalletsOptions";
 import { splitStringIntoArray } from "@/utils/Helpers";
 import { isFormValidated, validateForm } from "@/utils/TransactionsHelper";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -121,8 +125,9 @@ const AddTransaction = () => {
         return;
       }
 
-      const response: Transaction | null =
-        await Transactions.createTransaction(state);
+      const response: Transaction | null = currentSelectedTransaction
+        ? await Transactions.updateTransaction(state)
+        : await Transactions.createTransaction(state);
 
       if (response) {
         EventEmitterHelper.emit(EventName.UpdateTransactions);
@@ -155,6 +160,8 @@ const AddTransaction = () => {
   };
 
   const renderContent = () => {
+    const selectedWallet =
+      wallets?.find((wallet: Wallet) => wallet.id === state?.wallet) || null;
     return (
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps="handled"
@@ -165,6 +172,7 @@ const AddTransaction = () => {
         <DropDown
           key={TransactionFields.Type}
           placeholder={t("create_transaction.type")}
+          value={state.type}
           isRequired
           options={splitStringIntoArray(settings?.transactions?.type)}
           onChangeValue={(value: string) =>
@@ -175,11 +183,15 @@ const AddTransaction = () => {
         <DropDown
           key={TransactionFields.Wallet}
           placeholder={t("create_transaction.wallet")}
+          value={state.wallet}
           isRequired
           options={formatWalletsOptions(wallets)}
           onChangeValue={(value: string) =>
             onChangeValue(TransactionFields.Wallet, value)
           }
+          {...(selectedWallet && {
+            label: formatWalletOption(selectedWallet)?.label,
+          })}
         />
         <View style={styles.divider} />
         {state.type === TransactionType.Expense && (
@@ -187,6 +199,7 @@ const AddTransaction = () => {
             <DropDown
               key={TransactionFields.Category}
               placeholder={t("create_transaction.expense_category")}
+              value={state.category}
               isRequired
               options={splitStringIntoArray(settings?.transactions?.category)}
               onChangeValue={(value: string) =>
@@ -200,6 +213,7 @@ const AddTransaction = () => {
           ref={datePickerRef}
           key={TransactionFields.Date}
           placeholder={t("create_transaction.date")}
+          value={state.date}
           isRequired
           onChangeValue={(value: string) =>
             onChangeValue(TransactionFields.Date, value)
@@ -213,7 +227,7 @@ const AddTransaction = () => {
           returnKeyType="next"
           keyboardType="numeric"
           isRequired
-          value={state.amount}
+          value={state.amount > 0 ? state.amount?.toString() : ""}
           onChangeText={(amount: string) =>
             onChangeValue(TransactionFields.Amount, amount)
           }
@@ -229,7 +243,7 @@ const AddTransaction = () => {
           placeholder={t("create_transaction.description")}
           returnKeyType="next"
           isBigInput
-          value={state.description}
+          value={state.description?.toString()}
           onChangeText={(description: string) =>
             onChangeValue(TransactionFields.Description, description)
           }

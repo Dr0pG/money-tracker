@@ -68,7 +68,7 @@ const updateTransaction = async (
   if (!currentUser) return null;
 
   const updatedTransaction = Utils.database().ref(
-    `/${currentUser.uid}/wallets/${transaction.wallet}/transactions`
+    `/${currentUser.uid}/wallets/${transaction.wallet}/transactions/${transaction.id}`
   );
 
   const formattedTransaction: Transaction = {
@@ -76,7 +76,7 @@ const updateTransaction = async (
     type: transaction.type,
     wallet: transaction.wallet,
     date: transaction.date,
-    amount: parseEuropeanNumber(transaction.amount),
+    amount: parseEuropeanNumber(transaction.amount.toString()),
     description: transaction.description,
     ...(transaction.type === TransactionType.Expense && {
       category: transaction.category,

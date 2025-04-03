@@ -50,7 +50,7 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
         });
       }
     }
-  }, [selectedValue]);
+  }, [flatListRef, selectedValue]);
 
   const renderItem = ({ item }: { item: DataType }) => {
     const isSelected = item.value === selectedValue.value;
@@ -95,6 +95,8 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
 };
 
 type PropTypes = {
+  value?: string;
+  label?: string;
   placeholder: string;
   isRequired?: boolean;
   options: DataType[] | string[];
@@ -104,6 +106,8 @@ type PropTypes = {
 };
 
 const DropDown = ({
+  value,
+  label,
   placeholder,
   isRequired = false,
   options,
@@ -124,6 +128,20 @@ const DropDown = ({
   const [showOptions, setShowOptions] = useState(false);
 
   const formattedOptions = transformArray(options);
+
+  useEffect(() => {
+    if (
+      !value ||
+      value === selectedValue.value ||
+      label === selectedValue.label
+    )
+      return;
+
+    setSelectedValue({
+      value: value,
+      label: label || value,
+    });
+  }, [value, label]);
 
   useEffect(() => {
     if (formattedOptions?.length === 1) setSelectedValue(formattedOptions[0]);

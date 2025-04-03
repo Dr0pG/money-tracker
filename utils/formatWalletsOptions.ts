@@ -18,5 +18,13 @@ const formatWalletsOptions = (wallets: Wallet[]) => {
   return formattedWallets;
 };
 
-export { formatWalletsOptions };
+const formatWalletOption = (wallet: Wallet) => {
+  if (!wallet) return null;
 
+  return {
+    value: wallet.id,
+    label: `${wallet.name} (${(wallet.income ?? 0) - (wallet.expense ?? 0)})`,
+  };
+};
+
+export { formatWalletsOptions, formatWalletOption };

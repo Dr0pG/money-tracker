@@ -5,6 +5,7 @@ import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { formateDate } from "@/utils/Helpers";
 import Entypo from "@expo/vector-icons/Entypo";
+
 import React, {
   forwardRef,
   memo,
@@ -24,6 +25,7 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 type PropTypes = TextInputProps & {
+  value?: string;
   isRequired?: boolean;
   placeholder?: string;
   style?: ViewStyle | ViewStyle[];
@@ -35,6 +37,7 @@ type PropTypes = TextInputProps & {
 const DatePicker = forwardRef(
   (
     {
+      value,
       isRequired = false,
       placeholder,
       style,
@@ -55,6 +58,11 @@ const DatePicker = forwardRef(
     const [displayCalendar, setDisplayCalendar] = useState<boolean>(false);
 
     const [showError, setError] = useState<boolean>(false);
+
+    useEffect(() => {
+      if (!value || new Date(value).getDate() === new Date().getDate()) return;
+      setSelectedDate(value);
+    }, [value]);
 
     useEffect(() => {
       onChangeValue(selectedDate);
@@ -116,6 +124,7 @@ const DatePicker = forwardRef(
       return (
         <View style={styles.calendarContainer}>
           <DateTimePickerModal
+            date={new Date(selectedDate)}
             isVisible={displayCalendar}
             mode="date"
             isDarkModeEnabled
