@@ -38,7 +38,7 @@
     "expense": "Expense",
     "no_transactions_yet": "No transactions yet... Start adding new ones!",
     "no_wallet": "No wallet found yet! Please create a new one and start tracking your expenses/incomes",
-    "create_wallet": "Create wallet",
+    "create_wallet": "Create wallet"
   },
   "login": "Login",
   "enter_your_email": "Enter your email",
@@ -107,5 +107,18 @@
     "no_wallets_yet": "No wallets yet... Create a new one!",
     "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets"
   },
-  "ok": "Ok",
+  "statistics": {
+    "title": "Statistics",
+
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+
+    "total_income": "Total Income",
+    "total_expense": "Total Expense",
+    "total_balance": "Total Balance",
+    "no_transactions_yet": "No transactions yet... Start adding new ones!",
+    "there_was_a_problem_getting_your_statistics": "There was a problem getting your statistics"
+  },
+  "ok": "Ok"
 }

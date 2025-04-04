@@ -5,7 +5,7 @@ export const Colors = {
     textHighlight: "#4CAF50", // Soft but vibrant green for highlights
 
     background: "#E2E2E8", // Modern neutral gray with a slightly darker tone
-    backgroundMiddle: '#1A1919',
+    backgroundMiddle: "#1A1919",
     backgroundDark: "#1b1a18",
 
     button: "#4CAF50", // Clean and vibrant green button
@@ -40,16 +40,18 @@ export const Colors = {
     dining: "#B81A5B",
     clothing: "#7D3BEE",
     groceries: "#525462",
-    sports: '#FF7F50',
-    rent: '#0074D9',
-    transportation: '#FF4136',
-    entertainment: '#FF851B',
-    insurance: '#2ECC40',
-    personal: '#85144B',
-    investments: '#17A2B8',
-    other: '#3D9970',
+    sports: "#FF7F50",
+    rent: "#0074D9",
+    transportation: "#FF4136",
+    entertainment: "#FF851B",
+    insurance: "#2ECC40",
+    personal: "#85144B",
+    investments: "#17A2B8",
+    other: "#3D9970",
 
     modalBackground: "rgba(0,0,0,0.5)",
+
+    orange: "#FF5733",
   },
   dark: {
     text: "#fff",
@@ -57,9 +59,9 @@ export const Colors = {
     textHighlight: "#A4E736",
 
     background: "#1A181B",
-    backgroundMiddle: '#1A1919',
+    backgroundMiddle: "#1A1919",
     backgroundDark: "#1b1a18",
-    
+
     button: "#A4E736",
     buttonText: "#010700",
     buttonTextDisabled: "#fff",
@@ -93,15 +95,17 @@ export const Colors = {
     dining: "#B81A5B",
     clothing: "#7D3BEE",
     groceries: "#525462",
-    sports: '#FF7F50',
-    rent: '#0074D9',
-    transportation: '#FF4136',
-    entertainment: '#FF851B',
-    insurance: '#2ECC40',
-    personal: '#85144B',
-    investments: '#17A2B8',
-    other: '#3D9970',
+    sports: "#FF7F50",
+    rent: "#0074D9",
+    transportation: "#FF4136",
+    entertainment: "#FF851B",
+    insurance: "#2ECC40",
+    personal: "#85144B",
+    investments: "#17A2B8",
+    other: "#3D9970",
 
     modalBackground: "rgba(0,0,0,0.5)",
+
+    orange: "#FF5733",
   },
 };

@@ -84,6 +84,10 @@ const FadeInComponent = ({
     return { opacity };
   });
 
+  if (!onDelete) {
+    return <Animated.View style={animatedStyle}>{children}</Animated.View>;
+  }
+
   return (
     <GestureHandlerRootView>
       <ReanimatedSwipeable
@@ -157,9 +161,11 @@ const FadeFlatList = React.forwardRef(
         return info.index < itemsToFadeIn ? (
           <FadeInComponent
             index={info.index}
-            onDelete={() => onDeleteItem?.(info?.item?.id || "")}
             parallelItems={parallelItems}
             animationValue={animationValue}
+            {...(!!onDeleteItem && {
+              onDelete: () => onDeleteItem?.(info?.item?.id || ""),
+            })}
           >
             {renderedItem}
           </FadeInComponent>

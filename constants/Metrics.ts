@@ -57,6 +57,9 @@ const Metrics = {
   // Create Wallet
   createWalletButton: 30,
 
+  // Tab
+  tabHeight: 45,
+
   // Icons
   backIcon: 28,
 
