@@ -133,6 +133,7 @@ const Statistics = () => {
           hideRules
           xAxisThickness={0}
           yAxisThickness={0}
+          yAxisLabelWidth={40}
           yAxisTextStyle={{ color: "gray" }}
           noOfSections={3}
           yAxisLabelPrefix={currency}
