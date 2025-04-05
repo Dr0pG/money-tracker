@@ -125,7 +125,7 @@ const RecentTransactions = () => {
         }}
         keyExtractor={(item) => {
           const transaction = item as Transaction;
-          return transaction?.id;
+          return transaction?.id || "id";
         }}
         ListEmptyComponent={ListEmptyComponent}
         onDeleteItem={onDeleteTransaction}

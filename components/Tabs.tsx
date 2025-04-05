@@ -54,7 +54,7 @@ const Tabs = ({ data, onChangeTab, children }: PropTypes) => {
               style={styles.tabButton}
               onPress={() => changeTab(index)}
             >
-              <ThemedText type="subtitle">{t(item)}</ThemedText>
+              <ThemedText type="mediumBold">{t(item)}</ThemedText>
             </TouchableOpacity>
           ))}
         </View>

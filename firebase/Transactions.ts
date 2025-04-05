@@ -8,7 +8,16 @@ import {
   TransactionType,
 } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
-import { parseEuropeanNumber, transformObjectIntoArray } from "@/utils/Helpers";
+import {
+  getEndOfMonth,
+  getEndOfWeek,
+  getStartOfMonth,
+  getStartOfWeek,
+  groupByDay,
+  groupByYear,
+  parseEuropeanNumber,
+  transformObjectIntoArray,
+} from "@/utils/Helpers";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 /**
@@ -158,9 +167,53 @@ const deleteTransaction = async (id: string) => {
     });
 };
 
+const getTransactionsByRange = async () => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  const currentWalletId = await Wallets.getCurrentWalletId();
+  if (!currentWalletId) return null;
+
+  const snapshot = await Utils.database()
+    .ref(`/${currentUser.uid}/wallets/${currentWalletId}/transactions`)
+    .once("value");
+
+  const transactions = snapshot.val();
+  const transactionsArray: Transaction[] | null =
+    transformObjectIntoArray(transactions);
+  const sortedTransactions =
+    transactionsArray?.sort(
+      (a, b) => Date.parse(b.date) - Date.parse(a.date)
+    ) || [];
+
+  // Now we group them
+  const now = new Date();
+
+  const weekly = groupByDay(
+    sortedTransactions,
+    getStartOfWeek(now),
+    getEndOfWeek(now)
+  );
+
+  const monthly = groupByDay(
+    sortedTransactions,
+    getStartOfMonth(now),
+    getEndOfMonth(now)
+  );
+
+  const yearly = groupByYear(sortedTransactions);
+
+  return {
+    weekly,
+    monthly,
+    yearly,
+  };
+};
+
 export default {
   createTransaction,
   updateTransaction,
   getTransactions,
   deleteTransaction,
+  getTransactionsByRange,
 };

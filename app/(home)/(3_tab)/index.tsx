@@ -1,77 +1,80 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import Metrics from "@/constants/Metrics";
 import Tabs from "@/components/Tabs";
 import { BarChart } from "react-native-gifted-charts";
+import AnimatedThemedView from "@/components/AnimatedThemedView";
+import Transactions from "@/firebase/Transactions";
+import { buildBarData } from "@/utils/Helpers";
+import { useIsFocused } from "@react-navigation/native";
+import { Transaction, TransactionType } from "@/store/walletStore";
+import TransactionCard from "@/components/TransactionCard";
+import LottieView from "lottie-react-native";
+import { FlashList } from "@shopify/flash-list";
+import userStore from "@/store/userStore";
 
 const TABS = ["statistics.weekly", "statistics.monthly", "statistics.yearly"];
 
-const barData = [
-  {
-    value: 40,
-    label: "Jan",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 20, frontColor: "#ED6665" },
-  {
-    value: 50,
-    label: "Feb",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 40, frontColor: "#ED6665" },
-  {
-    value: 75,
-    label: "Mar",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 25, frontColor: "#ED6665" },
-  {
-    value: 30,
-    label: "Apr",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 20, frontColor: "#ED6665" },
-  {
-    value: 60,
-    label: "May",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 40, frontColor: "#ED6665" },
-  {
-    value: 65,
-    label: "Jun",
-    spacing: 2,
-    labelWidth: 25,
-    labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
-  },
-  { value: 30, frontColor: "#ED6665" },
-];
+export type BarChartData = {
+  value: number;
+  label?: string;
+  spacing?: number;
+  labelWidth?: number;
+  labelTextStyle?: { color: string };
+  frontColor?: string;
+};
 
 const Statistics = () => {
   const { t } = useTranslation();
 
+  const isFocused = useIsFocused();
+
+  const { currency } = userStore();
+
   const [currentTab, setCurrentTab] = useState<number>(0);
+
+  const [barChartData, setBarChartData] = useState<{
+    weekly: { data: BarChartData[]; list: Transaction[] };
+    monthly: { data: BarChartData[]; list: Transaction[] };
+    yearly: { data: BarChartData[]; list: Transaction[] };
+  } | null>(null);
+
+  useEffect(() => {
+    const getTransactions = async () => {
+      try {
+        const transactions = await Transactions.getTransactionsByRange();
+        if (!transactions) return;
+
+        const weeklyBarData = buildBarData(transactions.weekly, "weekly");
+        const monthlyBarData = buildBarData(transactions.monthly, "monthly");
+        const yearlyBarData = buildBarData(transactions.yearly, "yearly");
+
+        setBarChartData({
+          weekly: {
+            data: weeklyBarData,
+            list: Object.values(transactions.weekly).flat(),
+          },
+          monthly: {
+            data: monthlyBarData,
+            list: Object.values(transactions.monthly).flat(),
+          },
+          yearly: {
+            data: yearlyBarData,
+            list: Object.values(transactions.yearly).flat(),
+          },
+        });
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    getTransactions();
+  }, [isFocused]);
 
   const renderHeader = () => {
     return (
@@ -81,13 +84,50 @@ const Statistics = () => {
     );
   };
 
+  const ListEmptyComponent = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <LottieView
+          source={require("@/assets/lottie/empty_state.json")}
+          style={styles.animationContent}
+          autoPlay
+          loop
+        />
+        <ThemedText type="gray" style={styles.emptyText}>
+          {t("home.no_transactions_yet")}
+        </ThemedText>
+      </View>
+    );
+  };
+
   const renderContent = useCallback(() => {
-    if (currentTab === 0) {
-      return (
+    let data = {
+      chart: barChartData?.weekly.data,
+      transactions: barChartData?.weekly.list,
+    };
+    if (currentTab === 1)
+      data = {
+        chart: barChartData?.monthly.data,
+        transactions: barChartData?.monthly.list,
+      };
+    if (currentTab === 2)
+      data = {
+        chart: barChartData?.yearly.data,
+        transactions: barChartData?.yearly.list,
+      };
+
+    return (
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: Metrics.largePadding * 5,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
         <BarChart
-          data={barData}
-          barWidth={7}
-          spacing={25}
+          data={data.chart}
+          barWidth={10}
+          spacing={40}
           roundedTop
           roundedBottom
           hideRules
@@ -95,23 +135,41 @@ const Statistics = () => {
           yAxisThickness={0}
           yAxisTextStyle={{ color: "gray" }}
           noOfSections={3}
-          maxValue={75}
+          yAxisLabelPrefix={currency}
         />
-      );
-    }
-    if (currentTab === 1) {
-      return <ThemedText>{t("statistics.monthly")}</ThemedText>;
-    }
-    if (currentTab === 2) {
-      return <ThemedText>{t("statistics.yearly")}</ThemedText>;
-    }
-  }, [currentTab]);
+        <View style={styles.transactionsContainer}>
+          <FlashList
+            data={data.transactions}
+            renderItem={({ item }) => {
+              const { id, type, category, amount, date, description } =
+                item as Transaction;
+              return (
+                <TransactionCard
+                  key={id}
+                  type={type}
+                  category={category}
+                  isIncome={type === TransactionType.Income}
+                  value={amount}
+                  date={date}
+                  description={description}
+                />
+              );
+            }}
+            estimatedItemSize={20}
+            ListEmptyComponent={ListEmptyComponent}
+          />
+        </View>
+      </ScrollView>
+    );
+  }, [barChartData, currentTab]);
 
   const renderTabs = () => {
     return (
-      <Tabs data={TABS} onChangeTab={setCurrentTab}>
-        {renderContent()}
-      </Tabs>
+      <AnimatedThemedView animationType="fade">
+        <Tabs data={TABS} onChangeTab={setCurrentTab}>
+          {renderContent()}
+        </Tabs>
+      </AnimatedThemedView>
     );
   };
 
@@ -132,6 +190,24 @@ const styles = StyleSheet.create({
   titleContainer: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  emptyContainer: {
+    flex: 1,
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  animationContent: {
+    width: "60%",
+    height: "60%",
+  },
+  emptyText: {
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
+    paddingBottom: Metrics.mediumPadding,
+  },
+  transactionsContainer: {
+    paddingVertical: Metrics.largePadding,
   },
 });
 

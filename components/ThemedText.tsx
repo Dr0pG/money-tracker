@@ -23,6 +23,7 @@ export type ThemedTextProps = TextProps & {
     | "default"
     | "error"
     | "medium"
+    | "mediumBold"
     | "hightLight"
     | "title"
     | "defaultSemiBold"
@@ -130,6 +131,7 @@ const ThemedText = ({
         type === "default" ? styles.default : undefined,
         type === "gray" ? styles.default : undefined,
         type === "medium" ? styles.medium : undefined,
+        type === "mediumBold" ? styles.mediumBold : undefined,
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
@@ -164,6 +166,11 @@ const styles = StyleSheet.create({
   medium: {
     fontSize: Metrics.size16,
     lineHeight: Metrics.size16 * 1.3,
+  },
+  mediumBold: {
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
+    fontWeight: "bold",
   },
   defaultSemiBold: {
     fontSize: Metrics.size14,
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
   },
   walletTotal: {
     fontSize: Metrics.size34 * 1.2,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: Metrics.size34 * 1.2 * 1.3,
   },
 });
