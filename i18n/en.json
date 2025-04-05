@@ -120,5 +120,6 @@
     "no_transactions_yet": "No transactions yet... Start adding new ones!",
     "there_was_a_problem_getting_your_statistics": "There was a problem getting your statistics"
   },
-  "ok": "Ok"
+  "ok": "Ok",
+  "transactions": "Transactions"
 }

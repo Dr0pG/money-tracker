@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -17,6 +17,7 @@ import TransactionCard from "@/components/TransactionCard";
 import LottieView from "lottie-react-native";
 import { FlashList } from "@shopify/flash-list";
 import userStore from "@/store/userStore";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 const TABS = ["statistics.weekly", "statistics.monthly", "statistics.yearly"];
 
@@ -34,7 +35,11 @@ const Statistics = () => {
 
   const isFocused = useIsFocused();
 
+  const textColor = useThemeColor({}, "textPlaceholder");
+
   const { currency } = userStore();
+
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [currentTab, setCurrentTab] = useState<number>(0);
 
@@ -75,6 +80,10 @@ const Statistics = () => {
 
     getTransactions();
   }, [isFocused]);
+
+  useEffect(() => {
+    scrollViewRef?.current?.scrollTo({ x: 0, y: 0, animated: true });
+  }, [currentTab]);
 
   const renderHeader = () => {
     return (
@@ -118,6 +127,7 @@ const Statistics = () => {
 
     return (
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{
           flexGrow: 1,
           paddingBottom: Metrics.largePadding * 5,
@@ -134,11 +144,14 @@ const Statistics = () => {
           xAxisThickness={0}
           yAxisThickness={0}
           yAxisLabelWidth={40}
-          yAxisTextStyle={{ color: "gray" }}
+          yAxisTextStyle={{ color: textColor }}
           noOfSections={3}
           yAxisLabelPrefix={currency}
         />
         <View style={styles.transactionsContainer}>
+          <ThemedText type="title" style={styles.title}>
+            {t("transactions")}
+          </ThemedText>
           <FlashList
             data={data.transactions}
             renderItem={({ item }) => {
@@ -162,7 +175,7 @@ const Statistics = () => {
         </View>
       </ScrollView>
     );
-  }, [barChartData, currentTab]);
+  }, [barChartData, currentTab, textColor]);
 
   const renderTabs = () => {
     return (
@@ -209,6 +222,11 @@ const styles = StyleSheet.create({
   },
   transactionsContainer: {
     paddingVertical: Metrics.largePadding,
+  },
+  title: {
+    fontSize: Metrics.size22,
+    lineHeight: Metrics.size22 * 1.3,
+    paddingBottom: Metrics.mediumPadding,
   },
 });
 

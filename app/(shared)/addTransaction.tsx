@@ -241,7 +241,7 @@ const AddTransaction = () => {
           ref={descriptionInputRef}
           topPlaceholder={t("create_transaction.description")}
           placeholder={t("create_transaction.description")}
-          returnKeyType="next"
+          returnKeyType="send"
           isBigInput
           value={state.description?.toString()}
           onChangeText={(description: string) =>
@@ -250,6 +250,7 @@ const AddTransaction = () => {
           hasError={state.error.description !== ""}
           errorMessage={state.error.description}
           onFocus={() => onError(ErrorAddTransaction.Description, "")}
+          onSubmitEditing={onCreateTransaction}
         />
         <View style={styles.divider} />
       </KeyboardAwareScrollView>
