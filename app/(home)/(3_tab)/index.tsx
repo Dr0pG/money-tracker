@@ -41,6 +41,7 @@ const Statistics = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [barChartData, setBarChartData] = useState<{
     weekly: { data: BarChartData[]; list: Transaction[] };
@@ -51,6 +52,8 @@ const Statistics = () => {
   useEffect(() => {
     const getTransactions = async () => {
       try {
+        setIsLoading(true);
+
         const transactions = await Transactions.getTransactionsByRange();
         if (!transactions) return;
 
@@ -74,6 +77,8 @@ const Statistics = () => {
         });
       } catch (error) {
         console.error("Error fetching transactions:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -109,6 +114,8 @@ const Statistics = () => {
   };
 
   const renderContent = useCallback(() => {
+    if (!isLoading && !barChartData) return ListEmptyComponent();
+
     let data = {
       chart: barChartData?.weekly.data,
       transactions: barChartData?.weekly.list,
@@ -149,7 +156,10 @@ const Statistics = () => {
           yAxisLabelPrefix={currency}
           noOfSections={3}
         />
-        <View style={styles.transactionsContainer}>
+        <AnimatedThemedView
+          animationType="fade"
+          style={styles.transactionsContainer}
+        >
           <ThemedText type="title" style={styles.title}>
             {t("transactions")}
           </ThemedText>
@@ -178,12 +188,14 @@ const Statistics = () => {
                 {title}
               </ThemedText>
             )}
-            ListEmptyComponent={ListEmptyComponent}
+            {...(!isLoading && {
+              ListEmptyComponent,
+            })}
           />
-        </View>
+        </AnimatedThemedView>
       </ScrollView>
     );
-  }, [barChartData, currentTab, textColor]);
+  }, [isLoading, barChartData, currentTab, textColor]);
 
   const renderTabs = () => {
     return (
