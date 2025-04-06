@@ -1,13 +1,21 @@
-import { EventEmitter } from "expo-modules-core";
+import { EventEmitter, EventSubscription } from "expo-modules-core";
+
+// Extend EventEmitter to include custom event types
+type TypedEventEmitter = {
+  emit(event: EventName, data?: any): void;
+  addListener(
+    event: EventName,
+    callback: (data?: any) => void
+  ): EventSubscription;
+};
+
+const eventEmitter: TypedEventEmitter = new EventEmitter() as TypedEventEmitter;
 
 // Define event names as an enum for better type safety
 enum EventName {
   UpdateTransactions = "updateTransactions",
   WalletChanged = "walletChanged",
 }
-
-// Create a global event emitter instance
-const eventEmitter = new EventEmitter();
 
 // Helper functions for emitting and listening to events
 const EventEmitterHelper = {
@@ -23,4 +31,3 @@ const EventEmitterHelper = {
 };
 
 export { EventEmitterHelper, EventName };
-
