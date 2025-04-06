@@ -47,7 +47,6 @@ const Home = () => {
 
   const addTransactionIconColor = useThemeColor({}, "buttonText");
   const addTransactionBackgroundColor = useThemeColor({}, "button");
-
   const iconBackgroundColor = useThemeColor({}, "backButtonBackground");
 
   const [isLoading, setIsLoading] = useState(true);

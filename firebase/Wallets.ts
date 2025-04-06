@@ -142,17 +142,20 @@ const getWallets = async () => {
       const wallets = snapshot.val();
 
       const walletsArray = wallets
-        ? Object.entries(wallets).map(([id, wallet]) => ({ id, ...wallet }))
+        ? Object.entries(wallets).map(([id, wallet]) => ({
+            id,
+            ...(wallet || {}),
+          }))
         : [];
 
       const formatTransactions = walletsArray?.map((wallet) => {
-        if (!wallet.transactions) return wallet;
+        if (!wallet?.transactions) return wallet;
         return {
           ...wallet,
           transactions:
             Object?.entries(wallet?.transactions).map(([id, transaction]) => ({
               id,
-              ...transaction,
+              ...(transaction || {}),
             })) || [],
         };
       });

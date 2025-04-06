@@ -15,8 +15,40 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+
+function RightAction(drag: SharedValue<number>, onDelete: () => void) {
+  const backgroundRed = useThemeColor({}, "error");
+  const iconColor = useThemeColor({}, "text");
+
+  const styleAnimation = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: drag.value + 50 }],
+    };
+  });
+
+  return (
+    <Animated.View style={styleAnimation}>
+      <TouchableOpacity onPress={onDelete}>
+        <View style={[styles.rightAction, { backgroundColor: backgroundRed }]}>
+          <FontAwesome
+            name="trash"
+            size={Metrics.trashDeleteIcon}
+            color={iconColor}
+          />
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
 
 type PropTypes = {
+  id?: string;
   type: TransactionType;
   category?: TransactionCategory;
   description?: string;
@@ -24,9 +56,11 @@ type PropTypes = {
   value: number;
   date: string;
   onPress?: () => void;
+  onDelete?: (id: string) => void;
 };
 
 const TransactionCard = ({
+  id,
   type,
   category,
   description,
@@ -34,7 +68,12 @@ const TransactionCard = ({
   value,
   date,
   onPress,
+  onDelete,
 }: PropTypes) => {
+  const handleDelete = () => {
+    if (onDelete && id) onDelete?.(id);
+  };
+
   const { currency } = userStore();
 
   const transactionCardsColor = useThemeColor({}, "transactionCards");
@@ -127,35 +166,53 @@ const TransactionCard = ({
     );
   }, [isIncome, value, date, infoGoodTextColor, infoBadTextColor]);
 
-  return (
-    <TouchableOpacity
-      style={[styles.container, { backgroundColor: transactionCardsColor }]}
-      onPress={onPress}
-      disabled={!onPress}
-    >
-      <View
-        style={[
-          styles.typeContainer,
-          { backgroundColor: getTypeColor(category || type) },
-        ]}
+  const renderContent = () => {
+    return (
+      <TouchableOpacity
+        style={[styles.container, { backgroundColor: transactionCardsColor }]}
+        onPress={onPress}
+        disabled={!onPress}
       >
-        {renderTypeIcon()}
-      </View>
-      <View style={styles.textInfoContainer}>
-        <ThemedText type="medium">{formattedType}</ThemedText>
-        {!!description && (
-          <ThemedText
-            type="gray"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={styles.description}
-          >
-            {description}
-          </ThemedText>
-        )}
-      </View>
-      {renderRightInfo()}
-    </TouchableOpacity>
+        <View
+          style={[
+            styles.typeContainer,
+            { backgroundColor: getTypeColor(category || type) },
+          ]}
+        >
+          {renderTypeIcon()}
+        </View>
+        <View style={styles.textInfoContainer}>
+          <ThemedText type="medium">{formattedType}</ThemedText>
+          {!!description && (
+            <ThemedText
+              type="gray"
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={styles.description}
+            >
+              {description}
+            </ThemedText>
+          )}
+        </View>
+        {renderRightInfo()}
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <GestureHandlerRootView>
+      <ReanimatedSwipeable
+        friction={2}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        {...(!!onDelete && {
+          renderRightActions: (_, drag: SharedValue<number>) =>
+            RightAction(drag, handleDelete),
+        })}
+      >
+        {renderContent()}
+      </ReanimatedSwipeable>
+    </GestureHandlerRootView>
   );
 };
 
@@ -187,6 +244,13 @@ const styles = StyleSheet.create({
   description: {
     fontSize: Metrics.size12,
     lineHeight: Metrics.size12 * 1.3,
+  },
+  rightAction: {
+    width: Metrics.trashSize,
+    height: Metrics.mediumPadding * 2 + 40,
+    borderRadius: Metrics.largeRadius,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

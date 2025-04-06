@@ -156,7 +156,7 @@ const getLabel = (dateStr: string, type: "weekly" | "monthly"): string => {
     return date.toLocaleDateString("en-US", { weekday: "short" });
   } else if (type === "monthly") {
     return date.toLocaleDateString("en-US", {
-      month: "short",
+      month: "2-digit",
       day: "numeric",
     });
   }
@@ -184,13 +184,13 @@ const buildBarData = (
       .reduce((sum, t) => sum + t.amount, 0);
 
     const label = type === "yearly" ? key : getLabel(key, type);
-    const labelWidth = type === "weekly" ? 30 : 45;
+    const labelWidth = type === "weekly" ? 30 : 37;
 
     // Income bar (with label and spacing before the pair)
     result.push({
       value: incomeTotal === 0 ? invisibleValue : incomeTotal,
       label,
-      spacing: 3,
+      spacing: 2,
       labelWidth,
       labelTextStyle: { color: "gray" },
       frontColor: incomeTotal === 0 ? invisibleColor : incomeColor,
@@ -203,6 +203,57 @@ const buildBarData = (
   });
 
   return result;
+};
+
+type SectionData = {
+  title: string;
+  data: Transaction[];
+};
+
+const groupTransactionsByDate = (
+  transactions: Transaction[] | undefined,
+  currentTab: number
+): SectionData[] => {
+  if (!transactions) return [];
+
+  const groups: { [key: string]: Transaction[] } = {};
+
+  transactions.forEach((tx) => {
+    const date = new Date(tx.date);
+
+    let dayKey = date.toLocaleDateString(undefined, {
+      weekday: "long",
+    });
+
+    if (currentTab === 1) {
+      dayKey = date.toLocaleDateString(undefined, {
+        month: "long",
+        day: "numeric",
+      });
+    }
+    if (currentTab === 2) {
+      dayKey = date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+      });
+    }
+
+    if (!groups[dayKey]) {
+      groups[dayKey] = [];
+    }
+    groups[dayKey].push(tx);
+  });
+
+  return Object.entries(groups)
+    .sort((a, b) => {
+      const dateA = new Date(a[1][0].date);
+      const dateB = new Date(b[1][0].date);
+      return dateB.getTime() - dateA.getTime(); // Descending order
+    })
+    .map(([title, data]) => ({
+      title,
+      data,
+    }));
 };
 
 export {
@@ -222,4 +273,5 @@ export {
   transformArray,
   transformObjectIntoArray,
   buildBarData,
+  groupTransactionsByDate,
 };

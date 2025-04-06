@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, SectionList, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import Metrics from "@/constants/Metrics";
@@ -10,12 +10,11 @@ import Tabs from "@/components/Tabs";
 import { BarChart } from "react-native-gifted-charts";
 import AnimatedThemedView from "@/components/AnimatedThemedView";
 import Transactions from "@/firebase/Transactions";
-import { buildBarData } from "@/utils/Helpers";
+import { buildBarData, groupTransactionsByDate } from "@/utils/Helpers";
 import { useIsFocused } from "@react-navigation/native";
 import { Transaction, TransactionType } from "@/store/walletStore";
 import TransactionCard from "@/components/TransactionCard";
 import LottieView from "lottie-react-native";
-import { FlashList } from "@shopify/flash-list";
 import userStore from "@/store/userStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
@@ -125,6 +124,8 @@ const Statistics = () => {
         transactions: barChartData?.yearly.list,
       };
 
+    const sections = groupTransactionsByDate(data?.transactions, currentTab);
+
     return (
       <ScrollView
         ref={scrollViewRef}
@@ -145,15 +146,18 @@ const Statistics = () => {
           yAxisThickness={0}
           yAxisLabelWidth={40}
           yAxisTextStyle={{ color: textColor }}
-          noOfSections={3}
           yAxisLabelPrefix={currency}
+          noOfSections={3}
         />
         <View style={styles.transactionsContainer}>
           <ThemedText type="title" style={styles.title}>
             {t("transactions")}
           </ThemedText>
-          <FlashList
-            data={data.transactions}
+          <SectionList
+            sections={sections}
+            keyExtractor={(item: Transaction) => item.id || "id"}
+            scrollEnabled={false}
+            stickySectionHeadersEnabled
             renderItem={({ item }) => {
               const { id, type, category, amount, date, description } =
                 item as Transaction;
@@ -169,7 +173,11 @@ const Statistics = () => {
                 />
               );
             }}
-            estimatedItemSize={20}
+            renderSectionHeader={({ section: { title } }) => (
+              <ThemedText type="medium" style={styles.subtitle}>
+                {title}
+              </ThemedText>
+            )}
             ListEmptyComponent={ListEmptyComponent}
           />
         </View>
@@ -227,6 +235,12 @@ const styles = StyleSheet.create({
     fontSize: Metrics.size22,
     lineHeight: Metrics.size22 * 1.3,
     paddingBottom: Metrics.mediumPadding,
+  },
+  subtitle: {
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
+    paddingBottom: Metrics.mediumPadding,
+    fontWeight: "bold",
   },
 });
 

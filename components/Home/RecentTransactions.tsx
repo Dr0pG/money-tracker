@@ -1,4 +1,3 @@
-import FadeFlatList from "@/components/FadeFlatList";
 import Loader from "@/components/Loader";
 import ThemedText from "@/components/ThemedText";
 import TransactionCard from "@/components/TransactionCard";
@@ -6,11 +5,12 @@ import Metrics from "@/constants/Metrics";
 import Transactions from "@/firebase/Transactions";
 import { Transaction, TransactionType } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
+import { groupTransactionsByDate } from "@/utils/Helpers";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, SectionList, StyleSheet, View } from "react-native";
 
 const RecentTransactions = () => {
   const { t } = useTranslation();
@@ -103,16 +103,21 @@ const RecentTransactions = () => {
       );
     }
 
+    const sections = groupTransactionsByDate(transactions, 2);
+
     return (
-      <FadeFlatList
-        data={transactions}
+      <SectionList
+        sections={sections}
+        keyExtractor={(item: Transaction) => item.id || "id"}
         scrollEnabled={false}
+        stickySectionHeadersEnabled
         renderItem={({ item }) => {
           const { id, type, category, amount, date, description } =
             item as Transaction;
           return (
             <TransactionCard
               key={id}
+              id={id}
               type={type}
               category={category}
               isIncome={type === TransactionType.Income}
@@ -120,15 +125,16 @@ const RecentTransactions = () => {
               date={date}
               description={description}
               onPress={() => onNavigateToTransaction(item as Transaction)}
+              onDelete={onDeleteTransaction}
             />
           );
         }}
-        keyExtractor={(item) => {
-          const transaction = item as Transaction;
-          return transaction?.id || "id";
-        }}
+        renderSectionHeader={({ section: { title } }) => (
+          <ThemedText type="medium" style={styles.subtitle}>
+            {title}
+          </ThemedText>
+        )}
         ListEmptyComponent={ListEmptyComponent}
-        onDeleteItem={onDeleteTransaction}
       />
     );
   };
@@ -166,6 +172,12 @@ const styles = StyleSheet.create({
     fontSize: Metrics.size16,
     lineHeight: Metrics.size16 * 1.3,
     paddingBottom: Metrics.mediumPadding,
+  },
+  subtitle: {
+    fontSize: Metrics.size16,
+    lineHeight: Metrics.size16 * 1.3,
+    paddingBottom: Metrics.mediumPadding,
+    fontWeight: "bold",
   },
 });
 

@@ -19,7 +19,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import TouchableOpacity from "./TouchableOpacity";
+import TouchableOpacity from "@/components/TouchableOpacity";
 
 type FadeInProps = {
   index: number;
