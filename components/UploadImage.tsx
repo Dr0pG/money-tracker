@@ -1,17 +1,17 @@
-import { StyleSheet, View } from "react-native";
 import ThemedText from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useTranslation } from "react-i18next";
-import Metrics from "@/constants/Metrics";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import TouchableOpacity from "@/components/TouchableOpacity";
-import * as ImagePicker from "expo-image-picker";
-import { Image } from "expo-image";
-import { memo, useCallback } from "react";
-import Shadow from "@/constants/Shadow";
-import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
+import Metrics from "@/constants/Metrics";
+import Shadow from "@/constants/Shadow";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
+import { memo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 type PropTypes = {
   title: string;
@@ -28,8 +28,7 @@ const UploadImage = ({
 }: PropTypes) => {
   const { t } = useTranslation();
 
-  const color = useThemeColor({}, "text");
-  const removeImageColor = useThemeColor({}, "red");
+  const [color, removeImageColor] = useThemeColor({}, ["text", "red"]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

@@ -7,6 +7,7 @@ import React, { memo, ReactElement, Ref, useCallback, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import TouchableOpacity from "@/components/TouchableOpacity";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -19,7 +20,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import TouchableOpacity from "@/components/TouchableOpacity";
 
 type FadeInProps = {
   index: number;
@@ -34,8 +34,7 @@ function RightAction(
   drag: SharedValue<number>,
   onDelete: () => void
 ) {
-  const backgroundRed = useThemeColor({}, "error");
-  const iconColor = useThemeColor({}, "text");
+  const [backgroundRed, iconColor] = useThemeColor({}, ["error", "text"]);
 
   const styleAnimation = useAnimatedStyle(() => {
     return {

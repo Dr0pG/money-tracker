@@ -49,23 +49,9 @@ const ThemedText = ({
   const lightText = lightColor || useThemeColor({}, "text");
   const darkText = darkColor || useThemeColor({}, "text");
 
-  const textHighlight = useThemeColor(
+  const [textHighlight, errorColor, buttonTextColor, grayColor] = useThemeColor(
     { light: lightColor, dark: darkColor },
-    "textHighlight"
-  );
-  const errorColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "error"
-  );
-
-  const buttonTextColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "buttonText"
-  );
-
-  const grayColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "textPlaceholder"
+    ["textHighlight", "error", "buttonText", "textPlaceholder"]
   );
 
   // Use derived value to compute the color based on `type` and `theme`

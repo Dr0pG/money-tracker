@@ -59,9 +59,11 @@ const Input = forwardRef<TextInput, PropTypes>(
     }: PropTypes,
     ref
   ) => {
-    const color = useThemeColor({}, "text");
-    const textPlaceholder = useThemeColor({}, "textPlaceholder");
-    const error = useThemeColor({}, "error");
+    const [color, textPlaceholder, error] = useThemeColor({}, [
+      "text",
+      "textPlaceholder",
+      "error",
+    ]);
 
     const [showError, setError] = useState(false);
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);

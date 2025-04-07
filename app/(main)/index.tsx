@@ -1,25 +1,27 @@
 import React, { memo } from "react";
 
-import LottieView from "lottie-react-native";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet, View } from "react-native";
 import Metrics from "@/constants/Metrics";
-import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
+import LottieView from "lottie-react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import AnimatedThemedView from "@/components/AnimatedThemedView";
 import Button from "@/components/Button";
 import TouchableOpacity from "@/components/TouchableOpacity";
-import AnimatedThemedView from "@/components/AnimatedThemedView";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { useRouter } from "expo-router";
 
 const Intro = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const backgroundColor = useThemeColor({}, "background");
-  const gradient = useThemeColor({}, "gradient");
+  const [backgroundColor, gradient] = useThemeColor({}, [
+    "background",
+    "gradient",
+  ]);
 
   const onNavigateToSignUp = () => router.navigate("/sign_up");
   const onNavigateToSignIn = () => router.navigate("/sign_in");

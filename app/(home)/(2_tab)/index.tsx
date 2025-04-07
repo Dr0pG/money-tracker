@@ -40,9 +40,11 @@ const WalletsTab = () => {
   const { currency } = userStore();
   const { wallets, setWallets } = walletStore();
 
-  const backgroundMiddle = useThemeColor({}, "backgroundMiddle");
-  const addTransactionBackgroundColor = useThemeColor({}, "button");
-  const addTransactionIconColor = useThemeColor({}, "buttonText");
+  const [
+    backgroundMiddle,
+    addTransactionBackgroundColor,
+    addTransactionIconColor,
+  ] = useThemeColor({}, ["backgroundMiddle", "button", "buttonText"]);
 
   const [currentWalletsTotal, setCurrentWalletsTotal] = useState(0);
 

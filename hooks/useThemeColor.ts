@@ -11,13 +11,25 @@ interface ThemeColorProps {
 export function useThemeColor(
   props: ThemeColorProps,
   colorName: ColorName
-): string {
+): string;
+export function useThemeColor(
+  props: ThemeColorProps,
+  colorNames: ColorName[]
+): string[];
+export function useThemeColor(
+  props: ThemeColorProps,
+  colorNames: ColorName | ColorName[]
+): string | string[] {
   const { theme } = useTheme();
-  const colorFromProps = props[theme];
 
-  if (colorFromProps) {
-    return colorFromProps;
+  const getColor = (name: ColorName): string => {
+    const colorFromProps = props[theme];
+    return colorFromProps ?? Colors[theme][name];
+  };
+
+  if (Array.isArray(colorNames)) {
+    return colorNames.map(getColor);
   } else {
-    return Colors[theme][colorName];
+    return getColor(colorNames);
   }
 }

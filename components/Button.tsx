@@ -1,10 +1,10 @@
-import { ActivityIndicator, StyleSheet, ViewStyle } from "react-native";
-import React, { memo } from "react";
+import ThemedText from "@/components/ThemedText";
+import TouchableOpacity from "@/components/TouchableOpacity";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import ThemedText from "@/components/ThemedText";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import TouchableOpacity from "@/components/TouchableOpacity";
+import { ActivityIndicator, StyleSheet, ViewStyle } from "react-native";
 
 type PropTypes = {
   style?: ViewStyle | ViewStyle[];
@@ -25,9 +25,10 @@ const Button = ({
 }: PropTypes) => {
   const { t } = useTranslation();
 
-  const backgroundColor = useThemeColor({}, "button");
-  const buttonTextDisabledColor = useThemeColor({}, "buttonTextDisabled");
-  const textColor = useThemeColor({}, "buttonText");
+  const [backgroundColor, buttonTextDisabledColor, textColor] = useThemeColor(
+    {},
+    ["button", "buttonTextDisabled", "buttonText"]
+  );
 
   const translatedText = t(text);
   const currentText = isUpperCase

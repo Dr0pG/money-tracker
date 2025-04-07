@@ -48,9 +48,8 @@ const DatePicker = forwardRef(
     ref
   ) => {
     const { t } = useTranslation();
-
-    const color = useThemeColor({}, "text");
-    const error = useThemeColor({}, "error");
+    
+    const [color, error] = useThemeColor({}, ["text", "error"]);
 
     const [selectedDate, setSelectedDate] = useState<string>(
       new Date().toUTCString()

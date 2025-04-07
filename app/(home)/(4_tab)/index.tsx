@@ -2,19 +2,19 @@ import React, { memo, useCallback } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
-import { useTranslation } from "react-i18next";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import Metrics from "@/constants/Metrics";
 import TouchableOpacity from "@/components/TouchableOpacity";
-import Authentication from "@/firebase/Authentication";
-import userStore from "@/store/userStore";
-import { Image } from "expo-image";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import Durations from "@/constants/Durations";
+import Metrics from "@/constants/Metrics";
+import Authentication from "@/firebase/Authentication";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import userStore from "@/store/userStore";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Image } from "expo-image";
+import { useTranslation } from "react-i18next";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 type Option = {
   icon: React.ReactNode;
@@ -63,8 +63,10 @@ const Option = ({
 const Profile = () => {
   const { t } = useTranslation();
 
-  const backgroundColor = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
+  const [backgroundColor, textColor] = useThemeColor({}, [
+    "background",
+    "text",
+  ]);
 
   const { user, image } = userStore();
 

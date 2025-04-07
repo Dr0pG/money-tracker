@@ -43,11 +43,17 @@ const Home = () => {
   const storeUser = userStore((state) => state.storeUser);
   const setCurrency = userStore((state) => state.setCurrency);
 
-  const iconColor = useThemeColor({}, "icon");
-
-  const addTransactionIconColor = useThemeColor({}, "buttonText");
-  const addTransactionBackgroundColor = useThemeColor({}, "button");
-  const iconBackgroundColor = useThemeColor({}, "backButtonBackground");
+  const [
+    iconColor,
+    addTransactionIconColor,
+    addTransactionBackgroundColor,
+    iconBackgroundColor,
+  ] = useThemeColor({}, [
+    "icon",
+    "buttonText",
+    "button",
+    "backButtonBackground",
+  ]);
 
   const [isLoading, setIsLoading] = useState(true);
 

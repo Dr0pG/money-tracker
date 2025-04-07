@@ -1,18 +1,21 @@
-import React, { memo } from "react";
-import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { Tabs } from "expo-router";
+import React, { memo } from "react";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import Metrics from "@/constants/Metrics";
 
 const Navigator = () => {
-  const bottomBarColor = useThemeColor({}, "bottomBar");
-  const bottomBarActiveIconsColor = useThemeColor({}, "bottomBarActiveIcons");
-  const bottomBarInactiveIconsColor = useThemeColor(
-    {},
-    "bottomBarInactiveIcons"
-  );
+  const [
+    bottomBarColor,
+    bottomBarActiveIconsColor,
+    bottomBarInactiveIconsColor,
+  ] = useThemeColor({}, [
+    "bottomBar",
+    "bottomBarActiveIcons",
+    "bottomBarInactiveIcons",
+  ]);
 
   return (
     <Tabs

@@ -2,20 +2,37 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { TransactionCategory, TransactionType } from "@/store/walletStore";
 
 const getTypeColor = (type: TransactionCategory | TransactionType) => {
-  const health = useThemeColor({}, "health");
-  const income = useThemeColor({}, "income");
-  const utilities = useThemeColor({}, "utilities");
-  const clothing = useThemeColor({}, "clothing");
-  const dining = useThemeColor({}, "dining");
-  const groceries = useThemeColor({}, "groceries");
-  const sports = useThemeColor({}, "sports");
-  const rent = useThemeColor({}, "rent");
-  const transportation = useThemeColor({}, "transportation");
-  const entertainment = useThemeColor({}, "entertainment");
-  const insurance = useThemeColor({}, "insurance");
-  const personal = useThemeColor({}, "personal");
-  const investments = useThemeColor({}, "investments");
-  const other = useThemeColor({}, "other");
+  const [
+    health,
+    income,
+    utilities,
+    clothing,
+    dining,
+    groceries,
+    sports,
+    rent,
+    transportation,
+    entertainment,
+    insurance,
+    personal,
+    investments,
+    other,
+  ] = useThemeColor({}, [
+    "health",
+    "income",
+    "utilities",
+    "clothing",
+    "dining",
+    "groceries",
+    "sports",
+    "rent",
+    "transportation",
+    "entertainment",
+    "insurance",
+    "personal",
+    "investments",
+    "other",
+  ]);
 
   switch (type) {
     case TransactionCategory.Health:

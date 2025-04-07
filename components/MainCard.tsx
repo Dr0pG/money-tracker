@@ -24,11 +24,8 @@ const Info = ({ type, value }: InfoPropTypes) => {
 
   const { currency } = userStore();
 
-  const blackTextColor = useThemeColor({}, "blackText");
-  const backgroundColor = useThemeColor({}, "silver");
-
-  const infoGoodTextColor = useThemeColor({}, "green");
-  const infoBadTextColor = useThemeColor({}, "red");
+  const [blackTextColor, backgroundColor, infoGoodTextColor, infoBadTextColor] =
+    useThemeColor({}, ["blackText", "silver", "green", "red"]);
 
   const isIncome = type === "income";
   return (
@@ -72,10 +69,13 @@ const MainCard = ({
 
   const { currency } = userStore();
 
-  const mainCardBackground = useThemeColor({}, "mainCardBackground");
-  const titleBackground = useThemeColor({}, "background");
-  const blackTextColor = useThemeColor({}, "blackText");
-  const platinum = useThemeColor({}, "platinum");
+  const [mainCardBackground, titleBackground, blackTextColor, platinum] =
+    useThemeColor({}, [
+      "mainCardBackground",
+      "background",
+      "blackText",
+      "platinum",
+    ]);
 
   const [cardHeight, setCardHeight] = useState(300);
 

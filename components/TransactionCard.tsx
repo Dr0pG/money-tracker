@@ -15,16 +15,15 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 function RightAction(drag: SharedValue<number>, onDelete: () => void) {
-  const backgroundRed = useThemeColor({}, "error");
-  const iconColor = useThemeColor({}, "text");
+  const [backgroundRed, iconColor] = useThemeColor({}, ["error", "text"]);
 
   const styleAnimation = useAnimatedStyle(() => {
     return {
@@ -76,11 +75,17 @@ const TransactionCard = ({
 
   const { currency } = userStore();
 
-  const transactionCardsColor = useThemeColor({}, "transactionCards");
-  const transactionIconColor = useThemeColor({}, "transactionIcon");
-
-  const infoGoodTextColor = useThemeColor({}, "green");
-  const infoBadTextColor = useThemeColor({}, "error");
+  const [
+    transactionCardsColor,
+    transactionIconColor,
+    infoGoodTextColor,
+    infoBadTextColor,
+  ] = useThemeColor({}, [
+    "transactionCards",
+    "transactionIcon",
+    "green",
+    "error",
+  ]);
 
   const formattedType = capitalizeFirstLetter(category || type);
 

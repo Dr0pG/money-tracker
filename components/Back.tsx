@@ -1,8 +1,8 @@
-import React, { memo } from "react";
 import TouchableOpacity from "@/components/TouchableOpacity";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import React, { memo } from "react";
 import { StyleSheet } from "react-native";
 
 type PropTypes = {
@@ -10,8 +10,10 @@ type PropTypes = {
 };
 
 const Back = ({ onPress = () => {} }: PropTypes) => {
-  const iconColor = useThemeColor({}, "icon");
-  const backButtonBackground = useThemeColor({}, "backButtonBackground");
+  const [iconColor, backButtonBackground] = useThemeColor({}, [
+    "icon",
+    "backButtonBackground",
+  ]);
 
   return (
     <TouchableOpacity

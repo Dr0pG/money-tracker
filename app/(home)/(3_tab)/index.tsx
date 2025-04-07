@@ -34,11 +34,14 @@ const Statistics = () => {
 
   const isFocused = useIsFocused();
 
-  const textColor = useThemeColor({}, "textPlaceholder");
-  const incomeColor = useThemeColor({}, "incomeColor");
-  const expenseColor = useThemeColor({}, "expenseColor");
-  const invisibleColor = useThemeColor({}, "invisibleColor");
-  const labelTextColor = useThemeColor({}, "labelTextColor");
+  const [textColor, incomeColor, expenseColor, invisibleColor, labelTextColor] =
+    useThemeColor({}, [
+      "textPlaceholder",
+      "incomeColor",
+      "expenseColor",
+      "invisibleColor",
+      "labelTextColor",
+    ]);
 
   const { currency } = userStore();
 

@@ -34,8 +34,10 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
 
   const flatListRef = useRef(null);
 
-  const backButtonBackground = useThemeColor({}, "backButtonBackground");
-  const green = useThemeColor({}, "green");
+  const [backButtonBackground, green] = useThemeColor({}, [
+    "backButtonBackground",
+    "green",
+  ]);
 
   useEffect(() => {
     if (selectedValue) {
@@ -117,9 +119,11 @@ const DropDown = ({
 }: PropTypes) => {
   const { t } = useTranslation();
 
-  const color = useThemeColor({}, "text");
-  const backgroundDark = useThemeColor({}, "backgroundDark");
-  const modalBackground = useThemeColor({}, "modalBackground");
+  const [color, backgroundDark, modalBackground] = useThemeColor({}, [
+    "text",
+    "backgroundDark",
+    "modalBackground",
+  ]);
 
   const [selectedValue, setSelectedValue] = useState<DataType>({
     value: "",
