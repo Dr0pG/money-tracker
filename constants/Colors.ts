@@ -52,6 +52,11 @@ export const Colors = {
     modalBackground: "rgba(0,0,0,0.5)",
 
     orange: "#FF5733",
+
+    incomeColor: "#177AD5",
+    expenseColor: "#ED6665",
+    invisibleColor: "rgba(0,0,0,0)",
+    labelTextColor: "gray",
   },
   dark: {
     text: "#fff",
@@ -107,5 +112,10 @@ export const Colors = {
     modalBackground: "rgba(0,0,0,0.5)",
 
     orange: "#FF5733",
+
+    incomeColor: "#177AD5",
+    expenseColor: "#ED6665",
+    invisibleColor: "rgba(0,0,0,0)",
+    labelTextColor: "gray",
   },
 };

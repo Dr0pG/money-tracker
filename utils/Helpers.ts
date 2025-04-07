@@ -1,5 +1,6 @@
 import { BarChartData } from "@/app/(home)/(3_tab)";
 import { DataType } from "@/components/DropDown";
+import i18n from "@/i18n";
 import { Transaction, TransactionType } from "@/store/walletStore";
 
 function capitalizeFirstLetter(str: string) {
@@ -14,7 +15,7 @@ function splitStringIntoArray(str: string = "", splitValue: string = ",") {
 
 function formateDate(date: Date) {
   if (!date) return "";
-  return date.toLocaleDateString("pt-PT", {
+  return date.toLocaleDateString(i18n.language, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -49,7 +50,7 @@ function parseEuropeanNumber(numberString: string) {
 function formatEuropeanNumber(number: number) {
   if (typeof number !== "number" || isNaN(number)) return "";
 
-  return number.toLocaleString("de-DE", {
+  return number.toLocaleString(i18n.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -153,9 +154,9 @@ const groupByYear = (
 const getLabel = (dateStr: string, type: "weekly" | "monthly"): string => {
   const date = new Date(dateStr);
   if (type === "weekly") {
-    return date.toLocaleDateString("en-US", { weekday: "short" });
+    return date.toLocaleDateString(i18n.language, { weekday: "short" });
   } else if (type === "monthly") {
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(i18n.language, {
       month: "2-digit",
       day: "numeric",
     });
@@ -165,12 +166,15 @@ const getLabel = (dateStr: string, type: "weekly" | "monthly"): string => {
 
 const buildBarData = (
   groupedData: Record<string, Transaction[]>,
-  type: "weekly" | "monthly" | "yearly"
+  type: "weekly" | "monthly" | "yearly",
+  colors: {
+    incomeColor: string;
+    expenseColor: string;
+    invisibleColor: string;
+    labelTextColor: string;
+  }
 ): BarChartData[] => {
-  const incomeColor = "#177AD5";
-  const expenseColor = "#ED6665";
   const invisibleValue = 0.001;
-  const invisibleColor = "rgba(0,0,0,0)";
 
   const result: BarChartData[] = [];
 
@@ -186,19 +190,20 @@ const buildBarData = (
     const label = type === "yearly" ? key : getLabel(key, type);
     const labelWidth = type === "weekly" ? 30 : 37;
 
-    // Income bar (with label and spacing before the pair)
     result.push({
       value: incomeTotal === 0 ? invisibleValue : incomeTotal,
       label,
       spacing: 2,
       labelWidth,
-      labelTextStyle: { color: "gray" },
-      frontColor: incomeTotal === 0 ? invisibleColor : incomeColor,
+      labelTextStyle: { color: colors.labelTextColor },
+      frontColor:
+        incomeTotal === 0 ? colors.invisibleColor : colors.incomeColor,
     });
 
     result.push({
       value: expenseTotal === 0 ? invisibleValue : expenseTotal,
-      frontColor: expenseTotal === 0 ? invisibleColor : expenseColor,
+      frontColor:
+        expenseTotal === 0 ? colors.invisibleColor : colors.expenseColor,
     });
   });
 
@@ -221,18 +226,18 @@ const groupTransactionsByDate = (
   transactions.forEach((tx) => {
     const date = new Date(tx.date);
 
-    let dayKey = date.toLocaleDateString(undefined, {
+    let dayKey = date.toLocaleDateString(i18n.language, {
       weekday: "long",
     });
 
     if (currentTab === 1) {
-      dayKey = date.toLocaleDateString(undefined, {
+      dayKey = date.toLocaleDateString(i18n.language, {
         month: "long",
         day: "numeric",
       });
     }
     if (currentTab === 2) {
-      dayKey = date.toLocaleDateString(undefined, {
+      dayKey = date.toLocaleDateString(i18n.language, {
         year: "numeric",
         month: "short",
       });
@@ -257,21 +262,22 @@ const groupTransactionsByDate = (
 };
 
 export {
-  getStartOfWeek,
-  getEndOfWeek,
-  getStartOfMonth,
-  getEndOfMonth,
-  groupByDay,
-  groupByYear,
   addNumbers,
+  buildBarData,
   capitalizeFirstLetter,
   formateDate,
   formatEuropeanNumber,
+  getEndOfMonth,
+  getEndOfWeek,
+  getStartOfMonth,
+  getStartOfWeek,
+  groupByDay,
+  groupByYear,
+  groupTransactionsByDate,
   parseEuropeanNumber,
   splitStringIntoArray,
   subtractNumbers,
   transformArray,
-  transformObjectIntoArray,
-  buildBarData,
-  groupTransactionsByDate,
+  transformObjectIntoArray
 };
+

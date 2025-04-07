@@ -2,21 +2,21 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import { ScrollView, SectionList, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { ScrollView, SectionList, StyleSheet, View } from "react-native";
 
-import Metrics from "@/constants/Metrics";
-import Tabs from "@/components/Tabs";
-import { BarChart } from "react-native-gifted-charts";
 import AnimatedThemedView from "@/components/AnimatedThemedView";
+import Tabs from "@/components/Tabs";
+import TransactionCard from "@/components/TransactionCard";
+import Metrics from "@/constants/Metrics";
 import Transactions from "@/firebase/Transactions";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import userStore from "@/store/userStore";
+import { Transaction, TransactionType } from "@/store/walletStore";
 import { buildBarData, groupTransactionsByDate } from "@/utils/Helpers";
 import { useIsFocused } from "@react-navigation/native";
-import { Transaction, TransactionType } from "@/store/walletStore";
-import TransactionCard from "@/components/TransactionCard";
 import LottieView from "lottie-react-native";
-import userStore from "@/store/userStore";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { BarChart } from "react-native-gifted-charts";
 
 const TABS = ["statistics.weekly", "statistics.monthly", "statistics.yearly"];
 
@@ -35,6 +35,10 @@ const Statistics = () => {
   const isFocused = useIsFocused();
 
   const textColor = useThemeColor({}, "textPlaceholder");
+  const incomeColor = useThemeColor({}, "incomeColor");
+  const expenseColor = useThemeColor({}, "expenseColor");
+  const invisibleColor = useThemeColor({}, "invisibleColor");
+  const labelTextColor = useThemeColor({}, "labelTextColor");
 
   const { currency } = userStore();
 
@@ -57,9 +61,28 @@ const Statistics = () => {
         const transactions = await Transactions.getTransactionsByRange();
         if (!transactions) return;
 
-        const weeklyBarData = buildBarData(transactions.weekly, "weekly");
-        const monthlyBarData = buildBarData(transactions.monthly, "monthly");
-        const yearlyBarData = buildBarData(transactions.yearly, "yearly");
+        const colors = {
+          incomeColor,
+          expenseColor,
+          invisibleColor,
+          labelTextColor,
+        };
+
+        const weeklyBarData = buildBarData(
+          transactions.weekly,
+          "weekly",
+          colors
+        );
+        const monthlyBarData = buildBarData(
+          transactions.monthly,
+          "monthly",
+          colors
+        );
+        const yearlyBarData = buildBarData(
+          transactions.yearly,
+          "yearly",
+          colors
+        );
 
         setBarChartData({
           weekly: {
