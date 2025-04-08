@@ -119,11 +119,6 @@ const MainCard = ({
             <ThemedText type="subtitle" color={blackTextColor}>
               {t("home.total_balance")}
             </ThemedText>
-            <Entypo
-              name="dots-three-horizontal"
-              size={Metrics.cardDotsIcon}
-              color={blackTextColor}
-            />
           </View>
           <ThemedText
             type="bigTitle"
@@ -142,8 +137,8 @@ const MainCard = ({
         style={[
           styles.backgroundEffect,
           {
-            width: Metrics.screenWidth - Metrics.largePadding * 2,
-            left: -(cardWidth / 3.5),
+            width: Metrics.screenWidth - Metrics.largePadding,
+            left: -(cardWidth / 4),
             height: cardHeight,
             top: -(cardHeight / 2.5),
             backgroundColor: platinum,

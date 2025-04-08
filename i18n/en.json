@@ -105,7 +105,10 @@
     "total_balance": "Total Balance",
     "my_wallets": "My Wallets",
     "no_wallets_yet": "No wallets yet... Create a new one!",
-    "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets"
+    "there_was_a_problem_getting_your_wallets": "There was a problem getting your wallets",
+
+    "wallet_selected_successfully": "Wallet selected successfully!",
+    "there_was_a_problem_selecting_your_wallet": "There was a problem selecting your wallet. Try again later!"
   },
   "statistics": {
     "title": "Statistics",

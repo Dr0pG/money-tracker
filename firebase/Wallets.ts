@@ -82,7 +82,7 @@ const selectCurrentWallet = async (id: string) => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
-  await Utils.database().ref(`/${currentUser.uid}/currentWallet`).set(id);
+  return Utils.database().ref(`/${currentUser.uid}/currentWallet`).set(id).then(() => true).catch(() => false);
 };
 
 /**

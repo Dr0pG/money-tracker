@@ -20,25 +20,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useIsFocused } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
+import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 
 const WalletsTab = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const isFocused = useIsFocused();
 
-  const onNavigateToWallet = (wallet?: Wallet) => {
-    if (!wallet) {
-      router.navigate("../(shared)/createWallet");
-    } else {
-      router.push({
-        pathname: "/(shared)/createWallet",
-        params: { wallet: JSON.stringify(wallet) },
-      });
-    }
-  };
-
   const { currency } = userStore();
-  const { wallets, setWallets } = walletStore();
+  const { wallets, currentWalletId, setCurrentWalletId, setWallets } =
+    walletStore();
 
   const [
     backgroundMiddle,
@@ -74,6 +65,37 @@ const WalletsTab = () => {
 
     getWallets();
   }, [isFocused]);
+
+  const onNavigateToWallet = (wallet?: Wallet) => {
+    if (!wallet) {
+      router.navigate("../(shared)/createWallet");
+    } else {
+      router.push({
+        pathname: "/(shared)/createWallet",
+        params: { wallet: JSON.stringify(wallet) },
+      });
+    }
+  };
+
+  const onSelectWallet = async (id: string) => {
+    try {
+      const currentSelected = await Wallets.selectCurrentWallet(id);
+      if (!currentSelected) {
+        throw new Error();
+        return;
+      }
+
+      setCurrentWalletId(id);
+
+      EventEmitterHelper.emit(EventName.UpdateTransactions);
+
+      Toast.showError(i18n.t("wallets.wallet_selected_successfully"));
+    } catch (error) {
+      Toast.showError(
+        i18n.t("wallets.there_was_a_problem_selecting_your_wallet")
+      );
+    }
+  };
 
   const renderTotal = useCallback(() => {
     return (
@@ -126,6 +148,7 @@ const WalletsTab = () => {
         </View>
         <FadeFlatList
           data={wallets}
+          extraData={currentWalletId}
           contentContainerStyle={styles.walletsListContainer}
           scrollEnabled={false}
           renderItem={({ item }) => {
@@ -133,10 +156,13 @@ const WalletsTab = () => {
             return (
               <WalletCard
                 key={id}
+                id={id}
                 name={name}
                 image={image}
+                isSelected={currentWalletId === id}
                 total={subtractNumbers(income ?? 0, expense ?? 0)}
-                onPress={() => onNavigateToWallet(item as Wallet)}
+                onEdit={() => onNavigateToWallet(item as Wallet)}
+                onSelect={onSelectWallet}
               />
             );
           }}
@@ -148,7 +174,7 @@ const WalletsTab = () => {
         />
       </View>
     );
-  }, [wallets]);
+  }, [wallets, currentWalletId]);
 
   return (
     <ThemedView style={styles.container}>

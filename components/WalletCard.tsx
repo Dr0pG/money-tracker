@@ -4,29 +4,42 @@ import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import userStore from "@/store/userStore";
 import { formatEuropeanNumber } from "@/utils/Helpers";
-import Entypo from "@expo/vector-icons/Entypo";
 import { Image } from "expo-image";
 import React from "react";
 import { Image as RNImage, StyleSheet, View } from "react-native";
+
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const DEFAULT_IMAGE = RNImage.resolveAssetSource(
   require("@/assets/images/wallet-placeholder.jpg")
 ).uri;
 
 type PropTypes = {
+  id: string;
   name: string;
   image?: string;
   total: number;
-  onPress: () => void;
+  isSelected: boolean;
+  onEdit: () => void;
+  onSelect: (id: string) => void;
 };
 
-const WalletCard = ({ name, image, total, onPress }: PropTypes) => {
+const WalletCard = ({
+  id,
+  name,
+  image,
+  total,
+  isSelected,
+  onEdit,
+  onSelect,
+}: PropTypes) => {
   const { currency } = userStore();
 
-  const color = useThemeColor({}, "text");
+  const [color, green] = useThemeColor({}, ["text", "green"]);
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => onSelect(id)} disabled={isSelected}>
       <View style={styles.walletContainer}>
         <View style={styles.leftContent}>
           <Image
@@ -45,11 +58,22 @@ const WalletCard = ({ name, image, total, onPress }: PropTypes) => {
             </ThemedText>
           </View>
         </View>
-        <Entypo
-          name="chevron-right"
-          size={Metrics.walletRightIcon}
-          color={color}
-        />
+        {isSelected && (
+          <View style={styles.selectIcon}>
+            <AntDesign
+              name="checkcircleo"
+              size={Metrics.walletRightIcon}
+              color={green}
+            />
+          </View>
+        )}
+        <TouchableOpacity onPress={onEdit}>
+          <MaterialCommunityIcons
+            name="pencil-outline"
+            size={Metrics.walletRightIcon}
+            color={color}
+          />
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -70,6 +94,9 @@ const styles = StyleSheet.create({
     marginRight: Metrics.mediumMargin,
   },
   infoContainer: { flexDirection: "column" },
+  selectIcon: {
+    paddingHorizontal: Metrics.largePadding,
+  },
 });
 
 export default WalletCard;
