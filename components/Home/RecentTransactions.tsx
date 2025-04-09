@@ -12,7 +12,11 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, SectionList, StyleSheet, View } from "react-native";
 
-const RecentTransactions = () => {
+type PropTypes = {
+  title?: string;
+};
+
+const RecentTransactions = ({ title }: PropTypes) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -141,9 +145,11 @@ const RecentTransactions = () => {
 
   return (
     <View>
-      <ThemedText type="title" style={styles.title}>
-        {t("home.recent_transactions")}
-      </ThemedText>
+      {!!title && (
+        <ThemedText type="title" style={styles.title}>
+          {title}
+        </ThemedText>
+      )}
       {renderContent()}
     </View>
   );

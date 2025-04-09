@@ -34,6 +34,8 @@ const Home = () => {
     router.navigate("../(shared)/addTransaction");
   const onNavigateToCreateAccount = () =>
     router.navigate("../(shared)/createWallet");
+  const onNavigateToSearchTransaction = () =>
+    router.navigate("/searchTransaction");
 
   const { currentWallet, setCurrentWalletId, setCurrentWallet, setWallets } =
     walletStore();
@@ -137,7 +139,7 @@ const Home = () => {
                 styles.searchIconContent,
                 { backgroundColor: iconBackgroundColor },
               ]}
-              onPress={() => console.log("oi")}
+              onPress={onNavigateToSearchTransaction}
             >
               <Ionicons
                 name="search"
@@ -180,7 +182,7 @@ const Home = () => {
           expense={currentWallet?.expense}
         />
         <View style={styles.recentTransactionsContainer}>
-          <RecentTransactions />
+          <RecentTransactions title={t("home.recent_transactions")} />
         </View>
       </>
     );
@@ -189,7 +191,6 @@ const Home = () => {
   const renderContent = () => {
     return (
       <ScrollView
-        style={styles.mainContainer}
         contentContainerStyle={[
           !currentWallet
             ? styles.mainContentEmptyContainer
@@ -277,7 +278,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  mainContainer: {},
   mainContentEmptyContainer: {
     flexGrow: 1,
     justifyContent: "center",
