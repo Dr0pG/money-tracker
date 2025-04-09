@@ -14,14 +14,23 @@ import { Alert, SectionList, StyleSheet, View } from "react-native";
 
 type PropTypes = {
   title?: string;
+  haveSearch?: boolean;
+  search?: string;
 };
 
-const RecentTransactions = ({ title }: PropTypes) => {
+const RecentTransactions = ({
+  search,
+  title,
+  haveSearch = false,
+}: PropTypes) => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const [filteredTransactions, setFilteredTransactions] =
+    useState<Transaction[]>(transactions);
 
   const onNavigateToTransaction = (transaction?: Transaction) => {
     if (!transaction) {
@@ -64,6 +73,23 @@ const RecentTransactions = ({ title }: PropTypes) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!haveSearch && !search) return;
+
+    const lowerSearch = search?.toLowerCase();
+
+    const filtered = transactions.filter((currentTransaction) => {
+      const { category, description, type } = currentTransaction;
+      return (
+        category?.toLowerCase().includes(lowerSearch || "") ||
+        description?.toLowerCase().includes(lowerSearch || "") ||
+        type?.toLowerCase().includes(lowerSearch || "")
+      );
+    });
+
+    setFilteredTransactions(filtered);
+  }, [search, haveSearch, transactions]);
+
   const onDeleteTransaction = (id: string) => {
     Alert.alert(
       t("delete_transaction.delete_transaction"),
@@ -92,7 +118,11 @@ const RecentTransactions = ({ title }: PropTypes) => {
           loop
         />
         <ThemedText type="gray" style={styles.emptyText}>
-          {t("home.no_transactions_yet")}
+          {t(
+            haveSearch
+              ? "no_transactions_for_that_search"
+              : "home.no_transactions_yet"
+          )}
         </ThemedText>
       </View>
     );
@@ -107,7 +137,10 @@ const RecentTransactions = ({ title }: PropTypes) => {
       );
     }
 
-    const sections = groupTransactionsByDate(transactions, 2);
+    const sections = groupTransactionsByDate(
+      haveSearch ? filteredTransactions : transactions,
+      2
+    );
 
     return (
       <SectionList

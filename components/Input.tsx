@@ -89,6 +89,16 @@ const Input = forwardRef<TextInput, PropTypes>(
       if (!icon) return;
 
       switch (icon) {
+        case "search": {
+          return (
+            <AntDesign
+              name="search1"
+              size={Metrics.iconInput}
+              color={color}
+              style={styles.icon}
+            />
+          );
+        }
         case "name":
           return (
             <AntDesign

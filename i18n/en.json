@@ -127,4 +127,6 @@
   "transactions": "Transactions",
   "week_of": "Week of",
   "search": "Search",
+  "search_transaction": "Search Transaction",
+  "no_transactions_for_that_search": "No transactions for that search..."
 }
