@@ -8,6 +8,7 @@ import { Image } from "expo-image";
 import React from "react";
 import { Image as RNImage, StyleSheet, View } from "react-native";
 
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
@@ -23,6 +24,7 @@ type PropTypes = {
   isSelected: boolean;
   onEdit: () => void;
   onSelect: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
 const WalletCard = ({
@@ -33,10 +35,15 @@ const WalletCard = ({
   isSelected,
   onEdit,
   onSelect,
+  onDelete,
 }: PropTypes) => {
   const { currency } = userStore();
 
-  const [color, green] = useThemeColor({}, ["text", "green"]);
+  const [color, green, trashColor] = useThemeColor({}, [
+    "text",
+    "green",
+    "error",
+  ]);
 
   return (
     <TouchableOpacity onPress={() => onSelect(id)} disabled={isSelected}>
@@ -74,6 +81,15 @@ const WalletCard = ({
             color={color}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => onDelete(id)}>
+          <View style={styles.deleteIcon}>
+            <FontAwesome
+              name="trash"
+              size={Metrics.trashDeleteIcon}
+              color={trashColor}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -96,6 +112,9 @@ const styles = StyleSheet.create({
   infoContainer: { flexDirection: "column" },
   selectIcon: {
     paddingHorizontal: Metrics.largePadding,
+  },
+  deleteIcon: {
+    paddingLeft: Metrics.largePadding,
   },
 });
 

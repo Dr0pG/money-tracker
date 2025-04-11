@@ -77,21 +77,24 @@ const Home = () => {
           User.getUserCurrency(),
         ]);
 
-        if (
-          resWalletsResult.status === "fulfilled" &&
-          resWalletsResult.value &&
-          resCurrentWalletResult.status === "fulfilled" &&
-          resCurrentWalletResult.value &&
-          resCurrentWalletIdResult.status === "fulfilled" &&
-          resCurrentWalletIdResult.value
-        ) {
+        if (resWalletsResult.status === "fulfilled" && resWalletsResult.value)
           setWallets(resWalletsResult.value as Wallet[]);
-          setCurrentWallet(resCurrentWalletResult.value as Wallet);
-          setCurrentWalletId(resCurrentWalletIdResult.value as string);
-        } else {
-          setWallets(null);
-          setCurrentWalletId(null);
-          setCurrentWallet(null);
+        else setWallets(null);
+
+        if (resCurrentWalletResult.status === "fulfilled") {
+          if (resCurrentWalletResult.value)
+            setCurrentWallet(resCurrentWalletResult.value as Wallet);
+          else if (resWalletsResult.value)
+            setCurrentWallet(resWalletsResult.value[0] as Wallet);
+          else setCurrentWallet(null);
+        }
+
+        if (resCurrentWalletIdResult.status === "fulfilled") {
+          if (resCurrentWalletIdResult.value)
+            setCurrentWalletId(resCurrentWalletIdResult.value as string);
+          else if (resWalletsResult.value)
+            setCurrentWalletId(resWalletsResult.value[0].id as string);
+          else setCurrentWalletId(null);
         }
 
         if (

@@ -110,6 +110,12 @@
     "wallet_selected_successfully": "Wallet selected successfully!",
     "there_was_a_problem_selecting_your_wallet": "There was a problem selecting your wallet. Try again later!"
   },
+  "delete_wallet": {
+    "delete_wallet": "Delete wallet",
+    "do_you_wanna_delete_this_wallet": "Do you wanna delete this wallet?",
+    "wallet_deleted_successfully": "Wallet deleted successfully!",
+    "there_was_a_problem_deleting_your_wallets": "There was a problem deleting your wallet"
+  },
   "statistics": {
     "title": "Statistics",
 

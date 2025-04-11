@@ -74,15 +74,35 @@ const updateWallet = async (wallet: Wallet): Promise<Wallet | null> => {
 };
 
 /**
- * Function to select the current Wallet (Path created in case user change device)
+ * Function to select the current Wallet
  * @param id
  * @returns
  */
-const selectCurrentWallet = async (id: string) => {
+const selectCurrentWallet = async (id: string | null = null) => {
   const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
   if (!currentUser) return null;
 
-  return Utils.database().ref(`/${currentUser.uid}/currentWallet`).set(id).then(() => true).catch(() => false);
+  return Utils.database()
+    .ref(`/${currentUser.uid}/currentWallet`)
+    .set(id)
+    .then(() => true)
+    .catch(() => false);
+};
+
+/**
+ * Function to delete the selected Wallet
+ * @param id
+ * @returns
+ */
+const deleteWallet = async (id: string) => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return null;
+
+  return Utils.database()
+    .ref(`/${currentUser.uid}/wallets/${id}`)
+    .remove()
+    .then(() => true)
+    .catch(() => false);
 };
 
 /**
@@ -175,4 +195,5 @@ export default {
   getCurrentWalletId,
   getWallets,
   updateWallet,
+  deleteWallet,
 };

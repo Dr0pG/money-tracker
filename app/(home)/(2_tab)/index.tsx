@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 
 import ThemedView from "@/components/ThemedView";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import FadeFlatList from "@/components/FadeFlatList";
 import ThemedText from "@/components/ThemedText";
@@ -28,8 +28,13 @@ const WalletsTab = () => {
   const isFocused = useIsFocused();
 
   const { currency } = userStore();
-  const { wallets, currentWalletId, setCurrentWalletId, setWallets } =
-    walletStore();
+  const {
+    wallets,
+    currentWalletId,
+    setCurrentWallet,
+    setCurrentWalletId,
+    setWallets,
+  } = walletStore();
 
   const [
     backgroundMiddle,
@@ -41,27 +46,29 @@ const WalletsTab = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const getWallets = async () => {
+    try {
+      setIsLoading(true);
+
+      const wallets = await Wallets.getWallets();
+      if (!wallets || !wallets?.length) return;
+
+      setWallets(wallets);
+
+      setCurrentWalletsTotal(totalWallets(wallets));
+
+      return wallets;
+    } catch (error) {
+      Toast.showError(
+        i18n.t("wallets.there_was_a_problem_getting_your_wallets")
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!isFocused) return;
-
-    const getWallets = async () => {
-      try {
-        setIsLoading(true);
-
-        const wallets = await Wallets.getWallets();
-        if (!wallets || !wallets?.length) return;
-
-        setWallets(wallets);
-
-        setCurrentWalletsTotal(totalWallets(wallets));
-      } catch (error) {
-        Toast.showError(
-          i18n.t("wallets.there_was_a_problem_getting_your_wallets")
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
     getWallets();
   }, [isFocused]);
@@ -82,7 +89,6 @@ const WalletsTab = () => {
       const currentSelected = await Wallets.selectCurrentWallet(id);
       if (!currentSelected) {
         throw new Error();
-        return;
       }
 
       setCurrentWalletId(id);
@@ -95,6 +101,62 @@ const WalletsTab = () => {
         i18n.t("wallets.there_was_a_problem_selecting_your_wallet")
       );
     }
+  };
+
+  const onDelete = async (id: string) => {
+    try {
+      const isDeletedWallet = await Wallets.deleteWallet(id);
+      if (!isDeletedWallet) {
+        throw new Error();
+      }
+
+      const currentWallets = await getWallets();
+
+      const findCurrentWalletId = currentWallets?.some(
+        (wallet) => wallet?.id === currentWalletId
+      );
+
+      if (!findCurrentWalletId && !!currentWallets?.[0]) {
+        const firstWallet = currentWallets[0];
+
+        const currentSelected = await Wallets.selectCurrentWallet(
+          firstWallet.id
+        );
+
+        if (!currentSelected) {
+          throw new Error();
+        }
+
+        setCurrentWallet(firstWallet);
+        setCurrentWalletId(firstWallet.id);
+      }
+
+      EventEmitterHelper.emit(EventName.UpdateTransactions);
+
+      Toast.showError(i18n.t("delete_wallet.wallet_deleted_successfully"));
+    } catch (error) {
+      Toast.showError(
+        i18n.t("delete_wallet.there_was_a_problem_deleting_your_wallets")
+      );
+    }
+  };
+
+  const onDeleteWallet = (id: string) => {
+    Alert.alert(
+      t("delete_wallet.delete_wallet"),
+      t("delete_wallet.do_you_wanna_delete_this_wallet"),
+      [
+        {
+          text: t("cancel"),
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: t("ok").toUpperCase(),
+          onPress: () => onDelete(id),
+        },
+      ]
+    );
   };
 
   const renderTotal = useCallback(() => {
@@ -163,6 +225,7 @@ const WalletsTab = () => {
                 total={subtractNumbers(income ?? 0, expense ?? 0)}
                 onEdit={() => onNavigateToWallet(item as Wallet)}
                 onSelect={onSelectWallet}
+                onDelete={onDeleteWallet}
               />
             );
           }}
