@@ -74,7 +74,8 @@
     "edit_profile": "Edit profile",
     "settings": "Settings",
     "privacy_policy": "Privacy Policy",
-    "are_you_sure_you_want_to_logout": "Are you sure you want to logout?"
+    "are_you_sure_you_want_to_logout": "Are you sure you want to logout?",
+    "update_profile": "Update Profile"
   },
   "cancel": "Cancel",
   "logout": "Logout",

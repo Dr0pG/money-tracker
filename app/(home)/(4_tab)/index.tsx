@@ -12,6 +12,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
@@ -60,8 +61,15 @@ const Option = ({
   );
 };
 
+enum NavigationTypes {
+  EditProfile = "editProfile",
+  Settings = "settings",
+  PrivacyPolicy = "privacyPolicy",
+}
+
 const Profile = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [backgroundColor, textColor] = useThemeColor({}, [
     "background",
@@ -69,6 +77,10 @@ const Profile = () => {
   ]);
 
   const { user, image } = userStore();
+
+  const onNavigate = (type: NavigationTypes) => {
+    router.navigate(`/${type}`);
+  };
 
   const onLogOut = () => {
     Alert.alert(
@@ -136,7 +148,7 @@ const Profile = () => {
           }
           name={t("profile.edit_profile")}
           backgroundColor={"blue"}
-          onPress={() => console.log("Edit profile")}
+          onPress={() => onNavigate(NavigationTypes.EditProfile)}
         />
         <Option
           icon={
@@ -149,7 +161,7 @@ const Profile = () => {
           name={t("profile.settings")}
           backgroundColor={"green"}
           animationsDelay={Durations.animationsDelay - 300}
-          onPress={() => console.log("Settings")}
+          onPress={() => onNavigate(NavigationTypes.Settings)}
         />
         <Option
           icon={
@@ -162,7 +174,7 @@ const Profile = () => {
           name={t("profile.privacy_policy")}
           backgroundColor={"orange"}
           animationsDelay={Durations.animationsDelay - 200}
-          onPress={() => console.log("Privacy Policy")}
+          onPress={() => onNavigate(NavigationTypes.PrivacyPolicy)}
         />
         <Option
           icon={
