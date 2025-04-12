@@ -75,7 +75,9 @@
     "settings": "Settings",
     "privacy_policy": "Privacy Policy",
     "are_you_sure_you_want_to_logout": "Are you sure you want to logout?",
-    "update_profile": "Update Profile"
+    "update_profile": "Update Profile",
+    "name": "Name",
+    "currency": "Currency"
   },
   "cancel": "Cancel",
   "logout": "Logout",
