@@ -1,6 +1,12 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { create } from "zustand";
 
+export type UserInfo = {
+  name?: string;
+  currency?: string;
+  image?: string;
+};
+
 type State = {
   user?: FirebaseAuthTypes.User | null;
   currency: string;
@@ -9,6 +15,7 @@ type State = {
 
 type Action = {
   storeUser: (currentUser: FirebaseAuthTypes.User | null) => void;
+  storeUserInfo: (userInfo: UserInfo | null) => void;
   setCurrency: (currency: string) => void;
   removeUser: () => void;
 };
@@ -16,10 +23,15 @@ type Action = {
 const userStore = create<State & Action>((set) => ({
   user: null,
   currency: "€",
-  image:
-    "https://play-lh.googleusercontent.com/AFTR5qCcA2rTeEJTeQr4RcFelF7r1sJUnJTvo2lABGTR4SF774vcozga636nqzEGLk0",
+  image: "",
   storeUser: (currentUser: FirebaseAuthTypes.User | null) =>
     set(() => ({ user: currentUser || null })),
+  storeUserInfo: (userInfo: UserInfo | null) =>
+    set((state) => ({
+      ...state,
+      currency: userInfo?.currency,
+      image: userInfo?.image,
+    })),
   setCurrency: (currency: string) => set((state) => ({ ...state, currency })),
   removeUser: () => set(() => ({ user: null })),
 }));

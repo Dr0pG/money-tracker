@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
     paddingTop: Metrics.largePadding,
-    paddingBottom: Metrics.largePadding + Metrics.smallPadding,
+    paddingBottom: Metrics.mediumPadding,
   },
   header: {
     flexDirection: "row",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   rightWidth: { width: Metrics.backButtonSize },
   formContainer: { marginTop: Metrics.largePadding + Metrics.smallPadding },
   divider: { height: Metrics.mediumMargin },
-  buttonContainer: { paddingTop: Metrics.mediumPadding },
+  buttonContainer: { paddingVertical: Metrics.mediumPadding },
 });
 
 export default CreateWallet;

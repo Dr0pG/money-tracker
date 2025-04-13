@@ -140,8 +140,6 @@ const Statistics = () => {
   };
 
   const renderContent = useCallback(() => {
-    if (!isLoading && !barChartData) return ListEmptyComponent();
-
     let data = {
       chart: barChartData?.weekly.data,
       transactions: barChartData?.weekly.list,

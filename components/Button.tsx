@@ -45,7 +45,7 @@ const Button = ({
         ...(Array.isArray(style) ? style : [style]),
       ]}
       onPress={onPress}
-      disabled={disabled}
+      disabled={isLoading || disabled}
     >
       {!isLoading && (
         <ThemedText

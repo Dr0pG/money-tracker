@@ -48,7 +48,7 @@ const DatePicker = forwardRef(
     ref
   ) => {
     const { t } = useTranslation();
-    
+
     const [color, error] = useThemeColor({}, ["text", "error"]);
 
     const [selectedDate, setSelectedDate] = useState<string>(
@@ -126,7 +126,6 @@ const DatePicker = forwardRef(
             date={new Date(selectedDate)}
             isVisible={displayCalendar}
             mode="date"
-            isDarkModeEnabled
             onConfirm={onChangeDate}
             onCancel={() => setDisplayCalendar(false)}
           />

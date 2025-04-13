@@ -16,7 +16,7 @@ import Metrics from "@/constants/Metrics";
 import User from "@/firebase/User";
 import Wallets from "@/firebase/Wallets";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import userStore from "@/store/userStore";
+import userStore, { UserInfo } from "@/store/userStore";
 import walletStore, { Wallet } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -43,7 +43,7 @@ const Home = () => {
   const currentUser = userStore((state) => state.user);
 
   const storeUser = userStore((state) => state.storeUser);
-  const setCurrency = userStore((state) => state.setCurrency);
+  const storeUserInfo = userStore((state) => state.storeUserInfo);
 
   const [
     iconColor,
@@ -69,12 +69,12 @@ const Home = () => {
           resWalletsResult,
           resCurrentWalletResult,
           resCurrentWalletIdResult,
-          resCurrencyResult,
+          resUserInfo,
         ] = await Promise.allSettled([
           Wallets.getWallets(),
           Wallets.getCurrentWallet(),
           Wallets.getCurrentWalletId(),
-          User.getUserCurrency(),
+          User.getUserInfo(),
         ]);
 
         if (resWalletsResult.status === "fulfilled" && resWalletsResult.value)
@@ -97,11 +97,8 @@ const Home = () => {
           else setCurrentWalletId(null);
         }
 
-        if (
-          resCurrencyResult.status === "fulfilled" &&
-          resCurrencyResult.value
-        ) {
-          setCurrency(resCurrencyResult.value as string);
+        if (resUserInfo.status === "fulfilled" && resUserInfo.value) {
+          storeUserInfo(resUserInfo.value as UserInfo);
         }
       } catch (error: any) {
         console.log("Home error: ", error.message);

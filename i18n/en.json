@@ -77,7 +77,14 @@
     "are_you_sure_you_want_to_logout": "Are you sure you want to logout?",
     "update_profile": "Update Profile",
     "name": "Name",
-    "currency": "Currency"
+    "currency": "Currency",
+    "name_is_required": "Name is required.",
+    "currency_is_required": "Currency is required.",
+    "name_contains_invalid_characters": "Name contains invalid characters.",
+    "currency_contains_invalid_characters": "Currency contains invalid characters.",
+
+    "user_updated_successfully": "User info updated successfully!",
+    "there_was_a_problem_updating_your_info": "There was a problem updating your information. Try again later!",
   },
   "cancel": "Cancel",
   "logout": "Logout",

@@ -54,6 +54,9 @@ const Metrics = {
   // Remove Image Button
   removeButton: 30,
 
+  // Update Image Button
+  updateImageButton: 30,
+
   // Create Wallet
   createWalletButton: 30,
 

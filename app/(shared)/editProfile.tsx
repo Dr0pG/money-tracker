@@ -11,22 +11,18 @@ import Shadow from "@/constants/Shadow";
 import User from "@/firebase/User";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ErrorUpdateProfile } from "@/type/ErrorType";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Keyboard, StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { validateUpdateUserForm } from "@/utils/updateUserFormValidation";
+import userStore from "@/store/userStore";
 
 const EditProfile = () => {
   const { t } = useTranslation();
@@ -35,12 +31,15 @@ const EditProfile = () => {
 
   const onBack = () => router.back();
 
+  const storeUserInfo = userStore((state) => state.storeUserInfo);
+
   const nameInputRef = useRef<TextInput>(null);
   const currencyInputRef = useRef<TextInput>(null);
 
-  const [backgroundColor, textColor] = useThemeColor({}, [
-    "background",
+  const [textColor, button, buttonText] = useThemeColor({}, [
     "text",
+    "button",
+    "buttonText",
   ]);
 
   const [state, setState] = useState({
@@ -54,6 +53,7 @@ const EditProfile = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdatingUserLoading, setIsUpdatingUserLoading] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -70,6 +70,7 @@ const EditProfile = () => {
           currency: user.currency,
         }));
       } catch (error) {
+        console.error("Error fetching user info:", error);
       } finally {
         setIsLoading(false);
       }
@@ -78,8 +79,43 @@ const EditProfile = () => {
     getUser();
   }, []);
 
-  const onUpdateProfile = () => {
-    console.log("oi");
+  const onUpdateProfile = async () => {
+    Keyboard.dismiss();
+    try {
+      const validate = validateUpdateUserForm(state.name, state.currency);
+      if (!validate.hasError) {
+        setIsUpdatingUserLoading(true);
+
+        const { name, currency, image } = state;
+
+        const updatedUser = await User.updateUserInfo({
+          name,
+          currency,
+          image,
+        });
+
+        storeUserInfo({
+          name: updatedUser?.name,
+          image: updatedUser?.image,
+          currency: updatedUser?.currency,
+        });
+
+        onBack();
+        return;
+      }
+
+      setState((prevState) => ({
+        ...prevState,
+        error: {
+          name: t(validate?.errors?.name),
+          currency: t(validate?.errors?.currency),
+        },
+      }));
+    } catch (error) {
+      console.error("Error fetching updated user info:", error);
+    } finally {
+      setIsUpdatingUserLoading(false);
+    }
   };
 
   const onChangeValue = (type: string, value: string) => {
@@ -127,12 +163,16 @@ const EditProfile = () => {
         entering={FadeInDown.duration(Durations.animations).springify()}
         exiting={FadeOutDown.duration(Durations.animations).springify()}
       >
-        <Image
-          source={{ uri: state.image }}
-          style={{ width: "100%", height: "100%" }}
-        />
-        <TouchableOpacity style={[styles.removeImage]} onPress={pickImage}>
-          <Ionicons name="close-sharp" size={24} color={textColor} />
+        <Image source={{ uri: state.image }} style={styles.image} />
+        <TouchableOpacity
+          style={[styles.updateImage, { backgroundColor: button }]}
+          onPress={pickImage}
+        >
+          <MaterialCommunityIcons
+            name="pencil-outline"
+            size={Metrics.updateImageButton}
+            color={buttonText}
+          />
         </TouchableOpacity>
       </Animated.View>
     );
@@ -168,6 +208,7 @@ const EditProfile = () => {
           hasError={state.error?.currency !== ""}
           errorMessage={state.error?.currency}
           onFocus={() => onError(ErrorUpdateProfile.Currency, "")}
+          onSubmitEditing={onUpdateProfile}
         />
       </View>
     );
@@ -183,18 +224,18 @@ const EditProfile = () => {
     );
   };
 
-  const renderButton = () => {
+  const renderButton = useCallback(() => {
     return (
       <View style={styles.buttonContainer}>
         <Button
           text={t("edit")}
-          disabled={false}
+          disabled={!state.name || !state.currency}
           onPress={onUpdateProfile}
-          isLoading={isLoading}
+          isLoading={isLoading || isUpdatingUserLoading}
         />
       </View>
     );
-  };
+  }, [isLoading, isUpdatingUserLoading, state.name, state.currency]);
 
   const renderContent = () => {
     if (isLoading)
@@ -228,7 +269,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
-    paddingVertical: Metrics.mediumPadding,
+    paddingTop: Metrics.largePadding,
+    paddingBottom: Metrics.mediumPadding,
   },
   header: {
     flexDirection: "row",
@@ -260,7 +302,7 @@ const styles = StyleSheet.create({
     width: Metrics.imageSize,
     height: Metrics.imageSize,
     borderRadius: Metrics.imageSize,
-    overflow: "hidden",
+    overflow: "visible",
     alignSelf: "center",
     marginTop: Metrics.largeMargin,
     ...Shadow.default,
@@ -268,17 +310,18 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: Metrics.largeRadius,
+    borderRadius: Metrics.imageSize,
   },
-  removeImage: {
+  updateImage: {
     position: "absolute",
-    top: Metrics.smallMargin,
-    right: Metrics.smallMargin,
-    width: Metrics.removeButton,
-    height: Metrics.removeButton,
-    borderRadius: Metrics.removeButton,
+    bottom: 0,
+    right: Metrics.largePadding,
+    width: Metrics.updateImageButton + Metrics.mediumPadding,
+    height: Metrics.updateImageButton + Metrics.mediumPadding,
+    borderRadius: Metrics.updateImageButton + Metrics.mediumPadding,
     alignItems: "center",
     justifyContent: "center",
+    ...Shadow.default,
   },
   formContainer: {
     marginTop: Metrics.largePadding + Metrics.smallPadding,

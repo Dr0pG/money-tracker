@@ -64,15 +64,12 @@ const UploadImage = ({
         entering={FadeInDown.duration(Durations.animations).springify()}
         exiting={FadeOutDown.duration(Durations.animations).springify()}
       >
-        <Image
-          source={{ uri: imageUrl }}
-          style={{ width: "100%", height: "100%" }}
-        />
+        <Image source={{ uri: imageUrl }} style={styles.image} />
         <TouchableOpacity
           style={[styles.removeImage, { backgroundColor: removeImageColor }]}
           onPress={onRemoveImage}
         >
-          <Ionicons name="close-sharp" size={24} color={color} />
+          <Ionicons name="close-sharp" size={Metrics.removeButton} color={color} />
         </TouchableOpacity>
       </Animated.View>
     );
@@ -118,14 +115,14 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: Metrics.imageSize,
     height: Metrics.imageSize,
-    borderRadius: Metrics.largeRadius,
+    borderRadius: Metrics.imageSize,
     overflow: "hidden",
     ...Shadow.default,
   },
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: Metrics.largeRadius,
+    borderRadius: Metrics.imageSize,
   },
   removeImage: {
     position: "absolute",

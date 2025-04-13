@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
     paddingTop: Metrics.largePadding,
+    paddingBottom: Metrics.mediumPadding,
   },
   header: {
     flexDirection: "row",

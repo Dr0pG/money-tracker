@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -16,6 +16,8 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
+import User from "@/firebase/User";
 
 type Option = {
   icon: React.ReactNode;
@@ -76,11 +78,22 @@ const Profile = () => {
     "text",
   ]);
 
-  const { user, image } = userStore();
+  const { user, image, storeUser } = userStore();
 
   const onNavigate = (type: NavigationTypes) => {
     router.navigate(`../(shared)/${type}`);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const getUser = async () => {
+        const user = await User.getUser();
+        storeUser(user || null);
+      };
+
+      getUser();
+    }, [])
+  );
 
   const onLogOut = () => {
     Alert.alert(
