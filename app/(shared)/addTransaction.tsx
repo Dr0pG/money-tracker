@@ -164,10 +164,8 @@ const AddTransaction = () => {
       wallets?.find((wallet: Wallet) => wallet.id === state?.wallet) || null;
     return (
       <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         style={styles.formContainer}
-        nestedScrollEnabled
       >
         <DropDown
           key={TransactionFields.Type}
@@ -310,6 +308,7 @@ const styles = StyleSheet.create({
     width: Metrics.backButtonSize,
   },
   formContainer: {
+    flex: 1,
     marginTop: Metrics.largePadding + Metrics.smallPadding,
   },
   divider: {

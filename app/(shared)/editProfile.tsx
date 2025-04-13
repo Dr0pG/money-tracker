@@ -25,6 +25,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 const EditProfile = () => {
@@ -139,7 +140,7 @@ const EditProfile = () => {
 
   const renderForms = () => {
     return (
-      <KeyboardAvoidingView style={styles.formContainer}>
+      <View style={styles.formContainer}>
         <Input
           ref={nameInputRef}
           topPlaceholder={t("profile.name")}
@@ -168,7 +169,7 @@ const EditProfile = () => {
           errorMessage={state.error?.currency}
           onFocus={() => onError(ErrorUpdateProfile.Currency, "")}
         />
-      </KeyboardAvoidingView>
+      </View>
     );
   };
 
@@ -204,10 +205,13 @@ const EditProfile = () => {
       );
 
     return (
-      <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
         {renderImage()}
         {renderForms()}
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   };
 
@@ -224,7 +228,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
-    paddingTop: Metrics.mediumPadding,
+    paddingVertical: Metrics.mediumPadding,
   },
   header: {
     flexDirection: "row",

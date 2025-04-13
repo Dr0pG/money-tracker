@@ -79,7 +79,7 @@ const Profile = () => {
   const { user, image } = userStore();
 
   const onNavigate = (type: NavigationTypes) => {
-    router.navigate(`/${type}`);
+    router.navigate(`../(shared)/${type}`);
   };
 
   const onLogOut = () => {

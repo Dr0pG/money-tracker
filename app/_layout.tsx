@@ -134,6 +134,42 @@ const ThemedApp = () => {
             gestureEnabled: true,
           }}
         />
+        <JsStack.Screen
+          name="(shared)/searchTransaction"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+        name="(shared)/editProfile"
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+          presentation: "modal",
+          gestureEnabled: true,
+        }}
+      />
+      <JsStack.Screen
+        name="(shared)/settings"
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+          presentation: "modal",
+          gestureEnabled: true,
+        }}
+      />
+      <JsStack.Screen
+        name="(shared)/privacyPolicy"
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+          presentation: "modal",
+          gestureEnabled: true,
+        }}
+      />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </JsStack>
     </SafeAreaView>

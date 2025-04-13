@@ -35,7 +35,7 @@ const Home = () => {
   const onNavigateToCreateAccount = () =>
     router.navigate("../(shared)/createWallet");
   const onNavigateToSearchTransaction = () =>
-    router.navigate("/searchTransaction");
+    router.navigate("../(shared)/searchTransaction");
 
   const { currentWallet, setCurrentWalletId, setCurrentWallet, setWallets } =
     walletStore();
