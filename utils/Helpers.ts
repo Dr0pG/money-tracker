@@ -174,7 +174,7 @@ const buildBarData = (
     labelTextColor: string;
   }
 ): BarChartData[] => {
-  const invisibleValue = 0.001;
+  const invisibleValue = 0.1;
 
   const result: BarChartData[] = [];
 
@@ -305,5 +305,5 @@ export {
   subtractNumbers,
   transformArray,
   transformObjectIntoArray,
-  deepEqual
+  deepEqual,
 };

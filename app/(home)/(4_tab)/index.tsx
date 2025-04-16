@@ -78,7 +78,7 @@ const Profile = () => {
     "text",
   ]);
 
-  const { user, image, storeUser } = userStore();
+  const { user, image, storeUser, storeUserInfo } = userStore();
 
   const onNavigate = (type: NavigationTypes) => {
     router.navigate(`../(shared)/${type}`);
@@ -87,8 +87,32 @@ const Profile = () => {
   useFocusEffect(
     useCallback(() => {
       const getUser = async () => {
-        const user = await User.getUser();
-        storeUser(user || null);
+        const [resUserResult, resUserInfoResult] = await Promise.allSettled([
+          User.getUser(),
+          User.getUserInfo(),
+        ]);
+
+        if (
+          resUserResult.status === "fulfilled" &&
+          resUserResult.value &&
+          resUserInfoResult.status === "fulfilled" &&
+          resUserInfoResult.value
+        ) {
+          const user = resUserResult.value;
+          const userInfo = resUserInfoResult.value;
+
+          if (user) {
+            storeUser({
+              ...user,
+              email: user.email,
+              displayName: userInfo?.name,
+            });
+            storeUserInfo(userInfo);
+          } else storeUser(null);
+        } else {
+          storeUser(null);
+          storeUserInfo(null);
+        }
       };
 
       getUser();

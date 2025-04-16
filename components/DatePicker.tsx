@@ -126,6 +126,7 @@ const DatePicker = forwardRef(
             date={new Date(selectedDate)}
             isVisible={displayCalendar}
             mode="date"
+            display="inline"
             onConfirm={onChangeDate}
             onCancel={() => setDisplayCalendar(false)}
           />

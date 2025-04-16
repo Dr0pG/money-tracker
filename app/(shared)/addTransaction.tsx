@@ -178,20 +178,24 @@ const AddTransaction = () => {
           }
         />
         <View style={styles.divider} />
-        <DropDown
-          key={TransactionFields.Wallet}
-          placeholder={t("create_transaction.wallet")}
-          value={state.wallet}
-          isRequired
-          options={formatWalletsOptions(wallets)}
-          onChangeValue={(value: string) =>
-            onChangeValue(TransactionFields.Wallet, value)
-          }
-          {...(selectedWallet && {
-            label: formatWalletOption(selectedWallet)?.label,
-          })}
-        />
-        <View style={styles.divider} />
+        {!currentSelectedTransaction?.wallet && (
+          <>
+            <DropDown
+              key={TransactionFields.Wallet}
+              placeholder={t("create_transaction.wallet")}
+              value={state.wallet}
+              isRequired
+              options={formatWalletsOptions(wallets)}
+              onChangeValue={(value: string) =>
+                onChangeValue(TransactionFields.Wallet, value)
+              }
+              {...(selectedWallet && {
+                label: formatWalletOption(selectedWallet)?.label,
+              })}
+            />
+            <View style={styles.divider} />
+          </>
+        )}
         {state.type === TransactionType.Expense && (
           <>
             <DropDown

@@ -84,7 +84,7 @@
     "currency_contains_invalid_characters": "Currency contains invalid characters.",
 
     "user_updated_successfully": "User info updated successfully!",
-    "there_was_a_problem_updating_your_info": "There was a problem updating your information. Try again later!",
+    "there_was_a_problem_updating_your_info": "There was a problem updating your information. Try again later!"
   },
   "cancel": "Cancel",
   "logout": "Logout",
@@ -144,5 +144,9 @@
   "week_of": "Week of",
   "search": "Search",
   "search_transaction": "Search Transaction",
-  "no_transactions_for_that_search": "No transactions for that search..."
+  "no_transactions_for_that_search": "No transactions for that search...",
+  "privacy_policy": {
+    "title": "Thank you for trusting MoneyTracker to help you manage your finances! Your privacy is important to us.\n\nThis Privacy Policy explains how we collect, use, and protect your information when you use our app.",
+    "content": "1. Information We Collect\nWe collect the following types of information to provide and improve our services:\n\n- Personal Information:\n  - Name, email address (if you create an account or contact us)\n\n- Financial Data:\n  - Your manually entered transaction details (amounts, categories, notes)\n  - Budgets you set within the app\n  *We do not connect to your bank accounts or collect sensitive financial credentials.*\n\n- Usage Data:\n  - How you use the app (features accessed, time spent)\n  - Device information (model, operating system, app version)\n\n2. How We Use Your Information\nWe use your information to:\n\n- Track your spending and savings\n- Provide financial reports and insights\n- Send you helpful alerts and reminders\n- Improve app functionality and user experience\n- Respond to your inquiries and feedback\n\n3. Data Security\nWe implement industry-standard security measures to protect your data. All personal and financial data is stored securely and never shared with third parties without your explicit consent.\n\n4. Third-Party Services\nWe do not sell, trade, or rent your personal or financial information to third parties. If we use third-party services (like analytics providers), they will only have access to anonymous, aggregated data.\n\n5. Your Choices\nYou can:\n- Access, edit, or delete your personal and financial data at any time from within the app.\n- Opt out of non-essential notifications.\n\n6. Changes to This Policy\nWe may update this Privacy Policy occasionally. If we make significant changes, we’ll notify you within the app.\n\n7. Contact Us\nIf you have any questions or concerns about this Privacy Policy, feel free to contact us at:\nsupport@moneytrackerapp.com"
+  }
 }

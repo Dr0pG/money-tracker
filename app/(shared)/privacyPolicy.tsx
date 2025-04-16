@@ -30,14 +30,27 @@ const PrivacyPolicy = () => {
     );
   };
 
+  const renderContent = () => {
+    return (
+      <ScrollView
+        style={{ backgroundColor }}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        contentContainerStyle={styles.mainContent}
+      >
+        <ThemedText type="subtitle" style={styles.title}>
+          {t("privacy_policy.title")}
+        </ThemedText>
+        <ThemedText>{t("privacy_policy.content")}</ThemedText>
+      </ScrollView>
+    );
+  };
+
   return (
-    <ScrollView
-      style={{ backgroundColor }}
-      showsVerticalScrollIndicator={false}
-      bounces={false}
-    >
-      <ThemedView style={styles.container}>{renderHeader()}</ThemedView>
-    </ScrollView>
+    <ThemedView style={styles.container}>
+      {renderHeader()}
+      {renderContent()}
+    </ThemedView>
   );
 };
 
@@ -51,9 +64,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingBottom: Metrics.largePadding,
   },
   rightWidth: {
     width: Metrics.backButtonSize,
+  },
+  mainContent: {
+    paddingBottom: Metrics.largePadding * 2,
+  },
+  title: {
+    paddingBottom: Metrics.largePadding,
   },
 });
 

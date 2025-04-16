@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import ThemedText from "@/components/ThemedText";
@@ -24,6 +24,7 @@ import auth from "@react-native-firebase/auth";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -59,67 +60,69 @@ const Home = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const getInfo = async () => {
-      try {
-        const user = auth().currentUser;
-        if (user) storeUser(user);
+  useFocusEffect(
+    useCallback(() => {
+      const getInfo = async () => {
+        try {
+          const [
+            resWalletsResult,
+            resCurrentWalletResult,
+            resCurrentWalletIdResult,
+            resUserInfo,
+          ] = await Promise.allSettled([
+            Wallets.getWallets(),
+            Wallets.getCurrentWallet(),
+            Wallets.getCurrentWalletId(),
+            User.getUserInfo(),
+          ]);
 
-        const [
-          resWalletsResult,
-          resCurrentWalletResult,
-          resCurrentWalletIdResult,
-          resUserInfo,
-        ] = await Promise.allSettled([
-          Wallets.getWallets(),
-          Wallets.getCurrentWallet(),
-          Wallets.getCurrentWalletId(),
-          User.getUserInfo(),
-        ]);
+          if (resWalletsResult.status === "fulfilled" && resWalletsResult.value)
+            setWallets(resWalletsResult.value as Wallet[]);
+          else setWallets(null);
 
-        if (resWalletsResult.status === "fulfilled" && resWalletsResult.value)
-          setWallets(resWalletsResult.value as Wallet[]);
-        else setWallets(null);
+          if (resCurrentWalletResult.status === "fulfilled") {
+            if (resCurrentWalletResult.value)
+              setCurrentWallet(resCurrentWalletResult.value as Wallet);
+            else if (resWalletsResult.value)
+              setCurrentWallet(resWalletsResult.value[0] as Wallet);
+            else setCurrentWallet(null);
+          }
 
-        if (resCurrentWalletResult.status === "fulfilled") {
-          if (resCurrentWalletResult.value)
-            setCurrentWallet(resCurrentWalletResult.value as Wallet);
-          else if (resWalletsResult.value)
-            setCurrentWallet(resWalletsResult.value[0] as Wallet);
-          else setCurrentWallet(null);
+          if (resCurrentWalletIdResult.status === "fulfilled") {
+            if (resCurrentWalletIdResult.value)
+              setCurrentWalletId(resCurrentWalletIdResult.value as string);
+            else if (resWalletsResult.value)
+              setCurrentWalletId(resWalletsResult.value[0].id as string);
+            else setCurrentWalletId(null);
+          }
+
+          if (resUserInfo.status === "fulfilled" && resUserInfo.value) {
+            const user = auth().currentUser;
+            storeUserInfo(resUserInfo.value as UserInfo);
+            if (user)
+              storeUser({ ...user, displayName: resUserInfo.value.name });
+          }
+        } catch (error: any) {
+          console.log("Home error: ", error.message);
+        } finally {
+          setIsLoading(false);
         }
+      };
 
-        if (resCurrentWalletIdResult.status === "fulfilled") {
-          if (resCurrentWalletIdResult.value)
-            setCurrentWalletId(resCurrentWalletIdResult.value as string);
-          else if (resWalletsResult.value)
-            setCurrentWalletId(resWalletsResult.value[0].id as string);
-          else setCurrentWalletId(null);
+      getInfo();
+
+      const subscription = EventEmitterHelper.listen(
+        EventName.UpdateTransactions,
+        () => {
+          getInfo();
         }
+      );
 
-        if (resUserInfo.status === "fulfilled" && resUserInfo.value) {
-          storeUserInfo(resUserInfo.value as UserInfo);
-        }
-      } catch (error: any) {
-        console.log("Home error: ", error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getInfo();
-
-    const subscription = EventEmitterHelper.listen(
-      EventName.UpdateTransactions,
-      () => {
-        getInfo();
-      }
-    );
-
-    return () => {
-      EventEmitterHelper.remove(subscription);
-    };
-  }, []);
+      return () => {
+        EventEmitterHelper.remove(subscription);
+      };
+    }, [])
+  );
 
   const renderHeader = () => {
     return (
