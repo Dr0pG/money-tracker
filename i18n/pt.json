@@ -1,68 +1,152 @@
 {
-    "main": {
-      "sign_in": "Sign in",
-      "always_take_control": "Always take control of your finances",
-      "finances_must_be": "Finances must be arranged to set a better lifestyle in future",
-      "get_started": "Get started"
-    },
-    "sign_up": {
-      "sign_up": "Sign up",
-      "lets": "Let's",
-      "get_started": "Get Started",
-      "create_an_account": "Create an account to track your expenses",
-      "enter_your_name": "Enter your name",
-      "already_have_account": "Already have an account?",
-      "form": {
-        "name_is_required": "Name is required.",
-        "email_is_required": "Email is required.",
-        "password_is_required": "Password is required.",
-  
-        "name_contains_invalid_characters": "Name contains invalid characters.",
-        "invalid_email_format": "Invalid email format.",
-        "password_must_be_at_least": "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character."
-      }
-    },
-    "sign_in": {
-      "hey": "Hey",
-      "welcome_back": "Welcome Back",
-      "login_now_to_track_all_expenses": "Login now to track all expenses",
-      "forgot_password": "Forgot password",
-      "dont_have_an_account": "Don't have an account?",
-      "sign_up": "Sign up"
-    },
-    "home": {
-      "hello": "Hello,",
-      "total_balance": "Total Balance",
-      "recent_transactions": "Recent Transactions",
-      "income": "Income",
-      "expense": "Expense",
-      "no_transactions_yet": "No transactions yet... Start adding new ones!",
-      "no_wallet": "No wallet found yet! Please create a new one and start tracking your expenses/incomes",
-      "create_wallet": "Create wallet"
-    },
-    "login": "Login",
-    "enter_your_email": "Enter your email",
-    "enter_your_password": "Enter your password",
-    "login_successfully": "Login successfully!",
-    "that_email_address_is_already_in_use": "That email address is already in use!",
-    "that_email_address_is_invalid": "That email address is invalid!",
-    "the_supplied_authentication_credential_is_malformed_or_has_expired": "The supplied authentication credential is malformed or has expired",
-    "account_created_successfully": "Account created successfully!",
-    "there_was_a_problem_creating_your_account": "There was a problem creating your account. Try again later!",
-    "user_logout_successfully": "User logout successfully!",
-    "something_went_wrong": "Something went wrong. Try again later!",
-    "create_wallet": {
-      "title": "New Wallet",
-      "name": "Name",
-  
-      "description": "Description",
-      "image": "Image",
-      "wallet_created_successfully": "Wallet created successfully!",
-      "there_was_a_problem_creating_your_wallet": "There was a problem creating your wallet. Try again later!"
-    },
-    "upload_image": "Upload Image",
-    "create": "Create",
-    "first_release_we_only_store_images_locally": "First release, we only store images locally!",
-    "profile": "Profile"
+  "main": {
+    "sign_in": "Iniciar sessão",
+    "always_take_control": "Assume sempre o controlo das tuas finanças",
+    "finances_must_be": "As finanças devem estar organizadas para garantir um melhor estilo de vida no futuro",
+    "get_started": "Começar"
+  },
+  "sign_up": {
+    "sign_up": "Registar",
+    "lets": "Vamos",
+    "get_started": "Começar",
+    "create_an_account": "Cria uma conta para acompanhar as tuas despesas",
+    "enter_your_name": "Insere o teu nome",
+    "already_have_account": "Já tens uma conta?",
+    "form": {
+      "name_is_required": "O nome é obrigatório.",
+      "email_is_required": "O email é obrigatório.",
+      "password_is_required": "A palavra-passe é obrigatória.",
+      "name_contains_invalid_characters": "O nome contém caracteres inválidos.",
+      "invalid_email_format": "Formato de email inválido.",
+      "password_must_be_at_least": "A palavra-passe deve ter pelo menos 8 caracteres, incluir uma letra maiúscula e um caractere especial."
+    }
+  },
+  "sign_in": {
+    "hey": "Olá",
+    "welcome_back": "Bem-vindo de volta",
+    "login_now_to_track_all_expenses": "Inicia sessão para acompanhares todas as despesas",
+    "forgot_password": "Esqueceste-te da palavra-passe",
+    "dont_have_an_account": "Não tens conta?",
+    "sign_up": "Registar"
+  },
+  "home": {
+    "hello": "Olá,",
+    "total_balance": "Saldo Total",
+    "recent_transactions": "Transações Recentes",
+    "income": "Receita",
+    "expense": "Despesa",
+    "no_transactions_yet": "Ainda não há transações... Começa a adicionar!",
+    "no_wallet": "Ainda não tens nenhuma carteira! Cria uma nova e começa a acompanhar as tuas despesas/receitas",
+    "create_wallet": "Criar carteira"
+  },
+  "login": "Iniciar sessão",
+  "enter_your_email": "Insere o teu email",
+  "enter_your_password": "Insere a tua palavra-passe",
+  "login_successfully": "Sessão iniciada com sucesso!",
+  "that_email_address_is_already_in_use": "Esse endereço de email já está em uso!",
+  "that_email_address_is_invalid": "Esse endereço de email é inválido!",
+  "the_supplied_authentication_credential_is_malformed_or_has_expired": "As credenciais fornecidas estão malformadas ou expiradas",
+  "account_created_successfully": "Conta criada com sucesso!",
+  "there_was_a_problem_creating_your_account": "Houve um problema ao criar a tua conta. Tenta novamente mais tarde!",
+  "user_logout_successfully": "Sessão terminada com sucesso!",
+  "something_went_wrong": "Ocorreu um erro. Tenta novamente mais tarde!",
+  "create_wallet": {
+    "title": "Carteira Nova",
+    "edit_wallet": "Editar carteira",
+    "name": "Nome",
+    "description": "Descrição",
+    "image": "Imagem",
+    "wallet_created_successfully": "Carteira criada com sucesso!",
+    "wallet_updated_successfully": "Carteira atualizada com sucesso!",
+    "there_was_a_problem_creating_your_wallet": "Houve um problema ao criar sua carteira. Tente novamente mais tarde!",
+    "there_was_a_problem_updating_your_wallet": "Houve um problema ao atualizar sua carteira. Tente novamente mais tarde!"
+  },
+  "upload_image": "Carregar Imagem",
+  "create": "Criar",
+  "edit": "Editar",
+  "first_release_we_only_store_images_locally": "Primeira versão, apenas armazenamos imagens localmente!",
+  "profile": {
+    "title": "Perfil",
+    "log_out": "Terminar sessão",
+    "edit_profile": "Editar perfil",
+    "settings": "Definições",
+    "privacy_policy": "Política de Privacidade",
+    "are_you_sure_you_want_to_logout": "Tens a certeza que queres terminar sessão?",
+    "update_profile": "Atualizar Perfil",
+    "name": "Nome",
+    "currency": "Moeda",
+    "name_is_required": "O nome é obrigatório.",
+    "currency_is_required": "A moeda é obrigatória.",
+    "name_contains_invalid_characters": "O nome contém caracteres inválidos.",
+    "currency_contains_invalid_characters": "A moeda contém caracteres inválidos.",
+    "user_updated_successfully": "Informações do utilizador atualizadas com sucesso!",
+    "there_was_a_problem_updating_your_info": "Houve um problema ao atualizar as tuas informações. Tenta novamente mais tarde!"
+  },
+  "cancel": "Cancelar",
+  "logout": "Terminar sessão",
+  "preview": "Pré-visualizar",
+  "create_transaction": {
+    "title": "Nova Transação",
+    "edit_transaction": "Editar Transação",
+    "type": "Tipo",
+    "wallet": "Carteira",
+    "expense_category": "Categoria de Despesa",
+    "date": "Data",
+    "amount": "Montante",
+    "description": "Descrição",
+    "transaction_created_successfully": "Transação criada com sucesso!",
+    "transaction_updated_successfully": "Transação atualizada com sucesso!",
+    "there_was_a_problem_creating_your_transaction": "Houve um problema ao criar a tua transação. Tenta novamente mais tarde!",
+    "there_was_a_problem_updating_your_transaction": "Houve um problema ao atualizar a tua transação. Tenta novamente mais tarde!"
+  },
+  "delete_transaction": {
+    "delete_transaction": "Eliminar transação",
+    "do_you_wanna_delete_this_transaction": "Queres eliminar esta transação?",
+    "transaction_deleted_successfully": "Transação eliminada com sucesso!",
+    "there_was_a_problem_deleting_your_transaction": "Houve um problema ao eliminar a tua transação. Tenta novamente mais tarde!"
+  },
+  "select_item": "Selecionar item",
+  "select_date": "Selecionar data",
+  "wallets": {
+    "total_balance": "Saldo Total",
+    "my_wallets": "Carteiras",
+    "no_wallets_yet": "Ainda não tens nenhuma carteira... Cria uma nova!",
+    "there_was_a_problem_getting_your_wallets": "Houve um problema ao obter as tuas carteiras",
+
+    "wallet_selected_successfully": "Carteira selecionada com sucesso!",
+    "there_was_a_problem_selecting_your_wallet": "Houve um problema ao selecionar a tua carteira. Tenta novamente mais tarde!"
+  },
+  "delete_wallet": {
+    "delete_wallet": "Apagar carteira",
+    "do_you_wanna_delete_this_wallet": "Queres mesmo apagar esta carteira?",
+    "wallet_deleted_successfully": "Carteira apagada com sucesso!",
+    "there_was_a_problem_deleting_your_wallets": "Houve um problema ao apagar a tua carteira"
+  },
+  "statistics": {
+    "title": "Estatísticas",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "yearly": "Anual",
+    "total_income": "Receita Total",
+    "total_expense": "Despesa Total",
+    "total_balance": "Saldo Total",
+    "no_transactions_yet": "Ainda não há transações... Começa a adicionar novas!",
+    "there_was_a_problem_getting_your_statistics": "Houve um problema ao obter as tuas estatísticas"
+  },
+  "privacy_policy": {
+    "title": "Obrigado por confiares no MoneyTracker para te ajudar a gerir as tuas finanças! A tua privacidade é importante para nós.\n\nEsta Política de Privacidade explica como recolhemos, usamos e protegemos as tuas informações quando utilizas a nossa aplicação.",
+    "content": "1. Informações que Recolhemos\nRecolhemos os seguintes tipos de informações para fornecer e melhorar os nossos serviços:\n\n- Informações Pessoais:\n  - Nome, endereço de email (se criares uma conta ou nos contactares)\n\n- Dados Financeiros:\n  - Detalhes das transações inseridas manualmente (montantes, categorias, notas)\n  - Orçamentos que defines na aplicação\n  *Não nos conectamos às tuas contas bancárias nem recolhemos credenciais financeiras sensíveis.*\n\n- Dados de Utilização:\n  - Como utilizas a aplicação (funcionalidades acedidas, tempo gasto)\n  - Informações do dispositivo (modelo, sistema operativo, versão da aplicação)\n\n2. Como Usamos as Tuas Informações\nUsamos as tuas informações para:\n\n- Acompanhar os teus gastos e poupanças\n- Fornecer relatórios e insights financeiros\n- Enviar alertas e lembretes úteis\n- Melhorar a funcionalidade e experiência do utilizador da aplicação\n- Responder às tuas perguntas e feedback\n\n3. Segurança dos Dados\nImplementamos medidas de segurança padrão da indústria para proteger os teus dados. Todos os dados pessoais e financeiros são armazenados de forma segura e nunca são partilhados com terceiros sem o teu consentimento explícito.\n\n4. Serviços de Terceiros\nNão vendemos, trocamos ou alugamos as tuas informações pessoais ou financeiras a terceiros. Se utilizarmos serviços de terceiros (como fornecedores de análises), eles terão acesso apenas a dados anónimos e agregados.\n\n5. As Tuas Escolhas\nPodes:\n- Aceder, editar ou eliminar os teus dados pessoais e financeiros a qualquer momento dentro da aplicação.\n- Desativar notificações não essenciais.\n\n6. Alterações a Esta Política\nPodemos atualizar esta Política de Privacidade ocasionalmente. Se fizermos alterações significativas, notificaremos dentro da aplicação.\n\n7. Contacta-nos\nSe tiveres alguma dúvida ou preocupação sobre esta Política de Privacidade, contacta-nos em:\nsupport@moneytrackerapp.com"
+  },
+  "ok": "Ok",
+  "transactions": "Transações",
+  "week_of": "Semana de",
+  "search": "Pesquisar",
+  "search_transaction": "Pesquisar Transação",
+  "no_transactions_for_that_search": "Nenhuma transação encontrada para essa pesquisa...",
+  "language": "Idioma",
+  "english": "Inglês",
+  "portuguese": "Português",
+  "french": "Francês",
+  "save": "Guardar"
 }
   

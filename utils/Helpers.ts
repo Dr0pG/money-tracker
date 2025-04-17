@@ -287,12 +287,27 @@ const deepEqual = (obj1: Record<string, any>, obj2: Record<string, any>) => {
   return true;
 };
 
+const formatLanguage = (language: string) => {
+  switch (language) {
+    case "en":
+      return i18n.t("english");
+    case "pt":
+      return i18n.t("portuguese");
+    case "fr":
+      return i18n.t("french");
+    default:
+      return i18n.t("english");
+  }
+};
+
 export {
   addNumbers,
   buildBarData,
   capitalizeFirstLetter,
+  deepEqual,
   formateDate,
   formatEuropeanNumber,
+  formatLanguage,
   getEndOfMonth,
   getEndOfWeek,
   getStartOfMonth,
@@ -304,6 +319,6 @@ export {
   splitStringIntoArray,
   subtractNumbers,
   transformArray,
-  transformObjectIntoArray,
-  deepEqual,
+  transformObjectIntoArray
 };
+
