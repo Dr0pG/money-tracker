@@ -13,7 +13,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.moneytracker.app",
       "entitlements": {
-        "aps-environment": "production",
+        "aps-environment": "production"
       },
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification", "fetch"]
@@ -43,8 +43,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font",
-      "./notifee-mod.js"
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

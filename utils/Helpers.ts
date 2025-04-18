@@ -24,7 +24,10 @@ function formateDate(date: Date) {
 
 function transformArray(arr: DataType[] | string[]) {
   if (arr.every((item) => typeof item === "string")) {
-    return arr.map((item) => ({ value: item, label: i18n.t(item.toLowerCase()) }));
+    return arr.map((item) => ({
+      value: item,
+      label: item.toLowerCase(),
+    }));
   }
   return arr;
 }

@@ -30,6 +30,8 @@ type OptionsPropTypes = {
 };
 
 const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
+  const { t } = useTranslation();
+
   const { theme } = useTheme();
 
   const flatListRef = useRef(null);
@@ -56,7 +58,7 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
 
   const renderItem = ({ item }: { item: DataType }) => {
     const isSelected = item.value === selectedValue.value;
-    const text = capitalizeFirstLetter(item.label);
+    const text = capitalizeFirstLetter(t(item.label));
     return (
       <Pressable
         onPress={() => {
