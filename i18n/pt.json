@@ -147,6 +147,22 @@
   "english": "Inglês",
   "portuguese": "Português",
   "french": "Francês",
-  "save": "Guardar"
+  "save": "Guardar",
+  "changes_updated": "Alterações atualizadas com sucesso!",
+  "expense": "Despesa",
+  "health": "Saúde",
+  "income": "Rendimento",
+  "utilities": "Serviços públicos",
+  "dining": "Restaurantes",
+  "clothing": "Vestuário",
+  "groceries": "Mercearias",
+  "sports": "Desporto",
+  "rent": "Renda",
+  "transportation": "Transporte",
+  "entertainment": "Entretenimento",
+  "insurance": "Seguro",
+  "personal": "Pessoal",
+  "investments": "Investimentos",
+  "other": "Outro"
 }
   

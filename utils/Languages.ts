@@ -1,17 +1,15 @@
-import i18n from "@/i18n";
-
 export const getLanguages = () => {
   return [
     {
-      label: i18n.t("english"),
+      label: "english",
       value: "en",
     },
     {
-      label: i18n.t("portuguese"),
+      label: "portuguese",
       value: "pt",
     },
     {
-      label: i18n.t("french"),
+      label: "french",
       value: "fr",
     },
   ];

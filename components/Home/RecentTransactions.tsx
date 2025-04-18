@@ -81,9 +81,14 @@ const RecentTransactions = ({
     const filtered = transactions.filter((currentTransaction) => {
       const { category, description, type } = currentTransaction;
       return (
-        category?.toLowerCase().includes(lowerSearch || "") ||
+        (category &&
+          t(category)
+            ?.toLowerCase()
+            .includes(lowerSearch || "")) ||
         description?.toLowerCase().includes(lowerSearch || "") ||
-        type?.toLowerCase().includes(lowerSearch || "")
+        t(type)
+          ?.toLowerCase()
+          .includes(lowerSearch || "")
       );
     });
 

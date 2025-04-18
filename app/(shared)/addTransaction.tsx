@@ -162,6 +162,7 @@ const AddTransaction = () => {
   const renderContent = () => {
     const selectedWallet =
       wallets?.find((wallet: Wallet) => wallet.id === state?.wallet) || null;
+
     return (
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}

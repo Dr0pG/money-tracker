@@ -183,7 +183,9 @@ const DropDown = ({
   const renderSelectedOption = useCallback(() => {
     return (
       <ThemedText type={selectedValue.value ? "default" : "gray"}>
-        {capitalizeFirstLetter(selectedValue.label) || t("select_item")}
+        {selectedValue.label
+          ? capitalizeFirstLetter(t(selectedValue.label.toLowerCase()))
+          : t("select_item")}
       </ThemedText>
     );
   }, [selectedValue]);

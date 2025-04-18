@@ -24,7 +24,7 @@ function formateDate(date: Date) {
 
 function transformArray(arr: DataType[] | string[]) {
   if (arr.every((item) => typeof item === "string")) {
-    return arr.map((item) => ({ value: item, label: item }));
+    return arr.map((item) => ({ value: item, label: i18n.t(item.toLowerCase()) }));
   }
   return arr;
 }
@@ -290,13 +290,13 @@ const deepEqual = (obj1: Record<string, any>, obj2: Record<string, any>) => {
 const formatLanguage = (language: string) => {
   switch (language) {
     case "en":
-      return i18n.t("english");
+      return "english";
     case "pt":
-      return i18n.t("portuguese");
+      return "portuguese";
     case "fr":
-      return i18n.t("french");
+      return "french";
     default:
-      return i18n.t("english");
+      return "english";
   }
 };
 
@@ -319,6 +319,5 @@ export {
   splitStringIntoArray,
   subtractNumbers,
   transformArray,
-  transformObjectIntoArray
+  transformObjectIntoArray,
 };
-

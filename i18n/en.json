@@ -153,5 +153,21 @@
   "english": "English",
   "portuguese": "Portuguese",
   "french": "French",
-  "save": "Save"
+  "save": "Save",
+  "changes_updated": "Changes updated successfully!",
+  "expense": "Expense",
+  "health": "Health",
+  "income": "Income",
+  "utilities": "Utilities",
+  "dining": "Dining",
+  "clothing": "Clothing",
+  "groceries": "Groceries",
+  "sports": "Sports",
+  "rent": "Rent",
+  "transportation": "Transportation",
+  "entertainment": "Entertainment",
+  "insurance": "Insurance",
+  "personal": "Personal",
+  "investments": "Investments",
+  "other": "Other"
 }

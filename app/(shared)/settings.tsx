@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import DropDown from "@/components/DropDown";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
+import Toast from "@/components/Toast";
 import Metrics from "@/constants/Metrics";
 import { changeLanguage } from "@/i18n";
 import { formatLanguage } from "@/utils/Helpers";
@@ -23,6 +24,8 @@ const Settings = () => {
 
   const onSave = () => {
     changeLanguage(currentLanguage);
+
+    Toast.showSuccess(t('changes_updated'));
   };
 
   const renderHeader = () => {

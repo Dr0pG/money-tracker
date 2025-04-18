@@ -21,6 +21,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 
 function RightAction(drag: SharedValue<number>, onDelete: () => void) {
   const [backgroundRed, iconColor] = useThemeColor({}, ["error", "text"]);
@@ -69,6 +70,8 @@ const TransactionCard = ({
   onPress,
   onDelete,
 }: PropTypes) => {
+  const { t } = useTranslation();
+
   const handleDelete = () => {
     if (onDelete && id) onDelete?.(id);
   };
@@ -86,8 +89,6 @@ const TransactionCard = ({
     "green",
     "error",
   ]);
-
-  const formattedType = capitalizeFirstLetter(category || type);
 
   const renderTypeIcon = () => {
     if (type === TransactionType.Income) {
@@ -187,7 +188,7 @@ const TransactionCard = ({
           {renderTypeIcon()}
         </View>
         <View style={styles.textInfoContainer}>
-          <ThemedText type="medium">{formattedType}</ThemedText>
+          <ThemedText type="medium">{t(category || type)}</ThemedText>
           {!!description && (
             <ThemedText
               type="gray"
