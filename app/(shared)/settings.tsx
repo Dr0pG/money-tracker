@@ -70,7 +70,9 @@ const styles = StyleSheet.create({
     paddingBottom: Metrics.mediumPadding,
   },
   mainContent: {
-    paddingBottom: Metrics.mediumPadding,
+    flex: 1,
+    marginTop: Metrics.largePadding,
+    marginBottom: Metrics.largePadding,
   },
   buttonContainer: {
     paddingVertical: Metrics.mediumPadding,

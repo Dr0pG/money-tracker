@@ -163,99 +163,98 @@ const AddTransaction = () => {
       wallets?.find((wallet: Wallet) => wallet.id === state?.wallet) || null;
 
     return (
-      <KeyboardAwareScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.formContainer}
-      >
-        <DropDown
-          key={TransactionFields.Type}
-          placeholder={t("create_transaction.type")}
-          value={state.type}
-          isRequired
-          options={splitStringIntoArray(settings?.transactions?.type)}
-          onChangeValue={(value: string) =>
-            onChangeValue(TransactionFields.Type, value)
-          }
-        />
-        <View style={styles.divider} />
-        {!currentSelectedTransaction?.wallet && (
-          <>
-            <DropDown
-              key={TransactionFields.Wallet}
-              placeholder={t("create_transaction.wallet")}
-              value={state.wallet}
-              isRequired
-              options={formatWalletsOptions(wallets)}
-              onChangeValue={(value: string) =>
-                onChangeValue(TransactionFields.Wallet, value)
-              }
-              {...(selectedWallet && {
-                label: formatWalletOption(selectedWallet)?.label,
-              })}
-            />
-            <View style={styles.divider} />
-          </>
-        )}
-        {state.type === TransactionType.Expense && (
-          <>
-            <DropDown
-              key={TransactionFields.Category}
-              placeholder={t("create_transaction.expense_category")}
-              value={state.category}
-              isRequired
-              options={splitStringIntoArray(settings?.transactions?.category)}
-              onChangeValue={(value: string) =>
-                onChangeValue(TransactionFields.Category, value)
-              }
-            />
-            <View style={styles.divider} />
-          </>
-        )}
-        <DatePicker
-          ref={datePickerRef}
-          key={TransactionFields.Date}
-          placeholder={t("create_transaction.date")}
-          value={state.date}
-          isRequired
-          onChangeValue={(value: string) =>
-            onChangeValue(TransactionFields.Date, value)
-          }
-        />
-        <View style={styles.divider} />
-        <Input
-          ref={amountInputRef}
-          topPlaceholder={t("create_transaction.amount")}
-          placeholder={t("create_transaction.amount")}
-          returnKeyType="next"
-          keyboardType="numeric"
-          isRequired
-          value={state.amount > 0 ? state.amount?.toString() : ""}
-          onChangeText={(amount: string) =>
-            onChangeValue(TransactionFields.Amount, amount)
-          }
-          hasError={state.error.amount !== ""}
-          errorMessage={state.error.amount}
-          onFocus={() => onError(ErrorAddTransaction.Amount, "")}
-          onSubmitEditing={() => descriptionInputRef.current?.focus()}
-        />
-        <View style={styles.divider} />
-        <Input
-          ref={descriptionInputRef}
-          topPlaceholder={t("create_transaction.description")}
-          placeholder={t("create_transaction.description")}
-          returnKeyType="send"
-          isBigInput
-          value={state.description?.toString()}
-          onChangeText={(description: string) =>
-            onChangeValue(TransactionFields.Description, description)
-          }
-          hasError={state.error.description !== ""}
-          errorMessage={state.error.description}
-          onFocus={() => onError(ErrorAddTransaction.Description, "")}
-          onSubmitEditing={onCreateTransaction}
-        />
-        <View style={styles.divider} />
-      </KeyboardAwareScrollView>
+      <View style={styles.formContainer}>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <DropDown
+            key={TransactionFields.Type}
+            placeholder={t("create_transaction.type")}
+            value={state.type}
+            isRequired
+            options={splitStringIntoArray(settings?.transactions?.type)}
+            onChangeValue={(value: string) =>
+              onChangeValue(TransactionFields.Type, value)
+            }
+          />
+          <View style={styles.divider} />
+          {!currentSelectedTransaction?.wallet && (
+            <>
+              <DropDown
+                key={TransactionFields.Wallet}
+                placeholder={t("create_transaction.wallet")}
+                value={state.wallet}
+                isRequired
+                options={formatWalletsOptions(wallets)}
+                onChangeValue={(value: string) =>
+                  onChangeValue(TransactionFields.Wallet, value)
+                }
+                {...(selectedWallet && {
+                  label: formatWalletOption(selectedWallet)?.label,
+                })}
+              />
+              <View style={styles.divider} />
+            </>
+          )}
+          {state.type === TransactionType.Expense && (
+            <>
+              <DropDown
+                key={TransactionFields.Category}
+                placeholder={t("create_transaction.expense_category")}
+                value={state.category}
+                isRequired
+                options={splitStringIntoArray(settings?.transactions?.category)}
+                onChangeValue={(value: string) =>
+                  onChangeValue(TransactionFields.Category, value)
+                }
+              />
+              <View style={styles.divider} />
+            </>
+          )}
+          <DatePicker
+            ref={datePickerRef}
+            key={TransactionFields.Date}
+            placeholder={t("create_transaction.date")}
+            value={state.date}
+            isRequired
+            onChangeValue={(value: string) =>
+              onChangeValue(TransactionFields.Date, value)
+            }
+          />
+          <View style={styles.divider} />
+          <Input
+            ref={amountInputRef}
+            topPlaceholder={t("create_transaction.amount")}
+            placeholder={t("create_transaction.amount")}
+            returnKeyType="next"
+            keyboardType="numeric"
+            isRequired
+            value={state.amount > 0 ? state.amount?.toString() : ""}
+            onChangeText={(amount: string) =>
+              onChangeValue(TransactionFields.Amount, amount)
+            }
+            hasError={state.error.amount !== ""}
+            errorMessage={state.error.amount}
+            onFocus={() => onError(ErrorAddTransaction.Amount, "")}
+            onSubmitEditing={() => descriptionInputRef.current?.focus()}
+          />
+          <View style={styles.divider} />
+          <Input
+            ref={descriptionInputRef}
+            topPlaceholder={t("create_transaction.description")}
+            placeholder={t("create_transaction.description")}
+            returnKeyType="send"
+            isBigInput
+            value={state.description?.toString()}
+            onChangeText={(description: string) =>
+              onChangeValue(TransactionFields.Description, description)
+            }
+            hasError={state.error.description !== ""}
+            errorMessage={state.error.description}
+            onFocus={() => onError(ErrorAddTransaction.Description, "")}
+            onSubmitEditing={onCreateTransaction}
+          />
+          <View style={styles.divider} />
+        </KeyboardAwareScrollView>
+      </View>
     );
   };
 
@@ -302,7 +301,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    marginTop: Metrics.largePadding + Metrics.smallPadding,
+    marginTop: Metrics.largePadding,
   },
   divider: {
     height: Metrics.mediumMargin,

@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     ...Shadow.default,
   },
   formContainer: {
-    marginTop: Metrics.largePadding + Metrics.smallPadding,
+    marginTop: Metrics.largePadding,
   },
   divider: {
     height: Metrics.mediumMargin,

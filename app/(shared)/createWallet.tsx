@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.largePadding,
     paddingBottom: Metrics.mediumPadding,
   },
-  formContainer: { marginTop: Metrics.largePadding + Metrics.smallPadding },
+  formContainer: { marginTop: Metrics.largePadding },
   divider: { height: Metrics.mediumMargin },
   buttonContainer: { paddingVertical: Metrics.mediumPadding },
 });
