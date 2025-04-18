@@ -23,6 +23,7 @@ import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { validateUpdateUserForm } from "@/utils/updateUserFormValidation";
 import userStore from "@/store/userStore";
+import Header from "@/components/Header";
 
 const EditProfile = () => {
   const { t } = useTranslation();
@@ -214,16 +215,6 @@ const EditProfile = () => {
     );
   };
 
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Back onPress={onBack} />
-        <ThemedText type="title">{t("profile.update_profile")}</ThemedText>
-        <View style={styles.rightWidth} />
-      </View>
-    );
-  };
-
   const renderButton = useCallback(() => {
     return (
       <View style={styles.buttonContainer}>
@@ -258,7 +249,7 @@ const EditProfile = () => {
 
   return (
     <ThemedView style={styles.container}>
-      {renderHeader()}
+      <Header title="profile.update_profile" />
       {renderContent()}
       {renderButton()}
     </ThemedView>
@@ -271,14 +262,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.largePadding,
     paddingTop: Metrics.largePadding,
     paddingBottom: Metrics.mediumPadding,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  rightWidth: {
-    width: Metrics.backButtonSize,
   },
   emptyContent: {
     flex: 1,

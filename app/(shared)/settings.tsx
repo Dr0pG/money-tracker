@@ -1,14 +1,12 @@
-import Back from "@/components/Back";
 import Button from "@/components/Button";
 import DropDown from "@/components/DropDown";
-import ThemedText from "@/components/ThemedText";
+import Header from "@/components/Header";
 import ThemedView from "@/components/ThemedView";
 import Toast from "@/components/Toast";
 import Metrics from "@/constants/Metrics";
 import { changeLanguage } from "@/i18n";
 import { formatLanguage } from "@/utils/Helpers";
 import { getLanguages } from "@/utils/Languages";
-import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -16,26 +14,12 @@ import { ScrollView, StyleSheet, View } from "react-native";
 const Settings = () => {
   const { t, i18n } = useTranslation();
 
-  const router = useRouter();
-
   const [currentLanguage, setCurrentLanguage] = useState(i18n.languages[0]);
-
-  const onBack = () => router.back();
 
   const onSave = () => {
     changeLanguage(currentLanguage);
 
-    Toast.showSuccess(t('changes_updated'));
-  };
-
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Back onPress={onBack} />
-        <ThemedText type="title">{t("profile.settings")}</ThemedText>
-        <View style={styles.rightWidth} />
-      </View>
-    );
+    Toast.showSuccess(t("changes_updated"));
   };
 
   const renderOptions = () => {
@@ -47,6 +31,7 @@ const Settings = () => {
           label={formatLanguage(currentLanguage)}
           options={getLanguages()}
           onChangeValue={setCurrentLanguage}
+          isRequired
         />
       </View>
     );
@@ -70,7 +55,7 @@ const Settings = () => {
 
   return (
     <ThemedView style={styles.container}>
-      {renderHeader()}
+      <Header title="profile.settings" />
       {renderContent()}
       {renderButton()}
     </ThemedView>
@@ -84,16 +69,8 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.largePadding,
     paddingBottom: Metrics.mediumPadding,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  rightWidth: {
-    width: Metrics.backButtonSize,
-  },
   mainContent: {
-    paddingVertical: Metrics.largePadding,
+    paddingBottom: Metrics.mediumPadding,
   },
   buttonContainer: {
     paddingVertical: Metrics.mediumPadding,

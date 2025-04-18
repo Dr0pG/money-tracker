@@ -1,5 +1,6 @@
 import Back from "@/components/Back";
 import Button from "@/components/Button";
+import Header from "@/components/Header";
 import Input from "@/components/Input";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -72,22 +73,6 @@ const CreateWallet = () => {
     }
   };
 
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Back onPress={onBack} />
-        <ThemedText type="title">
-          {t(
-            !!currentSelectedWallet
-              ? "create_wallet.edit_wallet"
-              : "create_wallet.title"
-          )}
-        </ThemedText>
-        <View style={styles.rightWidth} />
-      </View>
-    );
-  };
-
   const renderContent = () => {
     return (
       <KeyboardAwareScrollView
@@ -143,6 +128,18 @@ const CreateWallet = () => {
     );
   }, [currentSelectedWallet, name, description, image, isLoading]);
 
+  const renderHeader = useCallback(() => {
+    return (
+      <Header
+        title={
+          !!currentSelectedWallet
+            ? "create_wallet.edit_wallet"
+            : "create_wallet.title"
+        }
+      />
+    );
+  }, [currentSelectedWallet]);
+
   return (
     <ThemedView style={styles.container}>
       {renderHeader()}
@@ -159,12 +156,6 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.largePadding,
     paddingBottom: Metrics.mediumPadding,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  rightWidth: { width: Metrics.backButtonSize },
   formContainer: { marginTop: Metrics.largePadding + Metrics.smallPadding },
   divider: { height: Metrics.mediumMargin },
   buttonContainer: { paddingVertical: Metrics.mediumPadding },

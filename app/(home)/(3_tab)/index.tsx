@@ -115,6 +115,25 @@ const Statistics = () => {
     scrollViewRef?.current?.scrollTo({ x: 0, y: 0, animated: true });
   }, [currentTab]);
 
+  const getData = useCallback(() => {
+    let data = {
+      chart: barChartData?.weekly.data,
+      transactions: barChartData?.weekly.list,
+    };
+    if (currentTab === 1)
+      data = {
+        chart: barChartData?.monthly.data,
+        transactions: barChartData?.monthly.list,
+      };
+    if (currentTab === 2)
+      data = {
+        chart: barChartData?.yearly.data,
+        transactions: barChartData?.yearly.list,
+      };
+
+    return data;
+  }, [barChartData, currentTab]);
+
   const renderHeader = () => {
     return (
       <View style={styles.titleContainer}>
@@ -140,21 +159,7 @@ const Statistics = () => {
   };
 
   const renderContent = useCallback(() => {
-    let data = {
-      chart: barChartData?.weekly.data,
-      transactions: barChartData?.weekly.list,
-    };
-    if (currentTab === 1)
-      data = {
-        chart: barChartData?.monthly.data,
-        transactions: barChartData?.monthly.list,
-      };
-    if (currentTab === 2)
-      data = {
-        chart: barChartData?.yearly.data,
-        transactions: barChartData?.yearly.list,
-      };
-
+    const data = getData();
     const sections = groupTransactionsByDate(data?.transactions, currentTab);
 
     return (

@@ -1,9 +1,8 @@
-import Back from "@/components/Back";
 import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import DropDown from "@/components/DropDown";
+import Header from "@/components/Header";
 import Input from "@/components/Input";
-import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import Toast from "@/components/Toast";
 import Metrics from "@/constants/Metrics";
@@ -260,22 +259,6 @@ const AddTransaction = () => {
     );
   };
 
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.header}>
-        <Back onPress={onBack} />
-        <ThemedText type="title">
-          {t(
-            !!currentSelectedTransaction
-              ? "create_transaction.edit_transaction"
-              : "create_transaction.title"
-          )}
-        </ThemedText>
-        <View style={styles.rightWidth} />
-      </View>
-    );
-  }, [currentSelectedTransaction]);
-
   const renderButton = useCallback(() => {
     return (
       <View style={styles.buttonContainer}>
@@ -288,6 +271,18 @@ const AddTransaction = () => {
       </View>
     );
   }, [currentSelectedTransaction, state, isLoading]);
+
+  const renderHeader = useCallback(() => {
+    return (
+      <Header
+        title={
+          !!currentSelectedTransaction
+            ? "create_transaction.edit_transaction"
+            : "create_transaction.title"
+        }
+      />
+    );
+  }, [currentSelectedTransaction]);
 
   return (
     <ThemedView style={styles.container}>
@@ -304,14 +299,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.largePadding,
     paddingTop: Metrics.largePadding,
     paddingBottom: Metrics.mediumPadding,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  rightWidth: {
-    width: Metrics.backButtonSize,
   },
   formContainer: {
     flex: 1,

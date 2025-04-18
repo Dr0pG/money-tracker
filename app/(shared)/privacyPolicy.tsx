@@ -1,34 +1,16 @@
-import Back from "@/components/Back";
+import Header from "@/components/Header";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 const PrivacyPolicy = () => {
   const { t } = useTranslation();
 
-  const router = useRouter();
-
-  const onBack = () => router.back();
-
-  const [backgroundColor, textColor] = useThemeColor({}, [
-    "background",
-    "text",
-  ]);
-
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Back onPress={onBack} />
-        <ThemedText type="title">{t("profile.privacy_policy")}</ThemedText>
-        <View style={styles.rightWidth} />
-      </View>
-    );
-  };
+  const backgroundColor = useThemeColor({}, "background");
 
   const renderContent = () => {
     return (
@@ -48,7 +30,7 @@ const PrivacyPolicy = () => {
 
   return (
     <ThemedView style={styles.container}>
-      {renderHeader()}
+      <Header title="profile.privacy_policy" />
       {renderContent()}
     </ThemedView>
   );
@@ -59,15 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Metrics.largePadding,
     paddingTop: Metrics.mediumPadding,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: Metrics.largePadding,
-  },
-  rightWidth: {
-    width: Metrics.backButtonSize,
   },
   mainContent: {
     paddingBottom: Metrics.largePadding * 2,
