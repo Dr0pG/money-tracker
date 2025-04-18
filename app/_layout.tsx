@@ -32,11 +32,12 @@ import {
   StackNavigationOptions,
   TransitionPresets,
 } from "@react-navigation/stack";
+import messaging from "@react-native-firebase/messaging";
+import Notifications from "@/services/Notifications";
 
 globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
 
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-
 const { Navigator } = createStackNavigator();
 
 export const JsStack = withLayoutContext<
@@ -48,6 +49,9 @@ export const JsStack = withLayoutContext<
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// Handle background messages using setBackgroundMessageHandler
+messaging().setBackgroundMessageHandler(Notifications.displayNotification);
 
 const ThemedApp = () => {
   const { theme } = useTheme();
@@ -144,32 +148,32 @@ const ThemedApp = () => {
           }}
         />
         <JsStack.Screen
-        name="(shared)/editProfile"
-        options={{
-          headerShown: false,
-          ...TransitionPresets.ModalPresentationIOS,
-          presentation: "modal",
-          gestureEnabled: true,
-        }}
-      />
-      <JsStack.Screen
-        name="(shared)/settings"
-        options={{
-          headerShown: false,
-          ...TransitionPresets.ModalPresentationIOS,
-          presentation: "modal",
-          gestureEnabled: true,
-        }}
-      />
-      <JsStack.Screen
-        name="(shared)/privacyPolicy"
-        options={{
-          headerShown: false,
-          ...TransitionPresets.ModalPresentationIOS,
-          presentation: "modal",
-          gestureEnabled: true,
-        }}
-      />
+          name="(shared)/editProfile"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="(shared)/settings"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="(shared)/privacyPolicy"
+          options={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </JsStack>
     </SafeAreaView>

@@ -11,7 +11,13 @@
     "ios": {
       "googleServicesFile": "./ios/GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.moneytracker.app"
+      "bundleIdentifier": "com.moneytracker.app",
+      "entitlements": {
+        "aps-environment": "production",
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification", "fetch"]
+      }
     },
     "android": {
       "googleServicesFile": "./android/app/google-services.json",
@@ -37,7 +43,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "./notifee-mod.js"
     ],
     "experiments": {
       "typedRoutes": true

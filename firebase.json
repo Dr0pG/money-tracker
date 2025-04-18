@@ -1,0 +1,6 @@
+{
+    "react-native": {
+        "messaging_android_notification_channel_id": "default",
+        "messaging_android_notification_delegation_enabled": true
+    }
+}
