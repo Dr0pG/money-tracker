@@ -1,10 +1,10 @@
 import Toast from "@/components/Toast";
 import Utils from "@/firebase/Utils";
+import Wallets from "@/firebase/Wallets";
 import i18n from "@/i18n";
 import { uploadImage } from "@/services/imagesService";
 import { UserInfo } from "@/store/userStore";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import Wallets from "@/firebase/Wallets";
 
 /**
  * Function to get user currency
@@ -104,9 +104,35 @@ const updateUserInfo = async (userInfo: UserInfo) => {
     });
 };
 
+/**
+ * Function to store FCM Token
+ */
+const storeFCMToken = async (fcmToken: string) => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return;
+
+  return Utils.database().ref(`/${currentUser.uid}`).update({
+    fcmToken,
+  });
+};
+
+/**
+ * Function to delete FCM Token
+ */
+const deleteFCMToken = async () => {
+  const currentUser: FirebaseAuthTypes.User | null = auth().currentUser;
+  if (!currentUser) return;
+
+  return Utils.database().ref(`/${currentUser.uid}`).update({
+    fcmToken: null,
+  });
+};
+
 export default {
   getUserCurrency,
   getUser,
   getUserInfo,
   updateUserInfo,
+  storeFCMToken,
+  deleteFCMToken,
 };

@@ -113,6 +113,8 @@ const ThemedText = ({
   return (
     <Animated.Text
       {...rest}
+      accessible
+      accessibilityLabel={rest.children?.toString()}
       style={[
         type === "default" ? styles.default : undefined,
         type === "gray" ? styles.default : undefined,

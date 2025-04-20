@@ -1,19 +1,28 @@
+import User from "@/firebase/User";
+import notifee, { AndroidImportance } from "@notifee/react-native";
 import messaging, {
   FirebaseMessagingTypes,
 } from "@react-native-firebase/messaging";
-import notifee, { AndroidImportance } from "@notifee/react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 
 const getToken = async () => {
-  //const token = await messaging().getToken();
-  //console.log("FCM Token:", token);
+  const token = await messaging().getToken();
+  await User.storeFCMToken(token);
   // Save token to Firebase Database
 };
 
 const requestPermission = async () => {
-  const authStatus = await messaging().requestPermission();
+  const authStatus =
+    Platform.OS === "android"
+      ? await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+        )
+      : await messaging().requestPermission();
+
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL ||
+    authStatus === "granted";
 
   if (enabled) getToken();
 };
