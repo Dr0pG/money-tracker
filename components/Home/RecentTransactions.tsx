@@ -177,6 +177,9 @@ const RecentTransactions = ({
           </ThemedText>
         )}
         ListEmptyComponent={ListEmptyComponent}
+        // onEndReached={loadMoreTransactions}
+        onEndReachedThreshold={0.5} // how close to the end before triggering (0-1)
+        // ListFooterComponent={isLoadingMore ? <ActivityIndicator /> : null}
       />
     );
   };

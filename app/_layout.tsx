@@ -63,9 +63,21 @@ const ThemedApp = () => {
 
   const navigationRef = useNavigationContainerRef();
 
-  const storeUser = userStore((state) => state.storeUser);
+  const { user: currentUser, storeUser } = userStore();
 
   const storeSettings = settingsStore((state) => state.storeSettings);
+
+  useEffect(() => {
+    if (!currentUser?.uid) return;
+
+    Notifications.requestPermission();
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Notifications.displayNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, [currentUser?.uid]);
 
   useEffect(() => {
     if (navigationRef.current?.isReady()) {

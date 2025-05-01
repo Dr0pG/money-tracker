@@ -24,7 +24,10 @@ const requestPermission = async () => {
     authStatus === messaging.AuthorizationStatus.PROVISIONAL ||
     authStatus === "granted";
 
-  if (enabled) getToken();
+  if (enabled) {
+    getToken();
+    await createChannel();
+  }
 };
 
 const displayNotification = async (

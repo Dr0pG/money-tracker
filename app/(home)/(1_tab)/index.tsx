@@ -25,8 +25,6 @@ import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
-import Notifications from "@/services/Notifications";
-import messaging from "@react-native-firebase/messaging";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -61,16 +59,6 @@ const Home = () => {
   ]);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    Notifications.requestPermission();
-
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Notifications.displayNotification(remoteMessage);
-    });
-
-    return unsubscribe;
-  }, []);
 
   useFocusEffect(
     useCallback(() => {

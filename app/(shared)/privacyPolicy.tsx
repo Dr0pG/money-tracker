@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.mediumPadding,
   },
   mainContent: {
+    flexGrow: 1,
     paddingBottom: Metrics.largePadding * 2,
   },
   title: {
