@@ -61,6 +61,7 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
     const text = capitalizeFirstLetter(t(item.label));
     return (
       <Pressable
+        key={item.value}
         onPress={() => {
           onPress(item);
           Keyboard.dismiss();
