@@ -180,7 +180,7 @@ const Statistics = () => {
           hideRules
           xAxisThickness={0}
           yAxisThickness={0}
-          yAxisLabelWidth={40}
+          yAxisLabelWidth={60}
           yAxisTextStyle={{ color: textColor }}
           yAxisLabelPrefix={currency}
           noOfSections={3}

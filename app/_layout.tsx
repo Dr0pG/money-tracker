@@ -38,6 +38,7 @@ import Notifications from "@/services/Notifications";
 globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
 
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+LogBox.ignoreLogs(["Warning: Invalid prop `onStartShouldSetResponder` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props."]);
 const { Navigator } = createStackNavigator();
 
 export const JsStack = withLayoutContext<

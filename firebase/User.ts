@@ -75,7 +75,11 @@ const updateUserInfo = async (userInfo: UserInfo) => {
 
   let image: string = "";
 
-  if (userInfo?.image) image = await uploadImage("user", userInfo.image);
+  if (userInfo?.image) {
+    if (!userInfo?.image?.includes("res.cloudinary"))
+      image = await uploadImage("user", userInfo.image);
+    else image = userInfo.image;
+  }
 
   const currentWalletId = await Wallets.getCurrentWalletId();
 

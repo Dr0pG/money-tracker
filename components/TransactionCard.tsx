@@ -170,7 +170,7 @@ const TransactionCard = ({
         </ThemedText>
       </View>
     );
-  }, [isIncome, value, date, infoGoodTextColor, infoBadTextColor]);
+  }, [isIncome, value, date, infoGoodTextColor, infoBadTextColor, currency]);
 
   const renderContent = () => {
     return (

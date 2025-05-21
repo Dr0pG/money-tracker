@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo, useCallback } from "react";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -18,6 +18,8 @@ import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import User from "@/firebase/User";
+
+const placeholder = require("@/assets/images/placeholder.svg");
 
 type Option = {
   icon: React.ReactNode;
@@ -143,18 +145,15 @@ const Profile = () => {
   };
 
   const renderUserImage = useCallback(() => {
+    const currentImage = image ? { uri: image } : placeholder;
+
     return (
       <Animated.View
         style={styles.imageContainer}
         entering={FadeInDown.duration(Durations.animations).springify()}
         exiting={FadeOutDown.duration(Durations.animations).springify()}
       >
-        <Image
-          source={{
-            uri: image,
-          }}
-          style={styles.image}
-        />
+        <Image source={currentImage} style={styles.image} />
       </Animated.View>
     );
   }, [image]);

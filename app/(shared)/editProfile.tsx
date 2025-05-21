@@ -1,4 +1,3 @@
-import Back from "@/components/Back";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Loader from "@/components/Loader";
@@ -82,6 +81,7 @@ const EditProfile = () => {
 
   const onUpdateProfile = async () => {
     Keyboard.dismiss();
+
     try {
       const validate = validateUpdateUserForm(state.name, state.currency);
       if (!validate.hasError) {
@@ -131,13 +131,14 @@ const EditProfile = () => {
   };
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "images",
       quality: 1,
     });
 
     if (!result.canceled) {
-      setState((prevState) => ({ ...prevState, image: result.assets[0].uri }));
+      const currentImage = result.assets[0].uri;
+      setState((prevState) => ({ ...prevState, image: currentImage }));
     }
   };
 
