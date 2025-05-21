@@ -5,7 +5,8 @@ import Metrics from "@/constants/Metrics";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const PrivacyPolicy = () => {
   const { t } = useTranslation();
