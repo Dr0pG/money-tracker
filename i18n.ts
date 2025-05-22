@@ -12,6 +12,8 @@ const resources = {
   pt: { translation: pt },
 };
 
+const fallbackLng = "en"; // Default language
+
 export const changeLanguage = async (language: string) => {
   try {
     await i18n.changeLanguage(language);
@@ -25,9 +27,7 @@ export const changeLanguage = async (language: string) => {
 const loadLanguage = async () => {
   try {
     const savedLanguage = await AsyncStorage.getItem("language");
-    if (savedLanguage) {
-      return savedLanguage;
-    }
+    return savedLanguage || fallbackLng;
   } catch (error) {
     console.error("Error loading language from AsyncStorage", error);
   }
@@ -42,7 +42,7 @@ const initI18n = async () => {
     .init({
       resources,
       lng: language,
-      fallbackLng: "en",
+      fallbackLng,
       interpolation: {
         escapeValue: false, // react already safes from xss
       },
