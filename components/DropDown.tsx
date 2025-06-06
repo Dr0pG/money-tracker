@@ -34,7 +34,7 @@ const Options = ({ selectedValue, data, onPress }: OptionsPropTypes) => {
 
   const { theme } = useTheme();
 
-  const flatListRef = useRef(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const [backButtonBackground, green] = useThemeColor({}, [
     "backButtonBackground",

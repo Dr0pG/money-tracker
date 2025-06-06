@@ -58,7 +58,7 @@ const Home = () => {
     "backButtonBackground",
   ]);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useFocusEffect(
     useCallback(() => {

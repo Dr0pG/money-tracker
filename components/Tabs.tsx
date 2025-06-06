@@ -25,8 +25,8 @@ const Tabs = ({ data, onChangeTab, children }: PropTypes) => {
 
   const background = useThemeColor({}, "orange");
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const animatedIndex = useSharedValue(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const animatedIndex = useSharedValue<number>(0);
 
   useEffect(() => {
     onChangeTab?.(selectedIndex);

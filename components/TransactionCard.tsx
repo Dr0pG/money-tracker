@@ -9,7 +9,7 @@ import { getTypeColor, getTypeIcon } from "@/utils/getTypeInfo";
 
 import userStore from "@/store/userStore";
 import { TransactionCategory, TransactionType } from "@/store/walletStore";
-import { capitalizeFirstLetter, formatEuropeanNumber } from "@/utils/Helpers";
+import { formatEuropeanNumber } from "@/utils/Helpers";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";

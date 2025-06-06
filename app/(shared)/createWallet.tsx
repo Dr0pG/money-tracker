@@ -37,15 +37,20 @@ const CreateWallet = () => {
 
   const currentSelectedWallet = !!wallet ? JSON.parse(wallet as string) : "";
 
-  const [name, setName] = useState(currentSelectedWallet?.name || "");
-  const [description, setDescription] = useState(
+  const [name, setName] = useState<string>(currentSelectedWallet?.name || "");
+  const [description, setDescription] = useState<string>(
     currentSelectedWallet?.description || ""
   );
-  const [image, setImage] = useState(currentSelectedWallet?.image || "");
+  const [image, setImage] = useState<string>(
+    currentSelectedWallet?.image || ""
+  );
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [error, serError] = useState({ name: "", description: "" });
+  const [error, serError] = useState<{ name: string; description: string }>({
+    name: "",
+    description: "",
+  });
 
   const onCreateWallet = async () => {
     setIsLoading(true);

@@ -21,6 +21,7 @@ const ThemedView = ({
   ...otherProps
 }: ThemedViewProps) => {
   const { theme } = useTheme();
+  
   const lightBg = lightColor || useThemeColor({}, "background");
   const darkBg = darkColor || useThemeColor({}, "background");
 

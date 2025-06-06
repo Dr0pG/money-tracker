@@ -27,11 +27,11 @@ const SignUp = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [generalError, setGeneralError] = useState<string | null>();
   const [error, serError] = useState({

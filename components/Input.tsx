@@ -65,8 +65,8 @@ const Input = forwardRef<TextInput, PropTypes>(
       "error",
     ]);
 
-    const [showError, setError] = useState(false);
-    const [isVisiblePassword, setIsVisiblePassword] = useState(false);
+    const [showError, setError] = useState<boolean>(false);
+    const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
 
     useEffect(() => {
       setError(hasError);

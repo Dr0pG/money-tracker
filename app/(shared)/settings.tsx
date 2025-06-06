@@ -14,7 +14,9 @@ import { ScrollView, StyleSheet, View } from "react-native";
 const Settings = () => {
   const { t, i18n } = useTranslation();
 
-  const [currentLanguage, setCurrentLanguage] = useState(i18n.languages[0]);
+  const [currentLanguage, setCurrentLanguage] = useState<string>(
+    i18n.languages[0]
+  );
 
   const onSave = () => {
     changeLanguage(currentLanguage);

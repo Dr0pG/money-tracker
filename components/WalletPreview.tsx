@@ -12,7 +12,7 @@ const WalletPreview = () => {
     <View style={styles.container}>
       <ThemedText style={styles.title}>{t("preview")}</ThemedText>
       <View style={styles.mainCardContainer}>
-        <MainCard value={0} income={0} expense={0} />
+        <MainCard income={0} expense={0} />
       </View>
     </View>
   );

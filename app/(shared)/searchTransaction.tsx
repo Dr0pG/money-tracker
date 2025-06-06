@@ -10,7 +10,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 const SearchTransaction = () => {
   const { t } = useTranslation();
 
-  const [searchTransaction, setSearchTransaction] = useState("");
+  const [searchTransaction, setSearchTransaction] = useState<string>("");
 
   const renderSearchInput = () => {
     return (

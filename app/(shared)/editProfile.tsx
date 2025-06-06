@@ -52,8 +52,9 @@ const EditProfile = () => {
     },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isUpdatingUserLoading, setIsUpdatingUserLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpdatingUserLoading, setIsUpdatingUserLoading] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const getUser = async () => {

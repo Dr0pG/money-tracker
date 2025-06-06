@@ -48,7 +48,7 @@ const Statistics = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [currentTab, setCurrentTab] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [barChartData, setBarChartData] = useState<{
     weekly: { data: BarChartData[]; list: Transaction[] };

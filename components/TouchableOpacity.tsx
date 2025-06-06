@@ -3,7 +3,7 @@ import {
   ViewStyle,
 } from "react-native";
 import React, { memo } from "react";
-import { TouchableOpacity as GestureTouchableOpacity } from "react-native-gesture-handler";
+import { Pressable as GesturePressable } from "react-native-gesture-handler";
 
 type PropTypes = {
   style?: ViewStyle | ViewStyle[];
@@ -20,9 +20,7 @@ const TouchableOpacity = ({
   useGestureHandler = false,
   disabled = false,
 }: PropTypes) => {
-  const Component = useGestureHandler
-    ? GestureTouchableOpacity
-    : RNTouchableOpacity;
+  const Component = useGestureHandler ? GesturePressable : RNTouchableOpacity;
 
   return (
     <Component

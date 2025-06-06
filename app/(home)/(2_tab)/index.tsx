@@ -42,9 +42,9 @@ const WalletsTab = () => {
     addTransactionIconColor,
   ] = useThemeColor({}, ["backgroundMiddle", "button", "buttonText"]);
 
-  const [currentWalletsTotal, setCurrentWalletsTotal] = useState(0);
+  const [currentWalletsTotal, setCurrentWalletsTotal] = useState<number>(0);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getWallets = async () => {
     try {
