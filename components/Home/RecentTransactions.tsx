@@ -26,7 +26,7 @@ const RecentTransactions = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const [filteredTransactions, setFilteredTransactions] =
