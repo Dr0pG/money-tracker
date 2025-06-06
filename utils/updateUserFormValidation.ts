@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 type FormErrors = {
   name: string;
   currency: string;
@@ -11,44 +13,41 @@ type ResultValidation = {
   hasError: boolean;
 };
 
+const updateUserSchema = z.object({
+  name: z
+    .string({ required_error: "profile.name_is_required" })
+    .nonempty("profile.name_is_required")
+    .regex(/^[\p{L}\s]+$/u, "profile.name_contains_invalid_characters"),
+
+  currency: z
+    .string({ required_error: "profile.currency_is_required" })
+    .nonempty("profile.currency_is_required")
+    .regex(
+      /^[€$£¥₹₩₽₺฿₴₪₦₫₲₵₡₱]$/,
+      "profile.currency_contains_invalid_characters"
+    ),
+});
+
 const validateUpdateUserForm = (
   name: string,
   currency: string
 ): ResultValidation => {
-  let errors: FormErrors = {
+  const result = updateUserSchema.safeParse({ name, currency });
+
+  const errors: FormErrors = {
     name: "",
     currency: "",
   };
 
-  // Validate name
-  const nameRegex = /^[\p{L}\s]+$/u;
-  if (!name) {
-    errors = {
-      ...errors,
-      name: "profile.name_is_required",
-    };
-  } else if (!nameRegex.test(name)) {
-    errors = {
-      ...errors,
-      name: "profile.name_contains_invalid_characters",
-    };
-  }
+  let hasError = false;
 
-  // Validate currency
-  const currencyRegex = /^[€$£¥₹₩₽₺฿₴₪₦₫₲₵₡₱]$/;
-  if (!currency) {
-    errors = {
-      ...errors,
-      currency: "profile.currency_is_required",
-    };
-  } else if (!currencyRegex.test(currency)) {
-    errors = {
-      ...errors,
-      currency: "profile.currency_contains_invalid_characters",
-    };
+  if (!result.success) {
+    hasError = true;
+    result.error.errors.forEach((err) => {
+      const field = err.path[0] as keyof FormErrors;
+      errors[field] = err.message;
+    });
   }
-
-  const hasError = Object.values(errors).some((value) => value !== "");
 
   return { errors, hasError };
 };

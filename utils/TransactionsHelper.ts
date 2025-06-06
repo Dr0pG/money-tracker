@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import {
   TransactionCategory,
   TransactionFields,
@@ -6,15 +8,6 @@ import {
   Wallet,
 } from "@/store/walletStore";
 import { addNumbers, subtractNumbers } from "@/utils/Helpers";
-
-type FormErrors = {
-  type: string;
-  wallet: string;
-  category: string;
-  date: string;
-  amount: string;
-  description: string;
-};
 
 type ResultValidation = {
   errors: FormErrors;
@@ -33,44 +26,62 @@ const isFormValidated = (state: TransactionForm): boolean => {
   return true;
 };
 
-const validateForm = (state: TransactionForm): ResultValidation => {
-  const errors: FormErrors = {
-    type: "",
-    wallet: "",
-    category: "",
-    date: "",
-    amount: "",
-    description: "",
-  };
+type FormErrors = Partial<Record<TransactionFields, string>>;
 
-  const REQUIRED_MESSAGE = "sign_up.form.password_is_required";
+const REQUIRED_MESSAGE = "sign_up.form.password_is_required";
 
-  if (!state.type || !Object.values(TransactionType).includes(state.type)) {
-    errors[TransactionFields.Type] = REQUIRED_MESSAGE;
-  }
+// Transaction schema
+const transactionSchema = z
+  .object({
+    type: z.nativeEnum(TransactionType, {
+      errorMap: () => ({ message: REQUIRED_MESSAGE }),
+    }),
 
-  if (!state.wallet) {
-    errors[TransactionFields.Wallet] = REQUIRED_MESSAGE;
-  }
+    wallet: z.string().nonempty(REQUIRED_MESSAGE),
 
-  if (state.type === TransactionType.Expense) {
-    if (
-      !state.category ||
-      !Object.values(TransactionCategory).includes(state.category)
-    ) {
-      errors[TransactionFields.Category] = REQUIRED_MESSAGE;
+    date: z.string().nonempty(REQUIRED_MESSAGE),
+
+    amount: z
+      .string()
+      .nonempty(REQUIRED_MESSAGE)
+      .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+        message: REQUIRED_MESSAGE,
+      }),
+
+    description: z.string().optional(),
+
+    category: z
+      .union([z.nativeEnum(TransactionCategory), z.literal(""), z.undefined()])
+      .optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.type === TransactionType.Expense) {
+      if (
+        !data.category ||
+        !Object.values(TransactionCategory).includes(data.category)
+      ) {
+        ctx.addIssue({
+          path: ["category"],
+          code: z.ZodIssueCode.custom,
+          message: REQUIRED_MESSAGE,
+        });
+      }
     }
-  }
+  });
 
-  if (!state.date) {
-    errors[TransactionFields.Date] = REQUIRED_MESSAGE;
-  }
+const validateForm = (state: TransactionForm): ResultValidation => {
+  const result = transactionSchema.safeParse(state);
 
-  if (!state.amount) {
-    errors[TransactionFields.Amount] = REQUIRED_MESSAGE;
-  }
+  const errors: FormErrors = {};
+  let hasError = false;
 
-  const hasError = Object.values(errors).some((error) => error !== "");
+  if (!result.success) {
+    hasError = true;
+    result.error.errors.forEach((err) => {
+      const field = err.path[0] as keyof Omit<TransactionForm, "id">;
+      errors[field] = err.message;
+    });
+  }
 
   return { errors, hasError };
 };
@@ -117,4 +128,3 @@ const totalWallets = (currentWallets: Wallet[]) => {
 };
 
 export { formatTotalTransactions, isFormValidated, totalWallets, validateForm };
-

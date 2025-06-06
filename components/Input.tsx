@@ -132,7 +132,7 @@ const Input = forwardRef<TextInput, PropTypes>(
     }, [icon, color]);
 
     const renderPasswordIcon = useCallback(() => {
-      if (icon !== "password") return;
+      if (icon !== "password" || errorMessage && showError) return;
 
       return (
         <Entypo
@@ -142,7 +142,7 @@ const Input = forwardRef<TextInput, PropTypes>(
           onPress={onChangeVisiblePassword}
         />
       );
-    }, [isVisiblePassword]);
+    }, [isVisiblePassword, errorMessage, showError]);
 
     const renderErrorIcon = useCallback(() => {
       if (!errorMessage && !showError) return;
