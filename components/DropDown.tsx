@@ -231,7 +231,7 @@ const DropDown = ({
 
   return (
     <TouchableWithoutFeedback onPress={() => setShowOptions(false)}>
-      <>
+      <View>
         <ThemedView style={[styles.container, style]}>
           {renderTopPlaceholder()}
           <Pressable onPress={onSetShowOptions}>
@@ -244,7 +244,7 @@ const DropDown = ({
           </Pressable>
         </ThemedView>
         <View style={styles.modalContainer}>{renderOptions()}</View>
-      </>
+      </View>
     </TouchableWithoutFeedback>
   );
 };

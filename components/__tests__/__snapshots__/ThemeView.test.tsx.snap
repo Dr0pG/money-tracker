@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemedView renders correctly with dark theme 1`] = `
+<View
+  collapsable={false}
+  jestAnimatedProps={
+    {
+      "value": {},
+    }
+  }
+  jestAnimatedStyle={
+    {
+      "value": {
+        "backgroundColor": "#1A181B",
+      },
+    }
+  }
+  jestInlineStyle={
+    [
+      undefined,
+    ]
+  }
+  style={
+    [
+      {
+        "backgroundColor": "#1A181B",
+      },
+      undefined,
+    ]
+  }
+  testID="themed-view"
+/>
+`;
+
+exports[`ThemedView renders correctly with light theme 1`] = `
+<View
+  collapsable={false}
+  jestAnimatedProps={
+    {
+      "value": {},
+    }
+  }
+  jestAnimatedStyle={
+    {
+      "value": {
+        "backgroundColor": "#E2E2E8",
+      },
+    }
+  }
+  jestInlineStyle={
+    [
+      undefined,
+    ]
+  }
+  style={
+    [
+      {
+        "backgroundColor": "#E2E2E8",
+      },
+      undefined,
+    ]
+  }
+  testID="themed-view"
+/>
+`;

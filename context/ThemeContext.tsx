@@ -21,10 +21,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 interface ThemeProviderProps {
   children: ReactNode;
+  initialTheme?: Theme;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>("dark");
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+  children,
+  initialTheme = "dark",
+}) => {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
   useEffect(() => {
     const loadTheme = async () => {

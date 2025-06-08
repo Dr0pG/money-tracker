@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ActivityIndicator, StyleSheet, ViewStyle } from "react-native";
 
 type PropTypes = {
+  testID?: string;
   style?: ViewStyle | ViewStyle[];
   text: string;
   isUpperCase?: boolean;
@@ -16,6 +17,7 @@ type PropTypes = {
 };
 
 const Button = ({
+  testID = undefined,
   style = {},
   text,
   isUpperCase = true,
@@ -37,6 +39,7 @@ const Button = ({
 
   return (
     <TouchableOpacity
+      testID={testID}
       style={[
         styles.container,
         disabled
@@ -59,7 +62,13 @@ const Button = ({
           {currentText}
         </ThemedText>
       )}
-      {isLoading && <ActivityIndicator color={textColor} />}
+      {isLoading && (
+        <ActivityIndicator
+          accessible
+          accessibilityRole="progressbar"
+          color={textColor}
+        />
+      )}
     </TouchableOpacity>
   );
 };

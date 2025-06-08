@@ -17,6 +17,7 @@ const Back = ({ onPress = () => {} }: PropTypes) => {
 
   return (
     <TouchableOpacity
+      testID="back-button"
       style={[styles.container, { backgroundColor: backButtonBackground }]}
       onPress={onPress}
     >
