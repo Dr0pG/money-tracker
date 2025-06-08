@@ -4,16 +4,6 @@ import DropDown from "@/components/DropDown";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 // Mocks
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: { changeLanguage: jest.fn() },
-  }),
-  initReactI18next: {
-    type: "3rdParty", // mock shape to avoid errors
-  },
-}));
-
 jest.mock("@/hooks/useThemeColor", () => ({
   useThemeColor: () => ["#000", "#111", "#222"], // mock colors
 }));
