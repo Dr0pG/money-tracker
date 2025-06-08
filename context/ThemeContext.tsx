@@ -11,23 +11,26 @@ import React, {
 export type Theme = "light" | "dark";
 
 // Define the context type
-interface ThemeContextType {
+type ThemeContextType = {
   theme: Theme;
   toggleTheme: () => void;
-}
+};
 
 // Create the context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-interface ThemeProviderProps {
+type PropTypes = {
   children: ReactNode;
   initialTheme?: Theme;
-}
+};
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+/**
+ * Provider to get the current theme and be able to change it
+ */
+export const ThemeProvider = ({
   children,
   initialTheme = "dark",
-}) => {
+}: PropTypes) => {
   const [theme, setTheme] = useState<Theme>(initialTheme);
 
   useEffect(() => {
@@ -53,6 +56,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   );
 };
 
+/**
+ * Hook to return the context
+ * @returns ThemeContext
+ */
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (!context) {
