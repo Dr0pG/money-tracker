@@ -169,5 +169,6 @@
   "insurance": "Insurance",
   "personal": "Personal",
   "investments": "Investments",
-  "other": "Other"
+  "other": "Other",
+  "field_required": "Field is required."
 }

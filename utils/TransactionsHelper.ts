@@ -28,7 +28,7 @@ const isFormValidated = (state: TransactionForm): boolean => {
 
 type FormErrors = Partial<Record<TransactionFields, string>>;
 
-const REQUIRED_MESSAGE = "sign_up.form.password_is_required";
+const REQUIRED_MESSAGE = "field_required";
 
 // Transaction schema
 const transactionSchema = z
