@@ -1,6 +1,8 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import Utils from "@/firebase/Utils";
 import Toast from "@/components/Toast";
+import Utils from "@/firebase/Utils";
+import Keychain from "@/services/Keychain";
+import userStore from "@/store/userStore";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import i18n from "i18next";
 
 /**
@@ -11,8 +13,9 @@ import i18n from "i18next";
 const loginUser = async (email: string, password: string) => {
   return auth()
     .signInWithEmailAndPassword(email, password)
-    .then(() => {
+    .then(async () => {
       Toast.showSuccess(i18n.t("login_successfully"));
+      await Keychain.storeLogin(email, password);
     })
     .catch((error) => {
       let currentError = null;
@@ -53,20 +56,24 @@ const registerUser = async (name: string, email: string, password: string) => {
       // Get the user ID (uid) from Firebase Authentication
       const userId = userCredential.user.uid;
 
+      // Get current currency
+      const currency = userStore.getState().currency;
+
       // Create the user object to store in the Realtime Database
       const user = {
         name: name,
         email: email,
         createdAt: new Date(),
-        currency: "€",
+        currency,
       };
 
       // Set the user object in the Realtime Database under a path like {userId}
       Utils.database()
         .ref(`/${userId}`)
         .set(user)
-        .then(() => {
+        .then(async () => {
           Toast.showSuccess(i18n.t("account_created_successfully"));
+          await Keychain.storeLogin(email, password);
         })
         .catch(() => {
           const currentError = i18n.t(
@@ -98,7 +105,8 @@ const registerUser = async (name: string, email: string, password: string) => {
 const signOut = () => {
   auth()
     .signOut()
-    .then(() => {
+    .then(async () => {
+      await Keychain.resetLogin();
       Toast.showSuccess(i18n.t("user_logout_successfully"));
     })
     .catch(() => {

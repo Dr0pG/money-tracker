@@ -24,7 +24,10 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Settings from "@/firebase/Settings";
+import Keychain from "@/services/Keychain";
+import Notifications from "@/services/Notifications";
 import settingsStore from "@/store/settingsStore";
+import messaging from "@react-native-firebase/messaging";
 import { ParamListBase, StackNavigationState } from "@react-navigation/native";
 import {
   createStackNavigator,
@@ -32,13 +35,14 @@ import {
   StackNavigationOptions,
   TransitionPresets,
 } from "@react-navigation/stack";
-import messaging from "@react-native-firebase/messaging";
-import Notifications from "@/services/Notifications";
 
 globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
 
-LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-LogBox.ignoreLogs(["Warning: Invalid prop `onStartShouldSetResponder` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props."]);
+LogBox.ignoreLogs([
+  "VirtualizedLists should never be nested",
+  "Warning: Invalid prop `onStartShouldSetResponder` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.",
+]);
+
 const { Navigator } = createStackNavigator();
 
 export const JsStack = withLayoutContext<
@@ -81,23 +85,25 @@ const ThemedApp = () => {
   }, [currentUser?.uid]);
 
   useEffect(() => {
-    if (navigationRef.current?.isReady()) {
-      const subscriber = auth().onAuthStateChanged(
-        (user: FirebaseAuthTypes.User | null) => {
-          storeUser(user);
+    if (!navigationRef.current?.isReady()) return;
 
-          if (user) {
-            router.replace("/(home)");
-          } else {
-            router.replace("/(main)");
-          }
+    const subscriber = auth().onAuthStateChanged(
+      async (user: FirebaseAuthTypes.User | null) => {
+        storeUser(user);
+
+        const savedUser = await Keychain.getLogin();
+
+        if (user || savedUser) {
+          router.replace("/(home)");
+        } else {
+          router.replace("/(main)");
         }
-      );
+      }
+    );
 
-      return () => {
-        subscriber(); // unsubscribe on unmount
-      };
-    }
+    return () => {
+      subscriber(); // unsubscribe on unmount
+    };
   }, [navigationRef]);
 
   useEffect(() => {

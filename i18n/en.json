@@ -170,5 +170,6 @@
   "personal": "Personal",
   "investments": "Investments",
   "other": "Other",
-  "field_required": "Field is required."
+  "field_required": "Field is required.",
+  "authenticate_to_login": "Authenticate to login"
 }

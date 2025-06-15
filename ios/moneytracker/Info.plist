@@ -49,6 +49,8 @@
 	<string>Give $(PRODUCT_NAME) permission to access your camera</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to use Face ID to log you in securely</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
