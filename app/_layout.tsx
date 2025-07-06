@@ -94,7 +94,7 @@ const ThemedApp = () => {
         const savedUser = await Keychain.getLogin();
 
         if (user || savedUser) {
-          router.replace("/(home)");
+          router.replace("/(home)/(home)");
         } else {
           router.replace("/(main)");
         }

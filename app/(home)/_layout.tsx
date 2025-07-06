@@ -30,10 +30,10 @@ const Navigator = () => {
           justifyContent: "center",
         },
       }}
-      initialRouteName="(1_tab)"
+      initialRouteName="(home)"
     >
       <Tabs.Screen
-        name="(1_tab)"
+        name="(home)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -46,7 +46,7 @@ const Navigator = () => {
         }}
       />
       <Tabs.Screen
-        name="(2_tab)"
+        name="(wallets)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -59,7 +59,7 @@ const Navigator = () => {
         }}
       />
       <Tabs.Screen
-        name="(3_tab)"
+        name="(statistics)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
@@ -72,7 +72,7 @@ const Navigator = () => {
         }}
       />
       <Tabs.Screen
-        name="(4_tab)"
+        name="(profile)"
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
