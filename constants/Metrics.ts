@@ -1,5 +1,4 @@
 import { Dimensions } from "react-native";
-import { hasNotch } from "react-native-device-info";
 
 const Metrics = {
   // Margins
@@ -97,7 +96,7 @@ const Metrics = {
   trashDeleteIcon: 24,
 
   // BottomBar
-  bottomBarHeight: hasNotch() ? 80 : 60,
+  bottomBarHeight: 80,
 
   // Screen Dimensions
   screenWidth: Dimensions.get("window").width,

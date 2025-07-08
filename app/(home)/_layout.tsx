@@ -25,7 +25,7 @@ const Navigator = () => {
         headerShown: false,
         tabBarStyle: {
           height: Metrics.bottomBarHeight,
-          paddingTop: Metrics.smallPadding + 2,
+          paddingTop: Metrics.mediumPadding,
           backgroundColor: bottomBarColor,
           justifyContent: "center",
         },
