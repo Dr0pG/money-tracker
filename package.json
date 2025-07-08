@@ -41,7 +41,7 @@
     "@testing-library/jest-native": "^5.4.3",
     "axios": "^1.10.0",
     "eslint-plugin-import": "2.32.0",
-    "expo": "53.0.17",
+    "expo": "53.0.18",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
     "expo-font": "~13.3.2",
@@ -63,7 +63,7 @@
     "jest-fail-on-console": "^3.3.1",
     "jest-fetch-mock": "^3.0.3",
     "jest-html-reporter": "^4.3.0",
-    "lottie-react-native": "7.2.3",
+    "lottie-react-native": "7.2.4",
     "patch-package": "8.0.0",
     "prettier": "3.6.2",
     "react": "19.0.0",
@@ -83,7 +83,7 @@
     "react-native-svg": "15.12.0",
     "react-native-web": "0.20.0",
     "react-native-webview": "13.15.0",
-    "zod": "^3.25.74",
+    "zod": "^3.25.76",
     "zustand": "5.0.6"
   },
   "devDependencies": {
