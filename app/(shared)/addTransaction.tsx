@@ -227,7 +227,7 @@ const AddTransaction = () => {
             returnKeyType="next"
             keyboardType="numeric"
             isRequired
-            value={state.amount > 0 ? state.amount?.toString() : ""}
+            value={state.amount?.toString() || ""}
             onChangeText={(amount: string) =>
               onChangeValue(TransactionFields.Amount, amount)
             }

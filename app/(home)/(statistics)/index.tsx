@@ -34,14 +34,23 @@ const Statistics = () => {
 
   const isFocused = useIsFocused();
 
-  const [textColor, incomeColor, expenseColor, invisibleColor, labelTextColor] =
-    useThemeColor({}, [
-      "textPlaceholder",
-      "incomeColor",
-      "expenseColor",
-      "invisibleColor",
-      "labelTextColor",
-    ]);
+  const [
+    textColor,
+    incomeColor,
+    expenseColor,
+    invisibleColor,
+    labelTextColor,
+    infoGoodTextColor,
+    infoBadTextColor,
+  ] = useThemeColor({}, [
+    "textPlaceholder",
+    "incomeColor",
+    "expenseColor",
+    "invisibleColor",
+    "labelTextColor",
+    "green",
+    "error",
+  ]);
 
   const { currency } = userStore();
 
@@ -212,10 +221,23 @@ const Statistics = () => {
                 />
               );
             }}
-            renderSectionHeader={({ section: { title } }) => (
-              <ThemedText type="medium" style={styles.subtitle}>
-                {title}
-              </ThemedText>
+            renderSectionHeader={({ section: { title, totalAmount } }) => (
+              <ThemedView style={styles.sectionTitle}>
+                <ThemedText type="medium" style={styles.subtitle}>
+                  {title}
+                </ThemedText>
+                <ThemedText
+                  type="medium"
+                  color={
+                    totalAmount.toString().includes("-")
+                      ? infoBadTextColor
+                      : infoGoodTextColor
+                  }
+                  style={styles.subtitle}
+                >
+                  {`${totalAmount}${currency}`}
+                </ThemedText>
+              </ThemedView>
             )}
             {...(!isLoading && {
               ListEmptyComponent,
@@ -282,6 +304,11 @@ const styles = StyleSheet.create({
     lineHeight: Metrics.size16 * 1.3,
     paddingBottom: Metrics.mediumPadding,
     fontWeight: "bold",
+  },
+  sectionTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import ThemedText from "@/components/ThemedText";
@@ -21,10 +21,10 @@ import walletStore, { Wallet } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import auth from "@react-native-firebase/auth";
+import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -63,12 +63,15 @@ const Home = () => {
   useFocusEffect(
     useCallback(() => {
       const getInfo = async () => {
+        const getFulfilledValue = (result: any) =>
+          result.status === "fulfilled" ? result.value : undefined;
+
         try {
           const [
-            resWalletsResult,
-            resCurrentWalletResult,
-            resCurrentWalletIdResult,
-            resUserInfo,
+            walletsResult,
+            currentWalletResult,
+            currentWalletIdResult,
+            userInfoResult,
           ] = await Promise.allSettled([
             Wallets.getWallets(),
             Wallets.getCurrentWallet(),
@@ -76,31 +79,38 @@ const Home = () => {
             User.getUserInfo(),
           ]);
 
-          if (resWalletsResult.status === "fulfilled" && resWalletsResult.value)
-            setWallets(resWalletsResult.value as Wallet[]);
-          else setWallets(null);
+          // Wallets
+          const wallets = getFulfilledValue(walletsResult) as
+            | Wallet[]
+            | undefined;
+          setWallets(wallets ?? null);
 
-          if (resCurrentWalletResult.status === "fulfilled") {
-            if (resCurrentWalletResult.value)
-              setCurrentWallet(resCurrentWalletResult.value as Wallet);
-            else if (resWalletsResult.value)
-              setCurrentWallet(resWalletsResult.value[0] as Wallet);
-            else setCurrentWallet(null);
+          // Current Wallet
+          let currentWallet = getFulfilledValue(currentWalletResult) as
+            | Wallet
+            | undefined;
+          if (!currentWallet && wallets && wallets.length > 0) {
+            currentWallet = wallets[0];
           }
+          setCurrentWallet(currentWallet ?? null);
 
-          if (resCurrentWalletIdResult.status === "fulfilled") {
-            if (resCurrentWalletIdResult.value)
-              setCurrentWalletId(resCurrentWalletIdResult.value as string);
-            else if (resWalletsResult.value)
-              setCurrentWalletId(resWalletsResult.value[0].id as string);
-            else setCurrentWalletId(null);
+          // Current Wallet ID
+          let currentWalletId = getFulfilledValue(currentWalletIdResult) as
+            | string
+            | undefined;
+          if (!currentWalletId && wallets && wallets.length > 0) {
+            currentWalletId = wallets[0].id;
           }
+          setCurrentWalletId(currentWalletId ?? null);
 
-          if (resUserInfo.status === "fulfilled" && resUserInfo.value) {
+          // User Info
+          const userInfo = getFulfilledValue(userInfoResult) as
+            | UserInfo
+            | undefined;
+          if (userInfo) {
             const user = auth().currentUser;
-            storeUserInfo(resUserInfo.value as UserInfo);
-            if (user)
-              storeUser({ ...user, displayName: resUserInfo.value.name });
+            storeUserInfo(userInfo);
+            if (user) storeUser({ ...user, displayName: userInfo?.name || "" });
           }
         } catch (error: any) {
           console.log("Home error: ", error.message);

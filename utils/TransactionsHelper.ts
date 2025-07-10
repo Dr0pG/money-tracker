@@ -44,7 +44,10 @@ const transactionSchema = z
     amount: z
       .string()
       .nonempty(REQUIRED_MESSAGE)
-      .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      .refine((val) => {
+        const normalized = val.replace(',', '.');
+        return !isNaN(Number(normalized)) && Number(normalized) > 0;
+      }, {
         message: REQUIRED_MESSAGE,
       }),
 

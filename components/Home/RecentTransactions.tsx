@@ -1,8 +1,11 @@
 import Loader from "@/components/Loader";
 import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
 import TransactionCard from "@/components/TransactionCard";
 import Metrics from "@/constants/Metrics";
 import Transactions from "@/firebase/Transactions";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import userStore from "@/store/userStore";
 import { Transaction, TransactionType } from "@/store/walletStore";
 import { EventEmitterHelper, EventName } from "@/utils/EventEmitter";
 import { groupTransactionsByDate } from "@/utils/Helpers";
@@ -25,6 +28,13 @@ const RecentTransactions = ({
 }: PropTypes) => {
   const { t } = useTranslation();
   const router = useRouter();
+
+  const { currency } = userStore();
+
+  const [infoGoodTextColor, infoBadTextColor] = useThemeColor({}, [
+    "green",
+    "error",
+  ]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -147,6 +157,8 @@ const RecentTransactions = ({
       2
     );
 
+    console.log("Sections: ", sections);
+
     return (
       <SectionList
         sections={sections}
@@ -171,10 +183,23 @@ const RecentTransactions = ({
             />
           );
         }}
-        renderSectionHeader={({ section: { title } }) => (
-          <ThemedText type="medium" style={styles.subtitle}>
-            {title}
-          </ThemedText>
+        renderSectionHeader={({ section: { title, totalAmount } }) => (
+          <ThemedView style={styles.sectionTitle}>
+            <ThemedText type="medium" style={styles.subtitle}>
+              {title}
+            </ThemedText>
+            <ThemedText
+              type="medium"
+              color={
+                totalAmount.toString().includes("-")
+                  ? infoBadTextColor
+                  : infoGoodTextColor
+              }
+              style={styles.subtitle}
+            >
+              {`${totalAmount}${currency}`}
+            </ThemedText>
+          </ThemedView>
         )}
         ListEmptyComponent={ListEmptyComponent}
         // onEndReached={loadMoreTransactions}
@@ -225,6 +250,11 @@ const styles = StyleSheet.create({
     lineHeight: Metrics.size16 * 1.3,
     paddingBottom: Metrics.mediumPadding,
     fontWeight: "bold",
+  },
+  sectionTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

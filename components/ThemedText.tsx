@@ -168,12 +168,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Metrics.size26,
     fontWeight: "bold",
-    lineHeight: Metrics.size26,
+    lineHeight: Metrics.size26 * 1.3,
   },
   bigTitle: {
     fontSize: Metrics.size30,
     fontWeight: "bold",
-    lineHeight: Metrics.size30,
+    lineHeight: Metrics.size30 * 1.3,
   },
   extremeTitle: {
     fontSize: Metrics.size30 * 1.2,

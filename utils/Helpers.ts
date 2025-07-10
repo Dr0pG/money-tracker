@@ -216,6 +216,7 @@ const buildBarData = (
 type SectionData = {
   title: string;
   data: Transaction[];
+  totalAmount: number;
 };
 
 const groupTransactionsByDate = (
@@ -261,6 +262,11 @@ const groupTransactionsByDate = (
     .map(([title, data]) => ({
       title,
       data,
+      totalAmount: data.reduce(
+        (sum, tx) =>
+          sum + (tx.type === TransactionType.Income ? tx.amount : -tx.amount),
+        0
+      ),
     }));
 };
 
@@ -322,5 +328,6 @@ export {
   splitStringIntoArray,
   subtractNumbers,
   transformArray,
-  transformObjectIntoArray,
+  transformObjectIntoArray
 };
+
