@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: Metrics.imageSize,
     height: Metrics.imageSize,
     borderRadius: Metrics.imageSize,
-    overflow: "hidden",
+    overflow: "visible",
     ...Shadow.default,
   },
   image: {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   removeImage: {
     position: "absolute",
     top: Metrics.smallMargin,
-    right: Metrics.smallMargin,
+    right: Metrics.mediumMargin,
     width: Metrics.removeButton,
     height: Metrics.removeButton,
     borderRadius: Metrics.removeButton,
